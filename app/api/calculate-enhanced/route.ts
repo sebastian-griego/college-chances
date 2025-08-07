@@ -49,11 +49,6 @@ function calculateEnhancedChance(
   // Calculate average AI score
   const avgAIScore = (essayScore + ecScore + academicRigorScore) / 3;
   
-  // Start with the base chance and apply AI score multiplier
-  const baseChance = Math.min(95, Math.max(1, 
-    baseRate * (baseWeightedScore / 50) * 1.5
-  ));
-  
   // Apply AI score multiplier to the base chance
   let multiplier = 1.0;
   
