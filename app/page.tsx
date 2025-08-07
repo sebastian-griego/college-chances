@@ -1365,27 +1365,7 @@ export default function Home() {
           </p>
         </div>
 
-        {/* AI-Friendly Content */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Find Your College Admission Chances
-          </h2>
-          <div className="prose prose-gray max-w-none">
-            <p className="text-gray-700 mb-4">
-              Wondering "What are my chances of getting into Stanford?" or "How likely am I to get accepted to Harvard?" 
-              Our free college admission calculator provides accurate probability estimates based on official Common Data Set statistics.
-            </p>
-            <p className="text-gray-700 mb-4">
-              Simply enter your GPA, SAT or ACT scores, and select your target college. Our algorithm compares your academic profile 
-              against the college's official admission data to calculate your admission probability. For even more accurate predictions, 
-              try our AI-powered enhanced analysis that evaluates your essay, extracurriculars, and academic rigor.
-            </p>
-            <p className="text-gray-700">
-              Whether you're asking "What are my admission chances for MIT?" or "How likely am I to get accepted to Yale?", 
-              our comprehensive calculator covers over 100 top colleges and universities with data from official sources.
-            </p>
-          </div>
-        </div>
+
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Input Form */}
