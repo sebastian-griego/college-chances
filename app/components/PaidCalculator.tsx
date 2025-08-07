@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 interface PaidCalculatorProps {
-  onAnalysisComplete: (scores: any) => void;
+  onAnalysisComplete: (scores: any, feedback?: string) => void;
 }
 
 export default function PaidCalculator({ onAnalysisComplete }: PaidCalculatorProps) {
@@ -74,7 +74,7 @@ export default function PaidCalculator({ onAnalysisComplete }: PaidCalculatorPro
 
       if (response.ok) {
         const result = await response.json();
-        onAnalysisComplete({ ...result.scores, userId });
+        onAnalysisComplete({ ...result.scores, userId }, result.essayFeedback);
       } else {
         console.error('Analysis failed');
       }

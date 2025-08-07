@@ -1142,6 +1142,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showPaidCalculator, setShowPaidCalculator] = useState(false);
   const [aiScores, setAiScores] = useState<any>(null);
+  const [essayFeedback, setEssayFeedback] = useState<string>('');
 
   const filteredColleges = COLLEGES.filter(college =>
     college.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -1254,7 +1255,7 @@ export default function Home() {
       // If user has AI scores, calculate enhanced chance
       if (aiScores) {
         const response = await fetch('/api/calculate-enhanced', {
-          method: 'POST',
+        method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             gpa: formData.gpa,
@@ -1301,11 +1302,13 @@ export default function Home() {
     setResult(null);
     setSearchTerm('');
     setAiScores(null);
+    setEssayFeedback('');
     setShowPaidCalculator(false);
   };
 
-  const handleAnalysisComplete = (scores: any) => {
+  const handleAnalysisComplete = (scores: any, essayFeedback?: string) => {
     setAiScores(scores);
+    setEssayFeedback(essayFeedback || '');
     setShowPaidCalculator(false);
   };
 
@@ -1316,7 +1319,7 @@ export default function Home() {
     return 'text-red-600';
   };
 
-  return (
+    return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
@@ -1330,7 +1333,7 @@ export default function Home() {
           <p className="text-sm text-gray-500 mt-2">
             Data sourced from Common Data Set (CDS) and official college statistics
           </p>
-        </div>
+      </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Input Form */}
@@ -1348,7 +1351,7 @@ export default function Home() {
               {aiScores ? (
                 <div className="text-sm text-green-700">
                   ✓ Analysis completed! Your enhanced scores are ready.
-                </div>
+        </div>
               ) : (
                 <button
                   onClick={() => setShowPaidCalculator(true)}
@@ -1357,24 +1360,24 @@ export default function Home() {
                   Try Enhanced Analysis
                 </button>
               )}
-            </div>
+      </div>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* College Selection */}
-              <div>
+                <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Search Colleges
                 </label>
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Type to search colleges..."
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+              />
+            </div>
 
-              <div>
+            <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select College
                 </label>
@@ -1389,82 +1392,82 @@ export default function Home() {
                   {filteredColleges.map((college) => (
                     <option key={college.name} value={college.name}>
                       {college.name}
-                    </option>
+                      </option>
                   ))}
                 </select>
-              </div>
+            </div>
 
               {/* GPA Input */}
-              <div>
+            <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   GPA (4.0 scale)
                 </label>
-                <input
-                  type="number"
-                  name="gpa"
+              <input
+                type="number"
+                name="gpa"
                   value={formData.gpa}
                   onChange={handleInputChange}
-                  step="0.01"
-                  min="0"
-                  max="4"
-                  required
+                step="0.01"
+                min="0"
+                max="4"
+                required
                   placeholder="Enter your GPA (e.g., 3.85)"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+              />
+            </div>
 
               {/* Test Type Selection */}
-              <div>
+            <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Test Type
                 </label>
-                <select
+              <select
                   name="testType"
                   value={formData.testType}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="sat">SAT</option>
-                  <option value="act">ACT</option>
-                </select>
+              >
+                <option value="sat">SAT</option>
+                <option value="act">ACT</option>
+              </select>
               </div>
-
+              
               {/* Test Score Input */}
-              <div>
+                <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   {formData.testType === 'sat' ? 'SAT Score' : 'ACT Score'}
                 </label>
-                <input
-                  type="number"
+                  <input
+                    type="number"
                   name={formData.testType}
                   value={formData.testType === 'sat' ? formData.sat : formData.act}
                   onChange={handleInputChange}
                   min={formData.testType === 'sat' ? "400" : "1"}
                   max={formData.testType === 'sat' ? "1600" : "36"}
-                  required
+                    required
                   placeholder={formData.testType === 'sat' ? "Enter your SAT score (400-1600)" : "Enter your ACT score (1-36)"}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
-              </div>
+            </div>
 
               {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading}
+            <button
+              type="submit"
+              disabled={loading}
                 className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
-              >
-                {loading ? 'Calculating...' : 'Calculate My Chances'}
-              </button>
+            >
+              {loading ? 'Calculating...' : 'Calculate My Chances'}
+            </button>
 
-              <button
-                type="button"
-                onClick={resetForm}
+            <button
+              type="button"
+              onClick={resetForm}
                 className="w-full bg-gray-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-600 transition-colors"
-              >
+            >
                 Reset Form
-              </button>
-            </form>
-          </div>
+            </button>
+          </form>
+        </div>
 
           {/* Results */}
           {result && (
@@ -1510,14 +1513,14 @@ export default function Home() {
               <div className="bg-gray-50 rounded-lg p-6">
                 <h3 className="font-semibold text-gray-900 mb-4">College Statistics</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
+              <div>
                     <p className="text-gray-600">Admission Rate</p>
                     <p className="font-semibold">{result.collegeData.admissionRate}%</p>
-                  </div>
-                  <div>
+              </div>
+              <div>
                     <p className="text-gray-600">Average SAT</p>
                     <p className="font-semibold">{result.collegeData.avgSAT}</p>
-                  </div>
+              </div>
                   <div>
                     <p className="text-gray-600">Average ACT</p>
                     <p className="font-semibold">{result.collegeData.avgACT}</p>
@@ -1550,6 +1553,14 @@ export default function Home() {
                       <p className="font-semibold text-purple-700">{result.aiScores.academicRigorScore}/100</p>
                     </div>
                   </div>
+                  
+                  {/* Essay Feedback */}
+                  {essayFeedback && (
+                    <div className="mt-4 p-4 bg-white rounded-lg border border-purple-200">
+                      <h4 className="font-semibold text-purple-800 mb-2">Essay Feedback</h4>
+                      <p className="text-sm text-gray-700">{essayFeedback}</p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

@@ -13,11 +13,143 @@ interface UserData {
   };
 }
 
-// Simple AI scoring function (we'll replace this with actual AI API)
-async function analyzeEssay(essay: string): Promise<number> {
-  // For now, using a simple heuristic-based scoring
-  // This will be replaced with actual AI API call
-  
+// Kimi K2 AI analysis function
+async function analyzeEssayWithAI(essay: string): Promise<{ score: number; feedback: string }> {
+  const systemPrompt = `You are an expert college admissions evaluator with 20+ years of experience. Your job is to critically and objectively assess college application essays.
+
+CRITICAL EVALUATION CRITERIA:
+- Be extremely critical and honest. Only truly exceptional essays should score above 85.
+- Average essays should score 50-70. Below average essays should score 30-50.
+- Evaluate on: authenticity, uniqueness, personal growth, writing quality, and impact
+- Avoid being sycophantic or overly positive. Be realistic and objective.
+- Consider: Is this essay memorable? Does it show genuine character? Is it generic?
+
+SCORING GUIDELINES:
+90-100: Exceptional, memorable, truly unique perspective
+80-89: Very strong, stands out significantly
+70-79: Good quality, some strengths
+60-69: Average, competent but not remarkable
+50-59: Below average, generic or weak
+Below 50: Poor quality, significant issues
+
+Provide a numerical score (0-100) and 2-3 specific, honest feedback points. Be direct and critical.`;
+
+  const userPrompt = `Please evaluate this college application essay:
+
+${essay}
+
+Provide:
+1. A numerical score (0-100)
+2. 2-3 specific, honest feedback points
+3. Brief explanation of the score
+
+Format your response as JSON:
+{
+  "score": number,
+  "feedback": "string",
+  "explanation": "string"
+}`;
+
+  try {
+    const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.MOONSHOT_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'kimi-k2',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.3,
+        max_tokens: 500
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`AI API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const aiResponse = data.choices[0].message.content;
+    
+    // Parse the JSON response
+    const parsed = JSON.parse(aiResponse);
+    
+    return {
+      score: Math.max(0, Math.min(100, parsed.score)),
+      feedback: parsed.feedback || 'No specific feedback provided.'
+    };
+  } catch (error) {
+    console.error('AI analysis error:', error);
+    // Fallback to heuristic scoring
+    return await analyzeEssay(essay);
+  }
+}
+
+// Enhanced extracurricular analysis with AI
+async function analyzeExtracurricularsWithAI(activities: string[]): Promise<number> {
+  const systemPrompt = `You are an expert college admissions evaluator. Assess extracurricular activities objectively and critically.
+
+EVALUATION CRITERIA:
+- Leadership roles (president, captain, founder, etc.)
+- Commitment and duration (years, hours per week)
+- Impact and achievement (awards, recognition, measurable results)
+- Uniqueness and passion
+- Depth vs breadth (fewer, deeper activities are better than many shallow ones)
+
+SCORING:
+90-100: Exceptional leadership, significant impact, unique achievements
+80-89: Strong leadership, good commitment, notable achievements
+70-79: Good involvement, some leadership, consistent commitment
+60-69: Average involvement, limited leadership
+50-59: Basic participation, minimal commitment
+Below 50: Poor quality or very limited activities
+
+Be critical and realistic. Most students have average extracurriculars.`;
+
+  const userPrompt = `Evaluate these extracurricular activities:
+
+${activities.join('\n')}
+
+Provide only a numerical score (0-100) based on the criteria above. Be objective and critical.`;
+
+  try {
+    const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.MOONSHOT_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'kimi-k2',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.2,
+        max_tokens: 50
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`AI API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const score = parseInt(data.choices[0].message.content.trim());
+    
+    return Math.max(0, Math.min(100, score));
+  } catch (error) {
+    console.error('AI extracurricular analysis error:', error);
+    return await analyzeExtracurriculars(activities);
+  }
+}
+
+// Fallback heuristic functions (keep existing ones)
+async function analyzeEssay(essay: string): Promise<{ score: number; feedback: string }> {
   let score = 50; // Base score
   
   // Length analysis
@@ -34,7 +166,7 @@ async function analyzeEssay(essay: string): Promise<number> {
   score += Math.min(personalCount * 3, 15);
   
   // Specificity indicators
-  const specificWords = ['because', 'when', 'where', 'how', 'why', 'specifically', 'specifically'];
+  const specificWords = ['because', 'when', 'where', 'how', 'why', 'specifically'];
   const specificCount = specificWords.filter(word => 
     essay.toLowerCase().includes(word.toLowerCase())
   ).length;
@@ -49,7 +181,10 @@ async function analyzeEssay(essay: string): Promise<number> {
   else if (avgSentenceLength < 5) score -= 10;
   else if (avgSentenceLength > 30) score -= 5;
   
-  return Math.max(0, Math.min(100, score));
+  return {
+    score: Math.max(0, Math.min(100, score)),
+    feedback: 'Basic heuristic analysis performed. Consider upgrading for AI-powered evaluation.'
+  };
 }
 
 async function analyzeExtracurriculars(activities: string[]): Promise<number> {
@@ -109,9 +244,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User ID required' }, { status: 400 });
     }
     
-    // Analyze each component
-    const essayScore = await analyzeEssay(essay || '');
-    const ecScore = await analyzeExtracurriculars(extracurriculars || []);
+    // Analyze each component with AI
+    const essayAnalysis = await analyzeEssayWithAI(essay || '');
+    const ecScore = await analyzeExtracurricularsWithAI(extracurriculars || []);
     const academicRigorScore = await calculateAcademicRigor(apScores || [], ibScores || [], honorsClasses || 0);
     
     // Load existing user data
@@ -125,7 +260,7 @@ export async function POST(request: NextRequest) {
     
     // Update user data
     userData.users[userId] = {
-      essayScore,
+      essayScore: essayAnalysis.score,
       ecScore,
       academicRigorScore,
       lastUpdated: new Date().toISOString()
@@ -137,10 +272,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       scores: {
-        essayScore,
+        essayScore: essayAnalysis.score,
         ecScore,
         academicRigorScore
-      }
+      },
+      essayFeedback: essayAnalysis.feedback
     });
     
   } catch (error) {
