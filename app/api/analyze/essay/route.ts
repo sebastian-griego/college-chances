@@ -58,6 +58,9 @@ Format your response as JSON:
 }`;
 
   try {
+    console.log('API Key available:', !!process.env.BASETEN_API_KEY);
+    console.log('API Key length:', process.env.BASETEN_API_KEY?.length);
+    
     const response = await fetch('https://inference.baseten.co/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -92,6 +95,11 @@ Format your response as JSON:
     };
   } catch (error) {
     console.error('AI analysis error:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      name: error instanceof Error ? error.name : 'Unknown'
+    });
     // Fallback to heuristic scoring
     return await analyzeEssay(essay);
   }
@@ -132,6 +140,9 @@ ${activities.join('\n')}
 Provide only a numerical score (0-100) based on the criteria above. Be objective and critical.`;
 
   try {
+    console.log('EC API Key available:', !!process.env.BASETEN_API_KEY);
+    console.log('EC API Key length:', process.env.BASETEN_API_KEY?.length);
+    
     const response = await fetch('https://inference.baseten.co/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -151,7 +162,10 @@ Provide only a numerical score (0-100) based on the criteria above. Be objective
     });
 
     if (!response.ok) {
-      throw new Error(`AI API error: ${response.status}`);
+      console.error('EC AI API response not ok:', response.status, response.statusText);
+      const errorText = await response.text();
+      console.error('EC Error response:', errorText);
+      throw new Error(`AI API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
