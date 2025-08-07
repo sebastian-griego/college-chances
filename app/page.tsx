@@ -1121,7 +1121,6 @@ interface CalculationResult {
   collegeData: any;
   convertedScore?: number;
   enhancedChance?: number;
-  improvement?: number;
   aiScores?: {
     essayScore: number;
     ecScore: number;
@@ -1270,7 +1269,6 @@ export default function Home() {
           setResult({
             ...basicResult,
             enhancedChance: enhancedData.enhancedChance,
-            improvement: enhancedData.improvement,
             aiScores: aiScores // Keep the original AI scores
           });
         } else {
@@ -1332,7 +1330,6 @@ export default function Home() {
           setResult({
             ...result,
             enhancedChance: enhancedResult.enhancedChance,
-            improvement: enhancedResult.improvement,
             aiScores: scores
           });
         }

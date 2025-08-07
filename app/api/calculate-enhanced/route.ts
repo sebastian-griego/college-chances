@@ -75,24 +75,14 @@ export async function POST(request: NextRequest) {
       academicRigorScore
     );
     
-    // Calculate original chance for comparison
-    const originalChance = calculateEnhancedChance(
-      parseFloat(gpa),
-      parseInt(satScore),
-      college,
-      50, 50, 50  // Default scores
-    );
-    
     return NextResponse.json({
       success: true,
       enhancedChance,
-      originalChance,
       scores: {
         essayScore,
         ecScore,
         academicRigorScore
-      },
-      improvement: enhancedChance - originalChance
+      }
     });
     
   } catch (error) {
