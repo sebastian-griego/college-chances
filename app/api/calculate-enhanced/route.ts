@@ -49,37 +49,30 @@ function calculateEnhancedChance(
   // Calculate average AI score
   const avgAIScore = (essayScore + ecScore + academicRigorScore) / 3;
   
+  // Start with the base chance and apply AI score multiplier
+  const baseChance = Math.min(95, Math.max(1, 
+    baseRate * (baseWeightedScore / 50) * 1.5
+  ));
+  
+  // Apply AI score multiplier to the base chance
+  let multiplier = 1.0;
+  
   if (avgAIScore >= 95) {
-    // Exceptional candidates (95+ average) get significant boost
-    enhancedChance = Math.min(100, Math.max(1, 
-      baseRate * (enhancedWeightedScore / 50) * 3.5
-    ));
+    multiplier = 3.5; // Exceptional candidates
   } else if (avgAIScore >= 90) {
-    // Outstanding candidates (90-94 average)
-    enhancedChance = Math.min(100, Math.max(1, 
-      baseRate * (enhancedWeightedScore / 50) * 3.0
-    ));
+    multiplier = 3.0; // Outstanding candidates
   } else if (avgAIScore >= 85) {
-    // Excellent candidates (85-89 average)
-    enhancedChance = Math.min(100, Math.max(1, 
-      baseRate * (enhancedWeightedScore / 50) * 2.5
-    ));
+    multiplier = 2.5; // Excellent candidates
   } else if (avgAIScore >= 80) {
-    // Very good candidates (80-84 average)
-    enhancedChance = Math.min(100, Math.max(1, 
-      baseRate * (enhancedWeightedScore / 50) * 2.0
-    ));
+    multiplier = 2.0; // Very good candidates
   } else if (avgAIScore >= 75) {
-    // Good candidates (75-79 average)
-    enhancedChance = Math.min(100, Math.max(1, 
-      baseRate * (enhancedWeightedScore / 50) * 1.8
-    ));
+    multiplier = 1.8; // Good candidates
   } else {
-    // Average and below candidates
-    enhancedChance = Math.min(100, Math.max(1, 
-      baseRate * (enhancedWeightedScore / 50) * 1.5
-    ));
+    multiplier = 1.5; // Average and below candidates
   }
+  
+  // Calculate enhanced chance based on base chance and AI multiplier
+  enhancedChance = Math.min(100, Math.max(1, baseChance * multiplier));
   
   return Math.round(enhancedChance * 100) / 100;
 }
