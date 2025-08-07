@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { prisma } from "../../../lib/prisma";
 
 // Extend the built-in session types
 declare module "next-auth" {
@@ -26,17 +26,8 @@ declare module "next-auth/jwt" {
   }
 }
 
-// Create a single PrismaClient instance that can be shared throughout the app
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-const prisma = globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
 const handler = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: process.env.NODE_ENV === "production" ? PrismaAdapter(prisma) : undefined,
   providers: [
     CredentialsProvider({
       name: "credentials",
