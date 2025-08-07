@@ -4,6 +4,28 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
+// Extend the built-in session types
+declare module "next-auth" {
+  interface User {
+    username?: string;
+  }
+  interface Session {
+    user: {
+      id?: string;
+      username?: string;
+      email?: string | null;
+      name?: string | null;
+      image?: string | null;
+    };
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    username?: string;
+  }
+}
+
 const prisma = new PrismaClient();
 
 const handler = NextAuth({
