@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import PaidCalculator from './components/PaidCalculator';
 
 // College data with accurate admission statistics from Common Data Set (CDS) and official sources
 // All data verified from Common Data Set 2023-2024 and official college websites
@@ -1119,6 +1120,13 @@ interface CalculationResult {
   chance: number;
   collegeData: any;
   convertedScore?: number;
+  enhancedChance?: number;
+  improvement?: number;
+  aiScores?: {
+    essayScore: number;
+    ecScore: number;
+    academicRigorScore: number;
+  };
 }
 
 export default function Home() {
@@ -1132,6 +1140,8 @@ export default function Home() {
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showPaidCalculator, setShowPaidCalculator] = useState(false);
+  const [aiScores, setAiScores] = useState<any>(null);
 
   const filteredColleges = COLLEGES.filter(college =>
     college.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -1192,7 +1202,7 @@ export default function Home() {
     };
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted with data:', formData);
     
@@ -1229,23 +1239,54 @@ export default function Home() {
     
     setLoading(true);
     
-    // Simulate API call delay
-    setTimeout(() => {
+    try {
       const selectedCollege = COLLEGES.find(c => c.name === formData.college);
       
-      console.log('Processing calculation:', { gpa, testScore, testType: formData.testType, college: formData.college, selectedCollege });
-      
-      if (selectedCollege) {
-        const result = calculateChance(gpa, testScore, formData.testType, selectedCollege);
-        console.log('Calculation result:', result);
-        setResult(result);
-      } else {
-        console.error('Selected college not found:', formData.college);
+      if (!selectedCollege) {
         alert('Selected college not found. Please try again.');
+        setLoading(false);
+        return;
       }
       
+      // Calculate basic chance
+      const basicResult = calculateChance(gpa, testScore, formData.testType, selectedCollege);
+      
+      // If user has AI scores, calculate enhanced chance
+      if (aiScores) {
+        const response = await fetch('/api/calculate-enhanced', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            gpa: formData.gpa,
+            satScore: formData.testType === 'sat' ? testScore : convertScore(testScore, 'act'),
+            college: selectedCollege,
+            userId: aiScores.userId
+          })
+        });
+        
+        if (response.ok) {
+          const enhancedData = await response.json();
+          setResult({
+            ...basicResult,
+            enhancedChance: enhancedData.enhancedChance,
+            improvement: enhancedData.improvement,
+            aiScores: enhancedData.scores
+          });
+        } else {
+          setResult(basicResult);
+        }
+      } else {
+        setResult(basicResult);
+      }
+    } catch (error) {
+      console.error('Calculation error:', error);
+      const selectedCollege = COLLEGES.find(c => c.name === formData.college);
+      if (selectedCollege) {
+        setResult(calculateChance(gpa, testScore, formData.testType, selectedCollege));
+      }
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -1259,6 +1300,13 @@ export default function Home() {
     setFormData({ gpa: '', sat: '', act: '', college: '', testType: 'sat' });
     setResult(null);
     setSearchTerm('');
+    setAiScores(null);
+    setShowPaidCalculator(false);
+  };
+
+  const handleAnalysisComplete = (scores: any) => {
+    setAiScores(scores);
+    setShowPaidCalculator(false);
   };
 
   const getChanceColor = (chance: number) => {
@@ -1290,6 +1338,26 @@ export default function Home() {
             <h2 className="text-2xl font-semibold mb-6 text-gray-900">
               Your Profile
             </h2>
+            
+            {/* Enhanced Analysis Button */}
+            <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200">
+              <h3 className="font-semibold text-purple-800 mb-2">🎯 Enhanced Analysis Available</h3>
+              <p className="text-sm text-purple-700 mb-3">
+                Get more accurate predictions by analyzing your essay, extracurriculars, and academic rigor.
+              </p>
+              {aiScores ? (
+                <div className="text-sm text-green-700">
+                  ✓ Analysis completed! Your enhanced scores are ready.
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowPaidCalculator(true)}
+                  className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700"
+                >
+                  Try Enhanced Analysis
+                </button>
+              )}
+            </div>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* College Selection */}
@@ -1407,12 +1475,35 @@ export default function Home() {
 
               {/* Chance Display */}
               <div className="text-center mb-8">
-                <div className="text-6xl font-bold mb-2">
-                  <span className={getChanceColor(result.chance)}>
-                    {result.chance}%
-                  </span>
-                </div>
-                <p className="text-gray-600">Admission Chance</p>
+                {result.enhancedChance ? (
+                  <div>
+                    <div className="text-4xl font-bold mb-2">
+                      <span className={getChanceColor(result.enhancedChance)}>
+                        {result.enhancedChance}%
+                      </span>
+                    </div>
+                    <p className="text-gray-600 mb-2">Enhanced Admission Chance</p>
+                    <div className="text-lg text-gray-500">
+                      <span className={getChanceColor(result.chance)}>
+                        {result.chance}%
+                      </span> basic chance
+                    </div>
+                    {result.improvement && result.improvement > 0 && (
+                      <div className="text-sm text-green-600 mt-1">
+                        +{result.improvement.toFixed(1)}% improvement
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    <div className="text-6xl font-bold mb-2">
+                      <span className={getChanceColor(result.chance)}>
+                        {result.chance}%
+                      </span>
+                    </div>
+                    <p className="text-gray-600">Admission Chance</p>
+                  </div>
+                )}
               </div>
 
               {/* College Stats */}
@@ -1440,9 +1531,48 @@ export default function Home() {
                   Data source: {result.collegeData.dataSource}
                 </div>
               </div>
+
+              {/* AI Scores Display */}
+              {result.aiScores && (
+                <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 mt-6">
+                  <h3 className="font-semibold text-purple-800 mb-4">AI Analysis Scores</h3>
+                  <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-gray-600">Essay Quality</p>
+                      <p className="font-semibold text-purple-700">{result.aiScores.essayScore}/100</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Extracurriculars</p>
+                      <p className="font-semibold text-purple-700">{result.aiScores.ecScore}/100</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Academic Rigor</p>
+                      <p className="font-semibold text-purple-700">{result.aiScores.academicRigorScore}/100</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
+
+        {/* Paid Calculator Modal */}
+        {showPaidCalculator && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 className="text-xl font-semibold">Enhanced Analysis</h2>
+                <button
+                  onClick={() => setShowPaidCalculator(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+              <PaidCalculator onAnalysisComplete={handleAnalysisComplete} />
+            </div>
+          </div>
+        )}
 
         {/* Footer */}
         <div className="mt-16 text-center text-gray-500">
