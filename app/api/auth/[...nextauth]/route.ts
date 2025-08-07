@@ -26,7 +26,14 @@ declare module "next-auth/jwt" {
   }
 }
 
-const prisma = new PrismaClient();
+// Create a single PrismaClient instance that can be shared throughout the app
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+const prisma = globalForPrisma.prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -38,35 +45,40 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.username || !credentials?.password) {
-          return null;
-        }
-
-        const user = await prisma.user.findUnique({
-          where: {
-            username: credentials.username
+        try {
+          if (!credentials?.username || !credentials?.password) {
+            return null;
           }
-        });
 
-        if (!user) {
+          const user = await prisma.user.findUnique({
+            where: {
+              username: credentials.username
+            }
+          });
+
+          if (!user) {
+            return null;
+          }
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          return {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            name: user.name,
+          };
+        } catch (error) {
+          console.error("Auth error:", error);
           return null;
         }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
-
-        if (!isPasswordValid) {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          name: user.name,
-        };
       }
     })
   ],
