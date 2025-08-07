@@ -1,0 +1,10 @@
+[33mcb09b88[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m Fix TypeScript error for username property in NextAuth
+[33ma69a96c[m Fix authentication providers and trigger redeploy
+[33mdb9b20c[m Add user authentication with NextAuth.js and username/password login
+[33ma0d331a[m Remove SEO content from main page and create dedicated about page
+[33m37860ec[m Remove social sharing and add AI search optimization with natural language content
+[33m0a7e0ea[m Add comprehensive SEO optimization and social sharing features
+[33mc4d4c5b[m Fix file system error by using in-memory storage for production
+[33m5232603[m Add debugging to AI API calls to identify production issues
+[33m9670555[m Fix enhanced chance calculation with proper 100% cap and improved tiered scoring
+[33m4a2791f[m Fix free vs paid version separation: remove enhanced analysis from free version, add upgrade prompt
