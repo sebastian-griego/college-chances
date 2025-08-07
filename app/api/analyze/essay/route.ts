@@ -17,22 +17,29 @@ interface UserData {
 async function analyzeEssayWithAI(essay: string): Promise<{ score: number; feedback: string }> {
   const systemPrompt = `You are an expert college admissions evaluator with 20+ years of experience. Your job is to critically and objectively assess college application essays.
 
-CRITICAL EVALUATION CRITERIA:
-- Be extremely critical and honest. Only truly exceptional essays should score above 85.
-- Average essays should score 50-70. Below average essays should score 30-50.
-- Evaluate on: authenticity, uniqueness, personal growth, writing quality, and impact
-- Avoid being sycophantic or overly positive. Be realistic and objective.
-- Consider: Is this essay memorable? Does it show genuine character? Is it generic?
+PRIMARY EVALUATION CRITERIA (in order of importance):
+1. PASSION & AUTHENTICITY - Does the student genuinely care about their topic? Is their passion authentic and compelling?
+2. PERSONAL VOICE - Does the essay sound like a real person wrote it, not a template?
+3. SPECIFICITY & DETAIL - Does it show concrete experiences, not vague statements?
+4. GROWTH & REFLECTION - Does it demonstrate learning, maturity, or personal development?
+5. WRITING QUALITY - Is it well-written, engaging, and free of major errors?
+
+COLLEGE ADMISSIONS INSIGHTS:
+- Top colleges prioritize PASSION above all else
+- They want to see genuine interest, not resume-padding activities
+- Authentic voice matters more than perfect grammar
+- Specific, personal stories beat generic achievements
+- Colleges can spot insincere passion from a mile away
 
 SCORING GUIDELINES:
-90-100: Exceptional, memorable, truly unique perspective
-80-89: Very strong, stands out significantly
-70-79: Good quality, some strengths
-60-69: Average, competent but not remarkable
-50-59: Below average, generic or weak
-Below 50: Poor quality, significant issues
+90-100: Exceptional passion, authentic voice, compelling personal story
+80-89: Strong passion, genuine voice, good personal insight
+70-79: Some passion, mostly authentic, competent writing
+60-69: Limited passion, generic voice, surface-level content
+50-59: Little passion, artificial voice, clichéd content
+Below 50: No passion, fake voice, poor quality
 
-Provide a numerical score (0-100) and 2-3 specific, honest feedback points. Be direct and critical.`;
+Be extremely critical about passion and authenticity. Most essays lack genuine passion.`;
 
   const userPrompt = `Please evaluate this college application essay:
 
@@ -94,22 +101,30 @@ Format your response as JSON:
 async function analyzeExtracurricularsWithAI(activities: string[]): Promise<number> {
   const systemPrompt = `You are an expert college admissions evaluator. Assess extracurricular activities objectively and critically.
 
-EVALUATION CRITERIA:
-- Leadership roles (president, captain, founder, etc.)
-- Commitment and duration (years, hours per week)
-- Impact and achievement (awards, recognition, measurable results)
-- Uniqueness and passion
-- Depth vs breadth (fewer, deeper activities are better than many shallow ones)
+EVALUATION CRITERIA (in order of importance):
+1. PASSION & COMMITMENT - Does the student genuinely care about these activities? Years of involvement?
+2. LEADERSHIP & IMPACT - Real leadership roles with measurable impact, not just titles
+3. UNIQUENESS - Activities that stand out from typical high school activities
+4. DEPTH OVER BREADTH - Fewer, deeper activities are better than many shallow ones
+5. ACHIEVEMENTS - Awards, recognition, or measurable results
+
+COLLEGE ADMISSIONS INSIGHTS:
+- Students are limited to 10 activities on applications
+- Quality matters much more than quantity
+- Colleges see thousands of "president of science club" applications
+- Authentic passion beats impressive titles
+- Depth and commitment matter more than prestigious organizations
+- Real impact beats superficial involvement
 
 SCORING GUIDELINES:
-90-100: Exceptional leadership, significant impact, unique achievements (very rare)
-80-89: Strong leadership, good commitment, notable achievements
-70-79: Good involvement, some leadership, consistent commitment
-60-69: Average involvement, limited leadership
-50-59: Basic participation, minimal commitment
-Below 50: Poor quality or very limited activities
+90-100: Exceptional passion, significant leadership, unique impact (very rare)
+80-89: Strong passion, good leadership, notable achievements
+70-79: Some passion, some leadership, consistent commitment
+60-69: Limited passion, basic involvement, minimal leadership
+50-59: Little passion, superficial involvement, no real impact
+Below 50: No passion, poor quality activities
 
-Be extremely critical and realistic. Most students have average extracurriculars (60-75 range). Only truly exceptional profiles should score above 85. Consider that top colleges see thousands of "president of science club" applications.`;
+Be extremely critical about passion and authenticity. Most students have average extracurriculars (60-75 range).`;
 
   const userPrompt = `Evaluate these extracurricular activities:
 
@@ -156,16 +171,23 @@ async function analyzeEssay(essay: string): Promise<{ score: number; feedback: s
   
   // Length analysis
   const wordCount = essay.split(' ').length;
-  if (wordCount >= 500 && wordCount <= 650) score += 10;
-  else if (wordCount < 400) score -= 15;
-  else if (wordCount > 700) score -= 10;
+  if (wordCount >= 500 && wordCount <= 650) score += 5;
+  else if (wordCount < 400) score -= 10;
+  else if (wordCount > 700) score -= 5;
+  
+  // Passion indicators (more important)
+  const passionWords = ['love', 'passion', 'excited', 'thrilled', 'amazing', 'incredible', 'fascinated', 'obsessed'];
+  const passionCount = passionWords.filter(word => 
+    essay.toLowerCase().includes(word.toLowerCase())
+  ).length;
+  score += Math.min(passionCount * 5, 20);
   
   // Personal story indicators
   const personalIndicators = ['I', 'me', 'my', 'we', 'our', 'family', 'experience', 'learned', 'realized'];
   const personalCount = personalIndicators.filter(word => 
     essay.toLowerCase().includes(word.toLowerCase())
   ).length;
-  score += Math.min(personalCount * 3, 15);
+  score += Math.min(personalCount * 2, 10);
   
   // Specificity indicators
   const specificWords = ['because', 'when', 'where', 'how', 'why', 'specifically'];
@@ -174,42 +196,56 @@ async function analyzeEssay(essay: string): Promise<{ score: number; feedback: s
   ).length;
   score += Math.min(specificCount * 2, 10);
   
-  // Grammar and structure (simple check)
+  // Grammar and structure (less important)
   const sentences = essay.split(/[.!?]+/).filter(s => s.trim().length > 0);
   const avgSentenceLength = sentences.reduce((sum, sentence) => 
     sum + sentence.split(' ').length, 0) / sentences.length;
   
-  if (avgSentenceLength >= 10 && avgSentenceLength <= 25) score += 5;
-  else if (avgSentenceLength < 5) score -= 10;
-  else if (avgSentenceLength > 30) score -= 5;
+  if (avgSentenceLength >= 10 && avgSentenceLength <= 25) score += 3;
+  else if (avgSentenceLength < 5) score -= 5;
+  else if (avgSentenceLength > 30) score -= 3;
   
   return {
     score: Math.max(0, Math.min(100, score)),
-    feedback: 'Basic heuristic analysis performed. Consider upgrading for AI-powered evaluation.'
+    feedback: 'Basic heuristic analysis performed. Consider upgrading for AI-powered evaluation focused on passion and authenticity.'
   };
 }
 
 async function analyzeExtracurriculars(activities: string[]): Promise<number> {
   let score = 50;
   
-  // Number of activities
-  if (activities.length >= 5 && activities.length <= 10) score += 10;
-  else if (activities.length < 3) score -= 15;
-  else if (activities.length > 15) score -= 5;
+  // Number of activities (quality over quantity)
+  if (activities.length >= 3 && activities.length <= 8) score += 5;
+  else if (activities.length < 2) score -= 10;
+  else if (activities.length > 10) score -= 5; // Penalize too many shallow activities
   
-  // Leadership indicators
+  // Passion indicators (more important)
+  const passionWords = ['love', 'passion', 'excited', 'thrilled', 'amazing', 'incredible', 'fascinated'];
+  const passionCount = activities.filter(activity => 
+    passionWords.some(word => activity.toLowerCase().includes(word))
+  ).length;
+  score += Math.min(passionCount * 8, 20);
+  
+  // Leadership indicators (real leadership, not just titles)
   const leadershipWords = ['president', 'captain', 'leader', 'founder', 'director', 'chair', 'coordinator'];
   const leadershipCount = activities.filter(activity => 
     leadershipWords.some(word => activity.toLowerCase().includes(word))
   ).length;
-  score += Math.min(leadershipCount * 8, 20);
+  score += Math.min(leadershipCount * 5, 15);
   
-  // Commitment indicators (hours, years)
-  const commitmentPatterns = [/\d+\s*hours?/, /\d+\s*years?/, /weekly/, /monthly/];
+  // Commitment indicators (years, hours - shows depth)
+  const commitmentPatterns = [/\d+\s*years?/, /\d+\s*hours?/, /weekly/, /monthly/];
   const commitmentCount = activities.filter(activity => 
     commitmentPatterns.some(pattern => pattern.test(activity))
   ).length;
-  score += Math.min(commitmentCount * 5, 15);
+  score += Math.min(commitmentCount * 4, 12);
+  
+  // Uniqueness indicators (less common activities)
+  const uniqueWords = ['founder', 'created', 'started', 'developed', 'organized', 'launched'];
+  const uniqueCount = activities.filter(activity => 
+    uniqueWords.some(word => activity.toLowerCase().includes(word))
+  ).length;
+  score += Math.min(uniqueCount * 6, 15);
   
   return Math.max(0, Math.min(100, score));
 }
