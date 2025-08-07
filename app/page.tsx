@@ -1350,13 +1350,14 @@ export default function Home() {
     if (chance >= 40) return 'text-blue-600';
     if (chance >= 20) return 'text-yellow-600';
     return 'text-red-600';
-  };
+    };
 
     return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12 relative">
+          {/* Authentication should now work on production */}
           {/* Authentication UI */}
           <div className="absolute top-0 right-0">
             {session ? (
@@ -1370,7 +1371,7 @@ export default function Home() {
                 >
                   Sign Out
                 </button>
-              </div>
+      </div>
             ) : (
               <div className="flex items-center gap-4">
                 <Link
@@ -1385,7 +1386,7 @@ export default function Home() {
                 >
                   Sign Up
                 </Link>
-              </div>
+      </div>
             )}
           </div>
 
@@ -1397,8 +1398,8 @@ export default function Home() {
           </p>
           <p className="text-sm text-gray-500 mt-2">
             Data sourced from Common Data Set (CDS) and official college statistics
-          </p>
-        </div>
+        </p>
+      </div>
 
 
 
@@ -1543,12 +1544,12 @@ export default function Home() {
 
                   </div>
                 ) : (
-                  <div>
+              <div>
                     <div className="text-6xl font-bold mb-2">
                       <span className={getChanceColor(result.chance)}>
                         {result.chance}%
                       </span>
-                    </div>
+              </div>
                     <p className="text-gray-600">Admission Chance</p>
                   </div>
                 )}
@@ -1626,9 +1627,9 @@ export default function Home() {
                             <span className="font-medium text-purple-700">{index + 1}.</span> {point}
                           </div>
                         ))}
-                      </div>
-                    </div>
-                  )}
+            </div>
+          </div>
+        )}
                 </div>
               )}
 
