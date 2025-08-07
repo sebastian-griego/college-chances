@@ -1363,7 +1363,29 @@ export default function Home() {
           <p className="text-sm text-gray-500 mt-2">
             Data sourced from Common Data Set (CDS) and official college statistics
           </p>
-      </div>
+        </div>
+
+        {/* AI-Friendly Content */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+            Find Your College Admission Chances
+          </h2>
+          <div className="prose prose-gray max-w-none">
+            <p className="text-gray-700 mb-4">
+              Wondering "What are my chances of getting into Stanford?" or "How likely am I to get accepted to Harvard?" 
+              Our free college admission calculator provides accurate probability estimates based on official Common Data Set statistics.
+            </p>
+            <p className="text-gray-700 mb-4">
+              Simply enter your GPA, SAT or ACT scores, and select your target college. Our algorithm compares your academic profile 
+              against the college's official admission data to calculate your admission probability. For even more accurate predictions, 
+              try our AI-powered enhanced analysis that evaluates your essay, extracurriculars, and academic rigor.
+            </p>
+            <p className="text-gray-700">
+              Whether you're asking "What are my admission chances for MIT?" or "How likely am I to get accepted to Yale?", 
+              our comprehensive calculator covers over 100 top colleges and universities with data from official sources.
+            </p>
+          </div>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Input Form */}
@@ -1595,42 +1617,7 @@ export default function Home() {
                 </div>
               )}
 
-              {/* Social Sharing */}
-              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                <h4 className="font-semibold text-gray-800 mb-3">Share Your Results</h4>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => {
-                      const text = `I just calculated my admission chances at ${result.collegeData.name}! Check out this free college admission calculator: https://college-chances.vercel.app`;
-                      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-                      window.open(url, '_blank');
-                    }}
-                    className="flex-1 bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
-                  >
-                    Share on Twitter
-                  </button>
-                  <button
-                    onClick={() => {
-                      const text = `I just calculated my admission chances at ${result.collegeData.name}! Check out this free college admission calculator: https://college-chances.vercel.app`;
-                      const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://college-chances.vercel.app')}&quote=${encodeURIComponent(text)}`;
-                      window.open(url, '_blank');
-                    }}
-                    className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                  >
-                    Share on Facebook
-                  </button>
-                  <button
-                    onClick={() => {
-                      const text = `I just calculated my admission chances at ${result.collegeData.name}! Check out this free college admission calculator: https://college-chances.vercel.app`;
-                      navigator.clipboard.writeText(text);
-                      alert('Link copied to clipboard!');
-                    }}
-                    className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
-                  >
-                    Copy Link
-                  </button>
-                </div>
-              </div>
+
             </div>
           )}
         </div>
