@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import Link from 'next/link';
 import PaidCalculator from './components/PaidCalculator';
 
 // College data with accurate admission statistics from Common Data Set (CDS) and official sources
@@ -1130,6 +1132,7 @@ interface CalculationResult {
 }
 
 export default function Home() {
+  const { data: session } = useSession();
   const [formData, setFormData] = useState<FormData>({
     gpa: '',
     sat: '',
@@ -1353,7 +1356,39 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 relative">
+          {/* Authentication UI */}
+          <div className="absolute top-0 right-0">
+            {session ? (
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-gray-600">
+                  Welcome, {(session.user as any)?.username || session.user?.name}!
+                </span>
+                <button
+                  onClick={() => signOut()}
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-colors"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/auth/signin"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
+
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             College Chances Calculator
           </h1>
