@@ -21,26 +21,35 @@ export default function PaidCalculator({ onAnalysisComplete }: PaidCalculatorPro
   };
 
   const handleArrayChange = (field: string, index: number, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: prev[field as keyof typeof prev].map((item: any, i: number) => 
-        i === index ? value : item
-      )
-    }));
+    setFormData(prev => {
+      const currentArray = prev[field as keyof typeof prev] as string[];
+      return {
+        ...prev,
+        [field]: currentArray.map((item: string, i: number) => 
+          i === index ? value : item
+        )
+      };
+    });
   };
 
   const addArrayItem = (field: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: [...prev[field as keyof typeof prev], '']
-    }));
+    setFormData(prev => {
+      const currentArray = prev[field as keyof typeof prev] as string[];
+      return {
+        ...prev,
+        [field]: [...currentArray, '']
+      };
+    });
   };
 
   const removeArrayItem = (field: string, index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: prev[field as keyof typeof prev].filter((_: any, i: number) => i !== index)
-    }));
+    setFormData(prev => {
+      const currentArray = prev[field as keyof typeof prev] as string[];
+      return {
+        ...prev,
+        [field]: currentArray.filter((_: string, i: number) => i !== index)
+      };
+    });
   };
 
   const handleAnalysis = async () => {
