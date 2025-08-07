@@ -22,12 +22,12 @@ function calculateEnhancedChance(
   ecScore: number = 50,
   academicRigorScore: number = 50
 ): number {
-  // Base calculation (from original algorithm)
+  // Use the same base calculation as the main page
   const gpaPercentile = Math.min(100, Math.max(0, ((gpa - college.gpa25th) / (college.gpa75th - college.gpa25th)) * 100));
   const satPercentile = Math.min(100, Math.max(0, ((satScore - college.sat25th) / (college.sat75th - college.sat25th)) * 100));
   
-  // Weighted score (original)
-  const weightedScore = (gpaPercentile * 0.6) + (satPercentile * 0.4);
+  // Base weighted score (same as main page)
+  const baseWeightedScore = (gpaPercentile * 0.6) + (satPercentile * 0.4);
   
   // Enhanced weighted score with AI components
   const enhancedWeightedScore = (
@@ -38,15 +38,53 @@ function calculateEnhancedChance(
     (academicRigorScore * 0.10)        // Academic Rigor: 10%
   );
   
-  // Base admission rate adjustment
+  // Base admission rate adjustment (same as main page)
   const baseRate = college.admissionRate;
   
-  // Calculate final chance
-  const finalChance = Math.min(95, Math.max(1, 
-    baseRate * (enhancedWeightedScore / 50) * 1.5
+  // Calculate base chance (same as main page)
+  const baseChance = Math.min(95, Math.max(1, 
+    baseRate * (baseWeightedScore / 50) * 1.5
   ));
   
-  return Math.round(finalChance * 100) / 100;
+  // Enhanced calculation with better differentiation for high scores
+  let enhancedChance;
+  
+  // Calculate average AI score
+  const avgAIScore = (essayScore + ecScore + academicRigorScore) / 3;
+  
+  if (avgAIScore >= 95) {
+    // Exceptional candidates (95+ average) get significant boost
+    enhancedChance = Math.min(100, Math.max(1, 
+      baseRate * (enhancedWeightedScore / 50) * 3.5
+    ));
+  } else if (avgAIScore >= 90) {
+    // Outstanding candidates (90-94 average)
+    enhancedChance = Math.min(100, Math.max(1, 
+      baseRate * (enhancedWeightedScore / 50) * 3.0
+    ));
+  } else if (avgAIScore >= 85) {
+    // Excellent candidates (85-89 average)
+    enhancedChance = Math.min(100, Math.max(1, 
+      baseRate * (enhancedWeightedScore / 50) * 2.5
+    ));
+  } else if (avgAIScore >= 80) {
+    // Very good candidates (80-84 average)
+    enhancedChance = Math.min(100, Math.max(1, 
+      baseRate * (enhancedWeightedScore / 50) * 2.0
+    ));
+  } else if (avgAIScore >= 75) {
+    // Good candidates (75-79 average)
+    enhancedChance = Math.min(100, Math.max(1, 
+      baseRate * (enhancedWeightedScore / 50) * 1.8
+    ));
+  } else {
+    // Average and below candidates
+    enhancedChance = Math.min(100, Math.max(1, 
+      baseRate * (enhancedWeightedScore / 50) * 1.5
+    ));
+  }
+  
+  return Math.round(enhancedChance * 100) / 100;
 }
 
 export async function POST(request: NextRequest) {

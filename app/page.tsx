@@ -1306,10 +1306,40 @@ export default function Home() {
     setShowPaidCalculator(false);
   };
 
-  const handleAnalysisComplete = (scores: any, essayFeedback?: string) => {
+  const handleAnalysisComplete = async (scores: any, essayFeedback?: string) => {
+    console.log('handleAnalysisComplete called with:', { scores, essayFeedback });
     setAiScores(scores);
     setEssayFeedback(essayFeedback || '');
     setShowPaidCalculator(false);
+    
+    // Recalculate with enhanced analysis
+    if (result && scores) {
+      console.log('Recalculating enhanced chance with:', { basicChance: result.chance, aiScores: scores });
+      try {
+        const response = await fetch('/api/calculate-enhanced', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            gpa: parseFloat(formData.gpa),
+            satScore: formData.testType === 'sat' ? parseInt(formData.sat) : convertScore(parseInt(formData.act), 'act'),
+            college: COLLEGES.find((c: any) => c.name === formData.college),
+            userId: scores.userId
+          })
+        });
+        
+        if (response.ok) {
+          const enhancedResult = await response.json();
+          setResult({
+            ...result,
+            enhancedChance: enhancedResult.enhancedChance,
+            improvement: enhancedResult.improvement,
+            aiScores: scores
+          });
+        }
+      } catch (error) {
+        console.error('Enhanced calculation error:', error);
+      }
+    }
   };
 
   const getChanceColor = (chance: number) => {
@@ -1473,11 +1503,7 @@ export default function Home() {
                         {result.chance}%
                       </span> basic chance
                     </div>
-                    {result.improvement && result.improvement > 0 && (
-                      <div className="text-sm text-green-600 mt-1">
-                        +{result.improvement.toFixed(1)}% improvement
-                      </div>
-                    )}
+
                   </div>
                 ) : (
                   <div>
@@ -1524,7 +1550,10 @@ export default function Home() {
                   Upgrade to premium for AI-powered analysis of your essay, extracurriculars, and academic rigor.
                 </p>
                 <button
-                  onClick={() => setShowPaidCalculator(true)}
+                  onClick={() => {
+                    console.log('Enhanced Analysis button clicked');
+                    setShowPaidCalculator(true);
+                  }}
                   className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700"
                 >
                   Try Enhanced Analysis
@@ -1554,7 +1583,13 @@ export default function Home() {
                   {essayFeedback && (
                     <div className="mt-4 p-4 bg-white rounded-lg border border-purple-200">
                       <h4 className="font-semibold text-purple-800 mb-2">Essay Feedback</h4>
-                      <p className="text-sm text-gray-700">{essayFeedback}</p>
+                      <div className="text-sm text-gray-700">
+                        {essayFeedback.split('\n').map((point, index) => (
+                          <div key={index} className="mb-2">
+                            <span className="font-medium text-purple-700">{index + 1}.</span> {point}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1565,7 +1600,8 @@ export default function Home() {
 
         {/* Paid Calculator Modal */}
         {showPaidCalculator && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" style={{zIndex: 9999}}>
+            {(() => { console.log('Modal should be visible, showPaidCalculator:', showPaidCalculator); return null; })()}
             <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-4 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Enhanced Analysis</h2>
