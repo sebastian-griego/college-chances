@@ -43,35 +43,9 @@ function calculateEnhancedChance(
     baseRate * (baseWeightedScore / 50) * 1.5
   ));
   
-  // Enhanced calculation with better differentiation for high scores
-  
-  // Calculate average AI score
-  const avgAIScore = (essayScore + ecScore + academicRigorScore) / 3;
-  
-  // Apply AI score multiplier to the base chance
-  let multiplier = 1.0;
-  
-  if (avgAIScore >= 95) {
-    multiplier = 3.5; // Exceptional candidates
-  } else if (avgAIScore >= 90) {
-    multiplier = 3.0; // Outstanding candidates
-  } else if (avgAIScore >= 85) {
-    multiplier = 2.5; // Excellent candidates
-  } else if (avgAIScore >= 80) {
-    multiplier = 2.0; // Very good candidates
-  } else if (avgAIScore >= 75) {
-    multiplier = 1.5; // Good candidates
-  } else if (avgAIScore >= 70) {
-    multiplier = 1.2; // Average candidates
-  } else if (avgAIScore >= 60) {
-    multiplier = 0.9; // Below average candidates
-  } else {
-    multiplier = 0.7; // Poor candidates
-  }
-  
   // Calculate enhanced chance using enhanced weighted score
   const enhancedChance = Math.min(100, Math.max(1, 
-    baseRate * (enhancedWeightedScore / 50) * 1.5 * multiplier
+    baseRate * (enhancedWeightedScore / 50) * 1.5
   ));
   
   return Math.round(enhancedChance * 100) / 100;
