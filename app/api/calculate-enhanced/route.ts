@@ -67,7 +67,7 @@ function calculateEnhancedChance(
   }
   
   // Calculate enhanced chance based on base chance and AI multiplier
-  enhancedChance = Math.min(100, Math.max(1, baseChance * multiplier));
+  enhancedChance = Math.max(1, baseChance * multiplier);
   
   return Math.round(enhancedChance * 100) / 100;
 }

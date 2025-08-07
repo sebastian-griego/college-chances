@@ -1271,7 +1271,7 @@ export default function Home() {
             ...basicResult,
             enhancedChance: enhancedData.enhancedChance,
             improvement: enhancedData.improvement,
-            aiScores: enhancedData.scores
+            aiScores: aiScores // Keep the original AI scores
           });
         } else {
           setResult(basicResult);
