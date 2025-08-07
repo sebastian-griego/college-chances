@@ -51,20 +51,21 @@ Format your response as JSON:
 }`;
 
   try {
-    const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+    const response = await fetch('https://inference.baseten.co/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.MOONSHOT_API_KEY}`
+        'Authorization': `Bearer ${process.env.BASETEN_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'kimi-k2',
+        model: 'moonshotai/Kimi-K2-Instruct',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
         temperature: 0.3,
-        max_tokens: 500
+        max_tokens: 500,
+        stream: false
       })
     });
 
@@ -117,20 +118,21 @@ ${activities.join('\n')}
 Provide only a numerical score (0-100) based on the criteria above. Be objective and critical.`;
 
   try {
-    const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+    const response = await fetch('https://inference.baseten.co/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.MOONSHOT_API_KEY}`
+        'Authorization': `Bearer ${process.env.BASETEN_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'kimi-k2',
+        model: 'moonshotai/Kimi-K2-Instruct',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
         temperature: 0.2,
-        max_tokens: 50
+        max_tokens: 50,
+        stream: false
       })
     });
 
