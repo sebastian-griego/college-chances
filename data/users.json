@@ -1,3 +1,10 @@
 {
-  "users": {}
+  "users": {
+    "user_1754592939039": {
+      "essayScore": 78,
+      "ecScore": 85,
+      "academicRigorScore": 77,
+      "lastUpdated": "2025-08-07T18:55:45.100Z"
+    }
+  }
 }

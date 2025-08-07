@@ -40,13 +40,13 @@ ${essay}
 
 Provide:
 1. A numerical score (0-100)
-2. 2-3 specific, honest feedback points
+2. 2-3 specific, honest feedback points (each on a new line)
 3. Brief explanation of the score
 
 Format your response as JSON:
 {
   "score": number,
-  "feedback": "string",
+  "feedback": "string with line breaks for each point",
   "explanation": "string"
 }`;
 
@@ -101,15 +101,15 @@ EVALUATION CRITERIA:
 - Uniqueness and passion
 - Depth vs breadth (fewer, deeper activities are better than many shallow ones)
 
-SCORING:
-90-100: Exceptional leadership, significant impact, unique achievements
+SCORING GUIDELINES:
+90-100: Exceptional leadership, significant impact, unique achievements (very rare)
 80-89: Strong leadership, good commitment, notable achievements
 70-79: Good involvement, some leadership, consistent commitment
 60-69: Average involvement, limited leadership
 50-59: Basic participation, minimal commitment
 Below 50: Poor quality or very limited activities
 
-Be critical and realistic. Most students have average extracurriculars.`;
+Be extremely critical and realistic. Most students have average extracurriculars (60-75 range). Only truly exceptional profiles should score above 85. Consider that top colleges see thousands of "president of science club" applications.`;
 
   const userPrompt = `Evaluate these extracurricular activities:
 
@@ -217,23 +217,40 @@ async function analyzeExtracurriculars(activities: string[]): Promise<number> {
 async function calculateAcademicRigor(apScores: number[], ibScores: number[], honorsClasses: number): Promise<number> {
   let score = 50;
   
-  // AP scores (1-5 scale)
-  const avgAPScore = apScores.length > 0 ? apScores.reduce((sum, score) => sum + score, 0) / apScores.length : 0;
-  if (avgAPScore >= 4.0) score += 20;
-  else if (avgAPScore >= 3.0) score += 10;
-  else if (avgAPScore < 2.0) score -= 10;
+  // AP scores - reward both quantity and quality
+  const totalAPClasses = apScores.length;
+  const avgAPScore = totalAPClasses > 0 ? apScores.reduce((sum, score) => sum + score, 0) / totalAPClasses : 0;
   
-  // IB scores (1-7 scale)
-  const avgIBScore = ibScores.length > 0 ? ibScores.reduce((sum, score) => sum + score, 0) / ibScores.length : 0;
-  if (avgIBScore >= 6.0) score += 15;
-  else if (avgIBScore >= 5.0) score += 8;
-  else if (avgIBScore < 4.0) score -= 8;
+  // Quality component (average score)
+  if (avgAPScore >= 4.0) score += 15;
+  else if (avgAPScore >= 3.0) score += 8;
+  else if (avgAPScore < 2.0) score -= 5;
   
-  // Honors/AP classes taken
-  if (honorsClasses >= 8) score += 15;
-  else if (honorsClasses >= 5) score += 10;
-  else if (honorsClasses >= 3) score += 5;
-  else if (honorsClasses < 1) score -= 10;
+  // Quantity component (number of AP classes)
+  if (totalAPClasses >= 8) score += 15;
+  else if (totalAPClasses >= 5) score += 10;
+  else if (totalAPClasses >= 3) score += 5;
+  else if (totalAPClasses < 1) score -= 5;
+  
+  // IB scores - similar approach
+  const totalIBClasses = ibScores.length;
+  const avgIBScore = totalIBClasses > 0 ? ibScores.reduce((sum, score) => sum + score, 0) / totalIBClasses : 0;
+  
+  // Quality component
+  if (avgIBScore >= 6.0) score += 10;
+  else if (avgIBScore >= 5.0) score += 6;
+  else if (avgIBScore < 4.0) score -= 3;
+  
+  // Quantity component
+  if (totalIBClasses >= 6) score += 10;
+  else if (totalIBClasses >= 4) score += 7;
+  else if (totalIBClasses >= 2) score += 3;
+  
+  // Honors/AP classes taken (separate from AP scores)
+  if (honorsClasses >= 8) score += 10;
+  else if (honorsClasses >= 5) score += 7;
+  else if (honorsClasses >= 3) score += 3;
+  else if (honorsClasses < 1) score -= 5;
   
   return Math.max(0, Math.min(100, score));
 }
