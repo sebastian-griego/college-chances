@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 
 interface UserData {
-  users: {
-    [userId: string]: {
-      essayScore?: number;
-      ecScore?: number;
-      academicRigorScore?: number;
-      lastUpdated?: string;
-    };
-  };
+  essayScore?: number;
+  ecScore?: number;
+  academicRigorScore?: number;
+  lastUpdated?: string;
 }
+
+// In-memory storage for production (will be replaced with database later)
+const userDataStore: { [userId: string]: UserData } = {};
 
 // Kimi K2 AI analysis function
 async function analyzeEssayWithAI(essay: string): Promise<{ score: number; feedback: string }> {
@@ -317,25 +314,13 @@ export async function POST(request: NextRequest) {
     const ecScore = await analyzeExtracurricularsWithAI(extracurriculars || []);
     const academicRigorScore = await calculateAcademicRigor(apScores || [], ibScores || [], honorsClasses || 0);
     
-    // Load existing user data
-    const dataPath = path.join(process.cwd(), 'data', 'users.json');
-    let userData: UserData = { users: {} };
-    
-    if (fs.existsSync(dataPath)) {
-      const fileContent = fs.readFileSync(dataPath, 'utf-8');
-      userData = JSON.parse(fileContent);
-    }
-    
-    // Update user data
-    userData.users[userId] = {
+    // Store user data in memory (will be replaced with database later)
+    userDataStore[userId] = {
       essayScore: essayAnalysis.score,
       ecScore,
       academicRigorScore,
       lastUpdated: new Date().toISOString()
     };
-    
-    // Save updated data
-    fs.writeFileSync(dataPath, JSON.stringify(userData, null, 2));
     
     return NextResponse.json({
       success: true,

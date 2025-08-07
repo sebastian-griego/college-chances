@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 
 interface UserData {
-  users: {
-    [userId: string]: {
-      essayScore?: number;
-      ecScore?: number;
-      academicRigorScore?: number;
-      lastUpdated?: string;
-    };
-  };
+  essayScore?: number;
+  ecScore?: number;
+  academicRigorScore?: number;
+  lastUpdated?: string;
 }
+
+// In-memory storage for production (will be replaced with database later)
+const userDataStore: { [userId: string]: UserData } = {};
 
 // Enhanced calculation that includes AI scores
 function calculateEnhancedChance(
@@ -95,16 +92,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
     
-    // Load user's AI scores
-    const dataPath = path.join(process.cwd(), 'data', 'users.json');
-    let userData: UserData = { users: {} };
-    
-    if (fs.existsSync(dataPath)) {
-      const fileContent = fs.readFileSync(dataPath, 'utf-8');
-      userData = JSON.parse(fileContent);
-    }
-    
-    const userScores = userData.users[userId] || {};
+    // Load user's AI scores from memory
+    const userScores = userDataStore[userId] || {};
     const essayScore = userScores.essayScore || 50;
     const ecScore = userScores.ecScore || 50;
     const academicRigorScore = userScores.academicRigorScore || 50;
