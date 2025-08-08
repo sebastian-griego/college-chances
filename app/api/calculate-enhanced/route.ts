@@ -26,13 +26,13 @@ function calculateEnhancedChance(
   // Base weighted score (same as main page)
   const baseWeightedScore = (gpaPercentile * 0.6) + (satPercentile * 0.4);
   
-  // Enhanced weighted score with AI components (keep full GPA/SAT weight, add AI as bonus)
+  // Enhanced weighted score with AI components
   const enhancedWeightedScore = (
-    (gpaPercentile * 0.6) +            // GPA: 60% (same as base)
-    (satPercentile * 0.4) +            // SAT: 40% (same as base)
-    (essayScore * 0.15) +              // Essay: 15% (bonus)
-    (ecScore * 0.15) +                 // Extracurriculars: 15% (bonus)
-    (academicRigorScore * 0.05)        // Academic Rigor: 5% (bonus)
+    (gpaPercentile * 0.25) +           // GPA: 25%
+    (satPercentile * 0.20) +           // SAT: 20%
+    (essayScore * 0.25) +              // Essay: 25%
+    (ecScore * 0.20) +                 // Extracurriculars: 20%
+    (academicRigorScore * 0.10)        // Academic Rigor: 10%
   );
   
   // Base admission rate adjustment (same as main page)
@@ -64,6 +64,20 @@ function calculateEnhancedChance(
   const enhancedChance = Math.min(100, Math.max(1, 
     baseRate * (enhancedWeightedScore / 50) * 1.5 * aiMultiplier
   ));
+  
+  // Debug logging
+  console.log('Enhanced calculation debug:', {
+    gpaPercentile,
+    satPercentile,
+    essayScore,
+    ecScore,
+    academicRigorScore,
+    enhancedWeightedScore,
+    avgAIScore,
+    aiMultiplier,
+    baseRate,
+    enhancedChance
+  });
   
   return Math.round(enhancedChance * 100) / 100;
 }
