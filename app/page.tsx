@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PaidCalculator from './components/PaidCalculator';
 import PaymentModal from './components/PaymentModal';
 
@@ -1144,6 +1144,34 @@ export default function Home() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [aiScores, setAiScores] = useState<any>(null);
   const [essayFeedback, setEssayFeedback] = useState<string>('');
+  const [isPremium, setIsPremium] = useState(false);
+  const [premiumFormData, setPremiumFormData] = useState({
+    essay: '',
+    extracurriculars: '',
+    apScores: '',
+    ibScores: '',
+    honorsClasses: ''
+  });
+
+  // Check for premium access on component mount
+  useEffect(() => {
+    const checkPremiumStatus = () => {
+      const premiumStatus = localStorage.getItem('isPremium');
+      if (premiumStatus === 'true') {
+        setIsPremium(true);
+      }
+    };
+    
+    checkPremiumStatus();
+    
+    // Check for premium activation from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('premium') === 'activated') {
+      setIsPremium(true);
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
 
   const filteredColleges = COLLEGES.filter(college =>
     college.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -1493,34 +1521,190 @@ export default function Home() {
           </form>
         </div>
 
-        {/* Premium Info Section */}
-        <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-2xl shadow-lg p-6 border border-purple-200">
-          <div className="text-center">
-            <h3 className="text-xl font-bold text-purple-800 mb-2">🚀 Want More Accurate Results?</h3>
-            <p className="text-purple-700 mb-4">
-              Get AI-powered analysis of your essays, extracurriculars, and academic rigor for a more realistic admission prediction.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 text-sm">
-              <div className="bg-white/60 rounded-lg p-3">
-                <div className="font-semibold text-purple-800">📝 Essay Analysis</div>
-                <div className="text-purple-600">AI critiques your personal statement</div>
-              </div>
-              <div className="bg-white/60 rounded-lg p-3">
-                <div className="font-semibold text-purple-800">🎭 EC Evaluation</div>
-                <div className="text-purple-600">Quality over quantity assessment</div>
-              </div>
-              <div className="bg-white/60 rounded-lg p-3">
-                <div className="font-semibold text-purple-800">📚 Academic Rigor</div>
-                <div className="text-purple-600">AP/IB course difficulty analysis</div>
+        {/* Premium Features Section */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 relative">
+          {/* Premium Overlay - Only show if not premium */}
+          {!isPremium && (
+            <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-blue-500/10 rounded-2xl backdrop-blur-sm z-10 flex items-center justify-center">
+              <div className="text-center bg-white/90 rounded-xl p-6 shadow-lg max-w-md">
+                <div className="text-4xl mb-2">🔒</div>
+                <h3 className="text-xl font-bold text-purple-800 mb-2">Premium Features</h3>
+                <p className="text-purple-700 mb-4 text-sm">
+                  Unlock AI-powered analysis for more accurate admission predictions
+                </p>
+                <button
+                  onClick={() => setShowPaymentModal(true)}
+                  className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+                >
+                  Upgrade to Premium
+                </button>
+                <p className="text-xs text-purple-600 mt-2">Starting at $5 • No subscription</p>
               </div>
             </div>
+          )}
+
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-gray-900">
+              🚀 Enhanced Analysis {isPremium ? '(Premium)' : '(Premium)'}
+            </h2>
+            {isPremium && (
+              <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                ✅ Premium Active
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-6">
+            {/* Essay Section */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                📝 Personal Statement / Essay
+              </label>
+              <textarea
+                disabled={!isPremium}
+                value={premiumFormData.essay}
+                onChange={(e) => setPremiumFormData({...premiumFormData, essay: e.target.value})}
+                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
+                  !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                }`}
+                rows={6}
+                placeholder="Paste your personal statement or main essay here for AI analysis and feedback..."
+              />
+              <p className="text-xs text-gray-500">AI will analyze authenticity, passion, uniqueness, and writing quality</p>
+            </div>
+
+            {/* Extracurriculars Section */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                🎭 Extracurricular Activities
+              </label>
+              <textarea
+                disabled={!isPremium}
+                value={premiumFormData.extracurriculars}
+                onChange={(e) => setPremiumFormData({...premiumFormData, extracurriculars: e.target.value})}
+                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
+                  !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                }`}
+                rows={4}
+                placeholder="List your key extracurricular activities, leadership roles, volunteering, work experience, etc..."
+              />
+              <p className="text-xs text-gray-500">AI evaluates quality, leadership, commitment, and uniqueness</p>
+            </div>
+
+            {/* Academic Rigor Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  📚 AP Scores (if applicable)
+                </label>
+                <input
+                  type="text"
+                  disabled={!isPremium}
+                  value={premiumFormData.apScores}
+                  onChange={(e) => setPremiumFormData({...premiumFormData, apScores: e.target.value})}
+                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
+                    !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                  }`}
+                  placeholder="e.g., AP Calc BC: 5, AP Physics: 4"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  🌍 IB Scores (if applicable)
+                </label>
+                <input
+                  type="text"
+                  disabled={!isPremium}
+                  value={premiumFormData.ibScores}
+                  onChange={(e) => setPremiumFormData({...premiumFormData, ibScores: e.target.value})}
+                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
+                    !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                  }`}
+                  placeholder="e.g., Math HL: 7, Physics SL: 6"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                🏆 Honors/Advanced Courses Taken
+              </label>
+              <input
+                type="text"
+                disabled={!isPremium}
+                value={premiumFormData.honorsClasses}
+                onChange={(e) => setPremiumFormData({...premiumFormData, honorsClasses: e.target.value})}
+                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
+                  !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                }`}
+                placeholder="List honors, dual enrollment, or other advanced courses"
+              />
+            </div>
+
+            {/* Premium Calculate Button */}
             <button
-              onClick={() => setShowPaymentModal(true)}
-              className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+              disabled={!isPremium || !premiumFormData.essay.trim() || !premiumFormData.extracurriculars.trim()}
+              onClick={async () => {
+                if (!formData.gpa || !formData.college || (!formData.sat && !formData.act)) {
+                  alert('Please fill out the basic form (GPA, test score, college) first!');
+                  return;
+                }
+                
+                setLoading(true);
+                try {
+                  // Call the AI analysis API directly
+                  const response = await fetch('/api/analyze/essay', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      essay: premiumFormData.essay,
+                      extracurriculars: premiumFormData.extracurriculars,
+                      apScores: premiumFormData.apScores,
+                      ibScores: premiumFormData.ibScores,
+                      honorsClasses: premiumFormData.honorsClasses
+                    })
+                  });
+                  
+                  const analysisResult = await response.json();
+                  setAiScores(analysisResult.scores);
+                  setEssayFeedback(analysisResult.essayFeedback);
+                  
+                  // Now call enhanced calculation
+                  const enhancedResponse = await fetch('/api/calculate-enhanced', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      gpa: parseFloat(formData.gpa),
+                      satScore: formData.testType === 'sat' ? parseInt(formData.sat) : undefined,
+                      actScore: formData.testType === 'act' ? parseInt(formData.act) : undefined,
+                      college: formData.college,
+                      aiScores: analysisResult.scores
+                    })
+                  });
+                  
+                  const enhancedResult = await enhancedResponse.json();
+                  
+                  // Update result with enhanced data
+                  setResult(prev => prev ? {
+                    ...prev,
+                    enhancedChance: enhancedResult.enhancedChance,
+                    aiScores: analysisResult.scores
+                  } : null);
+                  
+                } catch (error) {
+                  console.error('Enhanced calculation failed:', error);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              className={`w-full py-3 px-6 rounded-lg font-semibold ${
+                isPremium && premiumFormData.essay.trim() && premiumFormData.extracurriculars.trim()
+                  ? 'bg-purple-600 text-white hover:bg-purple-700' 
+                  : 'bg-purple-600 text-white opacity-50 cursor-not-allowed'
+              }`}
             >
-              Upgrade to Premium
+              {loading ? 'Analyzing...' : '🚀 Calculate Enhanced Admission Chance'}
             </button>
-            <p className="text-xs text-purple-600 mt-2">Starting at $5 • No subscription required</p>
           </div>
         </div>
 
