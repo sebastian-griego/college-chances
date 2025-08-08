@@ -106,6 +106,29 @@ export async function POST(request: NextRequest) {
       academicRigorScore
     );
     
+    // Debug info to include in response
+    const debugInfo = {
+      gpaPercentile: Math.min(100, Math.max(0, ((parseFloat(gpa) - college.gpa25th) / (college.gpa75th - college.gpa25th)) * 100)),
+      satPercentile: Math.min(100, Math.max(0, ((parseInt(satScore) - college.sat25th) / (college.sat75th - college.sat25th)) * 100)),
+      essayScore,
+      ecScore,
+      academicRigorScore,
+      enhancedWeightedScore: calculateEnhancedChance(parseFloat(gpa), parseInt(satScore), college, essayScore, ecScore, academicRigorScore),
+      avgAIScore: (essayScore + ecScore + academicRigorScore) / 3,
+      aiMultiplier: (() => {
+        const avg = (essayScore + ecScore + academicRigorScore) / 3;
+        if (avg >= 95) return 3.5;
+        if (avg >= 90) return 3.0;
+        if (avg >= 85) return 2.5;
+        if (avg >= 80) return 2.0;
+        if (avg >= 75) return 1.5;
+        if (avg >= 70) return 1.2;
+        if (avg >= 60) return 0.9;
+        return 0.7;
+      })(),
+      baseRate: college.admissionRate
+    };
+
     return NextResponse.json({
       success: true,
       enhancedChance,
@@ -113,7 +136,8 @@ export async function POST(request: NextRequest) {
         essayScore,
         ecScore,
         academicRigorScore
-      }
+      },
+      debug: debugInfo
     });
     
   } catch (error) {

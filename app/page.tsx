@@ -1327,6 +1327,7 @@ export default function Home() {
         
         if (response.ok) {
           const enhancedResult = await response.json();
+          console.log('Enhanced calculation debug:', enhancedResult.debug);
           setResult({
             ...result,
             enhancedChance: enhancedResult.enhancedChance,
