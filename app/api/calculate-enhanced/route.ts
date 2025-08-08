@@ -84,17 +84,16 @@ function calculateEnhancedChance(
 
 export async function POST(request: NextRequest) {
   try {
-    const { gpa, satScore, college, userId } = await request.json();
+    const { gpa, satScore, college, userId, aiScores } = await request.json();
     
     if (!gpa || !satScore || !college || !userId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
     
-    // Load user's AI scores from memory
-    const userScores = userDataStore[userId] || {};
-    const essayScore = userScores.essayScore || 50;
-    const ecScore = userScores.ecScore || 50;
-    const academicRigorScore = userScores.academicRigorScore || 50;
+    // Use AI scores from request or fallback to memory store
+    const essayScore = aiScores?.essayScore || userDataStore[userId]?.essayScore || 50;
+    const ecScore = aiScores?.ecScore || userDataStore[userId]?.ecScore || 50;
+    const academicRigorScore = aiScores?.academicRigorScore || userDataStore[userId]?.academicRigorScore || 50;
     
     // Calculate enhanced chance
     const enhancedChance = calculateEnhancedChance(
@@ -106,29 +105,6 @@ export async function POST(request: NextRequest) {
       academicRigorScore
     );
     
-    // Debug info to include in response
-    const debugInfo = {
-      gpaPercentile: Math.min(100, Math.max(0, ((parseFloat(gpa) - college.gpa25th) / (college.gpa75th - college.gpa25th)) * 100)),
-      satPercentile: Math.min(100, Math.max(0, ((parseInt(satScore) - college.sat25th) / (college.sat75th - college.sat25th)) * 100)),
-      essayScore,
-      ecScore,
-      academicRigorScore,
-      enhancedWeightedScore: calculateEnhancedChance(parseFloat(gpa), parseInt(satScore), college, essayScore, ecScore, academicRigorScore),
-      avgAIScore: (essayScore + ecScore + academicRigorScore) / 3,
-      aiMultiplier: (() => {
-        const avg = (essayScore + ecScore + academicRigorScore) / 3;
-        if (avg >= 95) return 3.5;
-        if (avg >= 90) return 3.0;
-        if (avg >= 85) return 2.5;
-        if (avg >= 80) return 2.0;
-        if (avg >= 75) return 1.5;
-        if (avg >= 70) return 1.2;
-        if (avg >= 60) return 0.9;
-        return 0.7;
-      })(),
-      baseRate: college.admissionRate
-    };
-
     return NextResponse.json({
       success: true,
       enhancedChance,
@@ -136,8 +112,7 @@ export async function POST(request: NextRequest) {
         essayScore,
         ecScore,
         academicRigorScore
-      },
-      debug: debugInfo
+      }
     });
     
   } catch (error) {

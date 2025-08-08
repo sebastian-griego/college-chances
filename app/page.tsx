@@ -1260,7 +1260,12 @@ export default function Home() {
             gpa: formData.gpa,
             satScore: formData.testType === 'sat' ? testScore : convertScore(testScore, 'act'),
             college: selectedCollege,
-            userId: aiScores.userId
+            userId: aiScores.userId,
+            aiScores: {
+              essayScore: aiScores.essayScore,
+              ecScore: aiScores.ecScore,
+              academicRigorScore: aiScores.academicRigorScore
+            }
           })
         });
         
@@ -1321,13 +1326,17 @@ export default function Home() {
             gpa: parseFloat(formData.gpa),
             satScore: formData.testType === 'sat' ? parseInt(formData.sat) : convertScore(parseInt(formData.act), 'act'),
             college: COLLEGES.find((c: any) => c.name === formData.college),
-            userId: scores.userId
+            userId: scores.userId,
+            aiScores: {
+              essayScore: scores.essayScore,
+              ecScore: scores.ecScore,
+              academicRigorScore: scores.academicRigorScore
+            }
           })
         });
         
         if (response.ok) {
           const enhancedResult = await response.json();
-          console.log('Enhanced calculation debug:', enhancedResult.debug);
           setResult({
             ...result,
             enhancedChance: enhancedResult.enhancedChance,
