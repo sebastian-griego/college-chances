@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import PaidCalculator from './components/PaidCalculator';
+import PaymentModal from './components/PaymentModal';
 
 // College data with accurate admission statistics from Common Data Set (CDS) and official sources
 // All data verified from Common Data Set 2023-2024 and official college websites
@@ -1140,6 +1141,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showPaidCalculator, setShowPaidCalculator] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [aiScores, setAiScores] = useState<any>(null);
   const [essayFeedback, setEssayFeedback] = useState<string>('');
 
@@ -1560,13 +1562,10 @@ export default function Home() {
                   Upgrade to premium for AI-powered analysis of your essay, extracurriculars, and academic rigor.
                 </p>
                 <button
-                  onClick={() => {
-                    console.log('Enhanced Analysis button clicked');
-                    setShowPaidCalculator(true);
-                  }}
+                  onClick={() => setShowPaymentModal(true)}
                   className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700"
                 >
-                  Try Enhanced Analysis
+                  Upgrade to Premium
                 </button>
               </div>
 
@@ -1628,6 +1627,16 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        {/* Payment Modal */}
+        <PaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          onSuccess={() => {
+            setShowPaymentModal(false);
+            setShowPaidCalculator(true);
+          }}
+        />
 
         {/* Footer */}
         <div className="mt-16 text-center text-gray-500">
