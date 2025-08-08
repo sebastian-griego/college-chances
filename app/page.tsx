@@ -1493,6 +1493,37 @@ export default function Home() {
           </form>
         </div>
 
+        {/* Premium Info Section */}
+        <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-2xl shadow-lg p-6 border border-purple-200">
+          <div className="text-center">
+            <h3 className="text-xl font-bold text-purple-800 mb-2">🚀 Want More Accurate Results?</h3>
+            <p className="text-purple-700 mb-4">
+              Get AI-powered analysis of your essays, extracurriculars, and academic rigor for a more realistic admission prediction.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 text-sm">
+              <div className="bg-white/60 rounded-lg p-3">
+                <div className="font-semibold text-purple-800">📝 Essay Analysis</div>
+                <div className="text-purple-600">AI critiques your personal statement</div>
+              </div>
+              <div className="bg-white/60 rounded-lg p-3">
+                <div className="font-semibold text-purple-800">🎭 EC Evaluation</div>
+                <div className="text-purple-600">Quality over quantity assessment</div>
+              </div>
+              <div className="bg-white/60 rounded-lg p-3">
+                <div className="font-semibold text-purple-800">📚 Academic Rigor</div>
+                <div className="text-purple-600">AP/IB course difficulty analysis</div>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowPaymentModal(true)}
+              className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+            >
+              Upgrade to Premium
+            </button>
+            <p className="text-xs text-purple-600 mt-2">Starting at $5 • No subscription required</p>
+          </div>
+        </div>
+
           {/* Results */}
           {result && (
             <div className="bg-white rounded-2xl shadow-xl p-8">
