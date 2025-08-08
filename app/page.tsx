@@ -1412,8 +1412,6 @@ export default function Home() {
               Your Profile
             </h2>
             
-
-            
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* College Selection */}
                 <div>
@@ -1502,210 +1500,194 @@ export default function Home() {
                 />
             </div>
 
-              {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
-            >
-              {loading ? 'Calculating...' : 'Calculate My Chances'}
-            </button>
+              {/* Premium Features Section - Inline */}
+              <div className="border-t pt-6 mt-6 relative">
+                {/* Premium Overlay - Only show if not premium */}
+                {!isPremium && (
+                  <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-blue-500/10 rounded-lg backdrop-blur-sm z-10 flex items-center justify-center">
+                    <div className="text-center bg-white/90 rounded-xl p-4 shadow-lg max-w-sm">
+                      <div className="text-3xl mb-2">🔒</div>
+                      <h3 className="text-lg font-bold text-purple-800 mb-2">Premium Features</h3>
+                      <p className="text-purple-700 mb-3 text-sm">
+                        Unlock AI analysis for more accurate predictions
+                      </p>
+                      <button
+                        onClick={() => setShowPaymentModal(true)}
+                        className="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-sm"
+                      >
+                        Upgrade to Premium
+                      </button>
+                      <p className="text-xs text-purple-600 mt-1">Starting at $5</p>
+                    </div>
+                  </div>
+                )}
 
-            <button
-              type="button"
-              onClick={resetForm}
-                className="w-full bg-gray-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-600 transition-colors"
-            >
-                Reset Form
-            </button>
-          </form>
-        </div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    🚀 Enhanced Analysis {isPremium ? '(Premium)' : ''}
+                  </h3>
+                  {isPremium && (
+                    <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                      ✅ Premium Active
+                    </div>
+                  )}
+                </div>
 
-        {/* Premium Features Section */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 relative">
-          {/* Premium Overlay - Only show if not premium */}
-          {!isPremium && (
-            <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-blue-500/10 rounded-2xl backdrop-blur-sm z-10 flex items-center justify-center">
-              <div className="text-center bg-white/90 rounded-xl p-6 shadow-lg max-w-md">
-                <div className="text-4xl mb-2">🔒</div>
-                <h3 className="text-xl font-bold text-purple-800 mb-2">Premium Features</h3>
-                <p className="text-purple-700 mb-4 text-sm">
-                  Unlock AI-powered analysis for more accurate admission predictions
-                </p>
-                <button
-                  onClick={() => setShowPaymentModal(true)}
-                  className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
-                >
-                  Upgrade to Premium
-                </button>
-                <p className="text-xs text-purple-600 mt-2">Starting at $5 • No subscription</p>
+                <div className="space-y-4">
+                  {/* Essay Section */}
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      📝 Personal Statement / Essay
+                    </label>
+                    <textarea
+                      disabled={!isPremium}
+                      value={premiumFormData.essay}
+                      onChange={(e) => setPremiumFormData({...premiumFormData, essay: e.target.value})}
+                      className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
+                        !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                      }`}
+                      rows={4}
+                      placeholder="Paste your personal statement or main essay here for AI analysis and feedback..."
+                    />
+                    <p className="text-xs text-gray-500">AI will analyze authenticity, passion, uniqueness, and writing quality</p>
+                  </div>
+
+                  {/* Extracurriculars Section */}
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      🎭 Extracurricular Activities
+                    </label>
+                    <textarea
+                      disabled={!isPremium}
+                      value={premiumFormData.extracurriculars}
+                      onChange={(e) => setPremiumFormData({...premiumFormData, extracurriculars: e.target.value})}
+                      className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
+                        !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                      }`}
+                      rows={3}
+                      placeholder="List your key extracurricular activities, leadership roles, volunteering, work experience, etc..."
+                    />
+                    <p className="text-xs text-gray-500">AI evaluates quality, leadership, commitment, and uniqueness</p>
+                  </div>
+
+                  {/* Academic Rigor Section */}
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        📚 AP/IB Scores (if applicable)
+                      </label>
+                      <input
+                        type="text"
+                        disabled={!isPremium}
+                        value={premiumFormData.apScores}
+                        onChange={(e) => setPremiumFormData({...premiumFormData, apScores: e.target.value})}
+                        className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
+                          !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                        }`}
+                        placeholder="e.g., AP Calc BC: 5, AP Physics: 4, IB Math HL: 7"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        🏆 Honors/Advanced Courses
+                      </label>
+                      <input
+                        type="text"
+                        disabled={!isPremium}
+                        value={premiumFormData.honorsClasses}
+                        onChange={(e) => setPremiumFormData({...premiumFormData, honorsClasses: e.target.value})}
+                        className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
+                          !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                        }`}
+                        placeholder="List honors, dual enrollment, or other advanced courses"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
 
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-gray-900">
-              🚀 Enhanced Analysis {isPremium ? '(Premium)' : '(Premium)'}
-            </h2>
-            {isPremium && (
-              <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                ✅ Premium Active
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-6">
-            {/* Essay Section */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                📝 Personal Statement / Essay
-              </label>
-              <textarea
-                disabled={!isPremium}
-                value={premiumFormData.essay}
-                onChange={(e) => setPremiumFormData({...premiumFormData, essay: e.target.value})}
-                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
-                  !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
-                }`}
-                rows={6}
-                placeholder="Paste your personal statement or main essay here for AI analysis and feedback..."
-              />
-              <p className="text-xs text-gray-500">AI will analyze authenticity, passion, uniqueness, and writing quality</p>
-            </div>
-
-            {/* Extracurriculars Section */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                🎭 Extracurricular Activities
-              </label>
-              <textarea
-                disabled={!isPremium}
-                value={premiumFormData.extracurriculars}
-                onChange={(e) => setPremiumFormData({...premiumFormData, extracurriculars: e.target.value})}
-                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
-                  !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
-                }`}
-                rows={4}
-                placeholder="List your key extracurricular activities, leadership roles, volunteering, work experience, etc..."
-              />
-              <p className="text-xs text-gray-500">AI evaluates quality, leadership, commitment, and uniqueness</p>
-            </div>
-
-            {/* Academic Rigor Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  📚 AP Scores (if applicable)
-                </label>
-                <input
-                  type="text"
-                  disabled={!isPremium}
-                  value={premiumFormData.apScores}
-                  onChange={(e) => setPremiumFormData({...premiumFormData, apScores: e.target.value})}
-                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
-                    !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
-                  }`}
-                  placeholder="e.g., AP Calc BC: 5, AP Physics: 4"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  🌍 IB Scores (if applicable)
-                </label>
-                <input
-                  type="text"
-                  disabled={!isPremium}
-                  value={premiumFormData.ibScores}
-                  onChange={(e) => setPremiumFormData({...premiumFormData, ibScores: e.target.value})}
-                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
-                    !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
-                  }`}
-                  placeholder="e.g., Math HL: 7, Physics SL: 6"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                🏆 Honors/Advanced Courses Taken
-              </label>
-              <input
-                type="text"
-                disabled={!isPremium}
-                value={premiumFormData.honorsClasses}
-                onChange={(e) => setPremiumFormData({...premiumFormData, honorsClasses: e.target.value})}
-                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
-                  !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
-                }`}
-                placeholder="List honors, dual enrollment, or other advanced courses"
-              />
-            </div>
-
-            {/* Premium Calculate Button */}
-            <button
-              disabled={!isPremium || !premiumFormData.essay.trim() || !premiumFormData.extracurriculars.trim()}
-              onClick={async () => {
-                if (!formData.gpa || !formData.college || (!formData.sat && !formData.act)) {
-                  alert('Please fill out the basic form (GPA, test score, college) first!');
-                  return;
-                }
+              {/* Submit Buttons */}
+              <div className="space-y-3 pt-6">
+                {isPremium && premiumFormData.essay.trim() && premiumFormData.extracurriculars.trim() ? (
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!formData.gpa || !formData.college || (!formData.sat && !formData.act)) {
+                        alert('Please fill out the basic form (GPA, test score, college) first!');
+                        return;
+                      }
+                      
+                      setLoading(true);
+                      try {
+                        // Call the AI analysis API directly
+                        const response = await fetch('/api/analyze/essay', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            essay: premiumFormData.essay,
+                            extracurriculars: premiumFormData.extracurriculars,
+                            apScores: premiumFormData.apScores,
+                            ibScores: premiumFormData.ibScores,
+                            honorsClasses: premiumFormData.honorsClasses
+                          })
+                        });
+                        
+                        const analysisResult = await response.json();
+                        setAiScores(analysisResult.scores);
+                        setEssayFeedback(analysisResult.essayFeedback);
+                        
+                        // Now call enhanced calculation
+                        const enhancedResponse = await fetch('/api/calculate-enhanced', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            gpa: parseFloat(formData.gpa),
+                            satScore: formData.testType === 'sat' ? parseInt(formData.sat) : undefined,
+                            actScore: formData.testType === 'act' ? parseInt(formData.act) : undefined,
+                            college: formData.college,
+                            aiScores: analysisResult.scores
+                          })
+                        });
+                        
+                        const enhancedResult = await enhancedResponse.json();
+                        
+                        // Update result with enhanced data
+                        setResult(prev => prev ? {
+                          ...prev,
+                          enhancedChance: enhancedResult.enhancedChance,
+                          aiScores: analysisResult.scores
+                        } : null);
+                        
+                      } catch (error) {
+                        console.error('Enhanced calculation failed:', error);
+                      } finally {
+                        setLoading(false);
+                      }
+                    }}
+                    disabled={loading}
+                    className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 disabled:bg-purple-400 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {loading ? 'Analyzing...' : '🚀 Calculate Enhanced Admission Chance'}
+                  </button>
+                ) : null}
                 
-                setLoading(true);
-                try {
-                  // Call the AI analysis API directly
-                  const response = await fetch('/api/analyze/essay', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      essay: premiumFormData.essay,
-                      extracurriculars: premiumFormData.extracurriculars,
-                      apScores: premiumFormData.apScores,
-                      ibScores: premiumFormData.ibScores,
-                      honorsClasses: premiumFormData.honorsClasses
-                    })
-                  });
-                  
-                  const analysisResult = await response.json();
-                  setAiScores(analysisResult.scores);
-                  setEssayFeedback(analysisResult.essayFeedback);
-                  
-                  // Now call enhanced calculation
-                  const enhancedResponse = await fetch('/api/calculate-enhanced', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      gpa: parseFloat(formData.gpa),
-                      satScore: formData.testType === 'sat' ? parseInt(formData.sat) : undefined,
-                      actScore: formData.testType === 'act' ? parseInt(formData.act) : undefined,
-                      college: formData.college,
-                      aiScores: analysisResult.scores
-                    })
-                  });
-                  
-                  const enhancedResult = await enhancedResponse.json();
-                  
-                  // Update result with enhanced data
-                  setResult(prev => prev ? {
-                    ...prev,
-                    enhancedChance: enhancedResult.enhancedChance,
-                    aiScores: analysisResult.scores
-                  } : null);
-                  
-                } catch (error) {
-                  console.error('Enhanced calculation failed:', error);
-                } finally {
-                  setLoading(false);
-                }
-              }}
-              className={`w-full py-3 px-6 rounded-lg font-semibold ${
-                isPremium && premiumFormData.essay.trim() && premiumFormData.extracurriculars.trim()
-                  ? 'bg-purple-600 text-white hover:bg-purple-700' 
-                  : 'bg-purple-600 text-white opacity-50 cursor-not-allowed'
-              }`}
-            >
-              {loading ? 'Analyzing...' : '🚀 Calculate Enhanced Admission Chance'}
-            </button>
-          </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
+                >
+                  {loading ? 'Calculating...' : 'Calculate My Chances'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="w-full bg-gray-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-600 transition-colors"
+                >
+                  Reset Form
+                </button>
+              </div>
+          </form>
         </div>
 
           {/* Results */}
