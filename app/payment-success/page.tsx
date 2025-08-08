@@ -25,18 +25,34 @@ export default function PaymentSuccessPage() {
     }
   }, [searchParams]);
 
-  const handleCreateAccount = () => {
-    // Store premium access in localStorage (simple approach)
-    localStorage.setItem('isPremium', 'true');
-    localStorage.setItem('premiumAccount', JSON.stringify({
-      name: accountData.name,
-      email: accountData.email,
-      activatedAt: new Date().toISOString(),
-      paymentIntent: searchParams.get('payment_intent')
-    }));
-    
-    // Redirect to main page with premium access
-    router.push('/?premium=activated');
+  const handleCreateAccount = async () => {
+    try {
+      // Check if user exists, upgrade to premium
+      const response = await fetch('/api/auth/upgrade-premium', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: accountData.email,
+          paymentIntent: searchParams.get('payment_intent')
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store updated user data
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('isPremium', 'true');
+        
+        // Redirect to main page with premium access
+        router.push('/?premium=activated');
+      } else {
+        alert('Error upgrading account: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Upgrade error:', error);
+      alert('Network error. Please try again.');
+    }
   };
 
   if (status === 'loading') {
@@ -83,19 +99,7 @@ export default function PaymentSuccessPage() {
           </div>
 
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
-              </label>
-              <input
-                type="text"
-                value={accountData.name}
-                onChange={(e) => setAccountData({...accountData, name: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your full name"
-                required
-              />
-            </div>
+
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -124,10 +128,10 @@ export default function PaymentSuccessPage() {
 
             <button
               onClick={handleCreateAccount}
-              disabled={!accountData.name.trim()}
+              disabled={!accountData.email.trim()}
               className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Create Account & Access Premium
+              Activate Premium Access
             </button>
           </div>
         </div>

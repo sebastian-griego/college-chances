@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import PaidCalculator from './components/PaidCalculator';
 import PaymentModal from './components/PaymentModal';
+import AuthModal from './components/AuthModal';
 
 // College data with accurate admission statistics from Common Data Set (CDS) and official sources
 // All data verified from Common Data Set 2023-2024 and official college websites
@@ -1144,7 +1145,9 @@ export default function Home() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [aiScores, setAiScores] = useState<any>(null);
   const [essayFeedback, setEssayFeedback] = useState<string>('');
+  const [user, setUser] = useState<any>(null);
   const [isPremium, setIsPremium] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [premiumFormData, setPremiumFormData] = useState({
     essay: '',
     extracurriculars: '',
@@ -1153,16 +1156,20 @@ export default function Home() {
     honorsClasses: ''
   });
 
-  // Check for premium access on component mount
+  // Check for authentication and premium status on component mount
   useEffect(() => {
-    const checkPremiumStatus = () => {
+    const checkAuthStatus = () => {
+      const userData = localStorage.getItem('user');
       const premiumStatus = localStorage.getItem('isPremium');
-      if (premiumStatus === 'true') {
-        setIsPremium(true);
+      
+      if (userData) {
+        const parsedUser = JSON.parse(userData);
+        setUser(parsedUser);
+        setIsPremium(parsedUser.isPremium || premiumStatus === 'true');
       }
     };
     
-    checkPremiumStatus();
+    checkAuthStatus();
     
     // Check for premium activation from URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -1172,6 +1179,18 @@ export default function Home() {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
+
+  const handleAuthSuccess = (userData: any) => {
+    setUser(userData);
+    setIsPremium(userData.isPremium);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('isPremium');
+    setUser(null);
+    setIsPremium(false);
+  };
 
   const filteredColleges = COLLEGES.filter(college =>
     college.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -1389,12 +1408,45 @@ export default function Home() {
     return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-6xl mx-auto px-4 py-8">
-                {/* Header */}
-        <div className="text-center mb-12 relative">
+        {/* Header with Auth */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center space-x-4">
+            <h1 className="text-2xl font-bold text-gray-900">College Calculator</h1>
+          </div>
+          <div className="flex items-center space-x-4">
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <div className="text-sm">
+                  <span className="text-gray-600">Welcome, </span>
+                  <span className="font-medium text-gray-900">{user.email}</span>
+                  {isPremium && (
+                    <span className="ml-2 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                      Premium
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-600 hover:text-gray-900 text-sm font-medium"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              >
+                Sign In
+              </button>
+            )}
+          </div>
+        </div>
 
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-12 relative">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
             College Chances Calculator
-          </h1>
+          </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Get an accurate estimate of your admission chances at top colleges and universities
           </p>
@@ -1512,10 +1564,16 @@ export default function Home() {
                         Unlock AI analysis for more accurate predictions
                       </p>
                       <button
-                        onClick={() => setShowPaymentModal(true)}
+                        onClick={() => {
+                          if (!user) {
+                            setShowAuthModal(true);
+                          } else {
+                            setShowPaymentModal(true);
+                          }
+                        }}
                         className="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-sm"
                       >
-                        Upgrade to Premium
+                        {!user ? 'Sign In for Premium' : 'Upgrade to Premium'}
                       </button>
                       <p className="text-xs text-purple-600 mt-1">Starting at $5</p>
                     </div>
@@ -1826,6 +1884,12 @@ export default function Home() {
         )}
 
         {/* Payment Modal */}
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onAuthSuccess={handleAuthSuccess}
+        />
+
         <PaymentModal
           isOpen={showPaymentModal}
           onClose={() => setShowPaymentModal(false)}
