@@ -26,15 +26,6 @@ function calculateEnhancedChance(
   // Base weighted score (same as main page)
   const baseWeightedScore = (gpaPercentile * 0.6) + (satPercentile * 0.4);
   
-  // Enhanced weighted score with AI components
-  const enhancedWeightedScore = (
-    (gpaPercentile * 0.25) +           // GPA: 25%
-    (satPercentile * 0.20) +           // SAT: 20%
-    (essayScore * 0.25) +              // Essay: 25%
-    (ecScore * 0.20) +                 // Extracurriculars: 20%
-    (academicRigorScore * 0.10)        // Academic Rigor: 10%
-  );
-  
   // Base admission rate adjustment (same as main page)
   const baseRate = college.admissionRate;
   
@@ -43,9 +34,31 @@ function calculateEnhancedChance(
     baseRate * (baseWeightedScore / 50) * 1.5
   ));
   
-  // Calculate enhanced chance using enhanced weighted score
+  // Calculate AI bonus multiplier based on average AI score
+  const avgAIScore = (essayScore + ecScore + academicRigorScore) / 3;
+  let aiMultiplier = 1.0;
+  
+  if (avgAIScore >= 95) {
+    aiMultiplier = 3.5; // Exceptional candidates
+  } else if (avgAIScore >= 90) {
+    aiMultiplier = 3.0; // Outstanding candidates
+  } else if (avgAIScore >= 85) {
+    aiMultiplier = 2.5; // Excellent candidates
+  } else if (avgAIScore >= 80) {
+    aiMultiplier = 2.0; // Very good candidates
+  } else if (avgAIScore >= 75) {
+    aiMultiplier = 1.5; // Good candidates
+  } else if (avgAIScore >= 70) {
+    aiMultiplier = 1.2; // Average candidates
+  } else if (avgAIScore >= 60) {
+    aiMultiplier = 0.9; // Below average candidates
+  } else {
+    aiMultiplier = 0.7; // Poor candidates
+  }
+  
+  // Calculate enhanced chance by applying AI multiplier to base chance
   const enhancedChance = Math.min(100, Math.max(1, 
-    baseRate * (enhancedWeightedScore / 50) * 1.5
+    baseChance * aiMultiplier
   ));
   
   return Math.round(enhancedChance * 100) / 100;
