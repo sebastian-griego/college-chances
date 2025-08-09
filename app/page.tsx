@@ -1581,16 +1581,7 @@ export default function Home() {
                   )}
                 </div>
 
-                                {!isPremium && (
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
-                    <div>
-                      <h4 className="text-purple-800 font-semibold">Premium Features Preview</h4>
-                      <p className="text-purple-700 text-sm">
-                        These fields are available with premium access. See exactly what you'll get before upgrading!
-                      </p>
-                    </div>
-                  </div>
-                )}
+                
 
                 <div className="space-y-6">
                   {/* Essay Section */}
@@ -1608,7 +1599,7 @@ export default function Home() {
                       }`}
                     />
                     <p className="text-sm text-gray-500 mt-1">
-                      Word count: {premiumFormData.essay.split(' ').filter(word => word.trim()).length} | AI analyzes authenticity, passion, uniqueness, and writing quality
+                      Word count: {premiumFormData.essay.split(' ').filter(word => word.trim()).length}
                     </p>
                   </div>
 
@@ -1663,7 +1654,7 @@ export default function Home() {
                     >
                       Add Activity
                     </button>
-                    <p className="text-sm text-gray-500 mt-1">AI evaluates quality, leadership, commitment, and uniqueness</p>
+
                   </div>
 
                   {/* AP Scores */}
