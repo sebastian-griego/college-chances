@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { findUserByEmail, addUser } from '@/lib/users';
+import { findUserByEmail, createUser } from '@/lib/database';
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user already exists
-    const existingUser = findUserByEmail(email);
+    const existingUser = await findUserByEmail(email);
     
     if (existingUser) {
       return NextResponse.json(
@@ -43,16 +43,8 @@ export async function POST(request: NextRequest) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create new user
-    const newUser = {
-      id: Date.now().toString(),
-      email: email.toLowerCase(),
-      password: hashedPassword,
-      isPremium: false,
-      createdAt: new Date().toISOString()
-    };
-
-    addUser(newUser);
+    // Create new user in database
+    const newUser = await createUser(email, hashedPassword);
 
     // Return user data (without password)
     const { password: _, ...userWithoutPassword } = newUser;

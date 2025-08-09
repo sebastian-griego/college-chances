@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { updateUserPremium } from '@/lib/users';
+import { updateUserPremium } from '@/lib/database';
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Upgrade user to premium
-    const updatedUser = updateUserPremium(email, true);
+    const updatedUser = await updateUserPremium(email, true);
     
     if (!updatedUser) {
       return NextResponse.json(

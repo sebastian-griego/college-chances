@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { findUserByEmail } from '@/lib/users';
+import { findUserByEmail } from '@/lib/database';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Find user by email
-    const user = findUserByEmail(email);
+    const user = await findUserByEmail(email);
     
     if (!user) {
       return NextResponse.json(
