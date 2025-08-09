@@ -1556,13 +1556,13 @@ export default function Home() {
               <div className="border-t pt-6 mt-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-semibold text-gray-900">
-                    🚀 Enhanced Analysis (Premium)
+                    Enhanced Analysis (Premium)
                   </h3>
                   {isPremium ? (
                     <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                      ✅ Premium Active
-                    </div>
-                  ) : (
+                      Premium Active
+                </div>
+              ) : (
                     <div className="text-center">
                       <button
                         onClick={() => {
@@ -1584,8 +1584,8 @@ export default function Home() {
                 {!isPremium && (
                   <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
                     <div className="flex items-center">
-                      <div className="text-purple-600 text-2xl mr-3">🔒</div>
-                      <div>
+                      <div className="text-purple-600 text-2xl mr-3">[LOCKED]</div>
+                <div>
                         <h4 className="text-purple-800 font-semibold">Premium Features Preview</h4>
                         <p className="text-purple-700 text-sm">
                           These fields are available with premium access. See exactly what you'll get before upgrading!
@@ -1599,7 +1599,7 @@ export default function Home() {
                   {/* Essay Section */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      📝 Personal Essay
+                      Personal Essay
                     </label>
                     <textarea
                       disabled={!isPremium}
@@ -1618,7 +1618,7 @@ export default function Home() {
                   {/* Extracurricular Activities */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      🎭 Extracurricular Activities
+                      Extracurricular Activities
                     </label>
                     {premiumFormData.extracurriculars.map((activity, index) => (
                       <div key={index} className="flex gap-2 mb-2">
@@ -1672,7 +1672,7 @@ export default function Home() {
                   {/* AP Scores */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      📚 AP Scores (1-5 scale)
+                      AP Scores (1-5 scale)
                     </label>
                     {premiumFormData.apScores.map((score, index) => (
                       <div key={index} className="flex gap-2 mb-2">
@@ -1727,7 +1727,7 @@ export default function Home() {
                   {/* IB Scores */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      🌍 IB Scores (1-7 scale)
+                      IB Scores (1-7 scale)
                     </label>
                     {premiumFormData.ibScores.map((score, index) => (
                       <div key={index} className="flex gap-2 mb-2">
@@ -1782,7 +1782,7 @@ export default function Home() {
                   {/* Honors Classes */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      🏆 Number of Honors/AP Classes Taken
+                      Number of Honors/AP Classes Taken
                     </label>
                     <input
                       type="number"
@@ -1860,7 +1860,7 @@ export default function Home() {
                     disabled={loading}
                     className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 disabled:bg-purple-400 disabled:cursor-not-allowed transition-colors"
                   >
-                    {loading ? 'Analyzing...' : '🚀 Calculate Enhanced Admission Chance'}
+                    {loading ? 'Analyzing...' : 'Calculate Enhanced Admission Chance'}
                   </button>
                 ) : null}
 
@@ -1947,7 +1947,7 @@ export default function Home() {
 
               {/* Upgrade to Premium */}
               <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200">
-                <h3 className="font-semibold text-purple-800 mb-2">🎯 Get More Accurate Predictions</h3>
+                <h3 className="font-semibold text-purple-800 mb-2">Get More Accurate Predictions</h3>
                 <p className="text-sm text-purple-700 mb-3">
                   Upgrade to premium for AI-powered analysis of your essay, extracurriculars, and academic rigor.
                 </p>

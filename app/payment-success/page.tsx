@@ -70,7 +70,7 @@ export default function PaymentSuccessPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4 text-center">
-          <div className="text-red-500 text-6xl mb-4">❌</div>
+          <div className="text-red-500 text-6xl mb-4 font-bold">ERROR</div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Payment Failed</h1>
           <p className="text-gray-600 mb-6">
             There was an issue processing your payment. Please try again or contact support.
@@ -91,7 +91,7 @@ export default function PaymentSuccessPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
           <div className="text-center mb-6">
-            <div className="text-green-500 text-6xl mb-4">✅</div>
+            <div className="text-green-500 text-6xl mb-4 font-bold">SUCCESS</div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Payment Successful!</h1>
             <p className="text-gray-600">
               Create your account to access premium features
@@ -142,7 +142,7 @@ export default function PaymentSuccessPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
       <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4 text-center">
-        <div className="text-green-500 text-6xl mb-4">✅</div>
+        <div className="text-green-500 text-6xl mb-4 font-bold">SUCCESS</div>
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Welcome to Premium!</h1>
         <p className="text-gray-600 mb-6">
           Your account has been created successfully. You now have access to all premium features.
