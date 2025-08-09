@@ -1150,10 +1150,10 @@ export default function Home() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [premiumFormData, setPremiumFormData] = useState({
     essay: '',
-    extracurriculars: '',
-    apScores: '',
-    ibScores: '',
-    honorsClasses: ''
+    extracurriculars: [''],
+    apScores: [''],
+    ibScores: [''],
+    honorsClasses: '0'
   });
 
   // Check for authentication and premium status on component mount
@@ -1412,7 +1412,7 @@ export default function Home() {
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center space-x-4">
             <h1 className="text-2xl font-bold text-gray-900">College Calculator</h1>
-          </div>
+        </div>
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-4">
@@ -1424,14 +1424,14 @@ export default function Home() {
                       Premium
                     </span>
                   )}
-                </div>
+      </div>
                 <button
                   onClick={handleLogout}
                   className="text-gray-600 hover:text-gray-900 text-sm font-medium"
                 >
                   Logout
                 </button>
-              </div>
+      </div>
             ) : (
               <button
                 onClick={() => setShowAuthModal(true)}
@@ -1440,7 +1440,7 @@ export default function Home() {
                 Sign In
               </button>
             )}
-          </div>
+      </div>
         </div>
 
         <div className="text-center mb-12 relative">
@@ -1549,10 +1549,10 @@ export default function Home() {
                     required
                   placeholder={formData.testType === 'sat' ? "Enter your SAT score (400-1600)" : "Enter your ACT score (1-36)"}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-            </div>
+                  />
+                </div>
 
-              {/* Premium Features Section - Inline */}
+              {/* Premium Features Section - Detailed */}
               <div className="border-t pt-6 mt-6 relative">
                 {/* Premium Overlay - Only show if not premium */}
                 {!isPremium && (
@@ -1580,93 +1580,224 @@ export default function Home() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    🚀 Enhanced Analysis {isPremium ? '(Premium)' : ''}
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    🚀 Enhanced Analysis (Premium)
                   </h3>
                   {isPremium && (
-                    <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                    <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                       ✅ Premium Active
                     </div>
                   )}
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {/* Essay Section */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      📝 Personal Statement / Essay
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      📝 Personal Essay
                     </label>
                     <textarea
                       disabled={!isPremium}
                       value={premiumFormData.essay}
                       onChange={(e) => setPremiumFormData({...premiumFormData, essay: e.target.value})}
-                      className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
-                        !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                      placeholder="Paste your personal essay here (500-650 words recommended)..."
+                      className={`w-full h-32 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                        !isPremium ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''
                       }`}
-                      rows={4}
-                      placeholder="Paste your personal statement or main essay here for AI analysis and feedback..."
                     />
-                    <p className="text-xs text-gray-500">AI will analyze authenticity, passion, uniqueness, and writing quality</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Word count: {premiumFormData.essay.split(' ').filter(word => word.trim()).length} | AI analyzes authenticity, passion, uniqueness, and writing quality
+                    </p>
                   </div>
 
-                  {/* Extracurriculars Section */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                  {/* Extracurricular Activities */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       🎭 Extracurricular Activities
                     </label>
-                    <textarea
+                    {premiumFormData.extracurriculars.map((activity, index) => (
+                      <div key={index} className="flex gap-2 mb-2">
+                        <input
+                          type="text"
+                          disabled={!isPremium}
+                          value={activity}
+                          onChange={(e) => {
+                            const newActivities = [...premiumFormData.extracurriculars];
+                            newActivities[index] = e.target.value;
+                            setPremiumFormData({...premiumFormData, extracurriculars: newActivities});
+                          }}
+                          placeholder="e.g., President of Science Club, 2 years, 5 hours/week"
+                          className={`flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 ${
+                            !isPremium ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''
+                          }`}
+                        />
+                        {premiumFormData.extracurriculars.length > 1 && (
+                          <button
+                            disabled={!isPremium}
+                            onClick={() => {
+                              const newActivities = premiumFormData.extracurriculars.filter((_, i) => i !== index);
+                              setPremiumFormData({...premiumFormData, extracurriculars: newActivities});
+                            }}
+                            className={`px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ${
+                              !isPremium ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
                       disabled={!isPremium}
-                      value={premiumFormData.extracurriculars}
-                      onChange={(e) => setPremiumFormData({...premiumFormData, extracurriculars: e.target.value})}
-                      className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
-                        !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
+                      onClick={() => {
+                        setPremiumFormData({
+                          ...premiumFormData, 
+                          extracurriculars: [...premiumFormData.extracurriculars, '']
+                        });
+                      }}
+                      className={`mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 ${
+                        !isPremium ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
-                      rows={3}
-                      placeholder="List your key extracurricular activities, leadership roles, volunteering, work experience, etc..."
-                    />
-                    <p className="text-xs text-gray-500">AI evaluates quality, leadership, commitment, and uniqueness</p>
+                    >
+                      Add Activity
+                    </button>
+                    <p className="text-sm text-gray-500 mt-1">AI evaluates quality, leadership, commitment, and uniqueness</p>
                   </div>
 
-                  {/* Academic Rigor Section */}
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-700">
-                        📚 AP/IB Scores (if applicable)
-                      </label>
-                      <input
-                        type="text"
-                        disabled={!isPremium}
-                        value={premiumFormData.apScores}
-                        onChange={(e) => setPremiumFormData({...premiumFormData, apScores: e.target.value})}
-                        className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
-                          !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
-                        }`}
-                        placeholder="e.g., AP Calc BC: 5, AP Physics: 4, IB Math HL: 7"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-700">
-                        🏆 Honors/Advanced Courses
-                      </label>
-                      <input
-                        type="text"
-                        disabled={!isPremium}
-                        value={premiumFormData.honorsClasses}
-                        onChange={(e) => setPremiumFormData({...premiumFormData, honorsClasses: e.target.value})}
-                        className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${
-                          !isPremium ? 'bg-gray-50 cursor-not-allowed' : 'focus:ring-2 focus:ring-purple-500'
-                        }`}
-                        placeholder="List honors, dual enrollment, or other advanced courses"
-                      />
-                    </div>
+                  {/* AP Scores */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      📚 AP Scores (1-5 scale)
+                    </label>
+                    {premiumFormData.apScores.map((score, index) => (
+                      <div key={index} className="flex gap-2 mb-2">
+                  <input
+                    type="number"
+                    min="1"
+                          max="5"
+                          disabled={!isPremium}
+                          value={score}
+                          onChange={(e) => {
+                            const newScores = [...premiumFormData.apScores];
+                            newScores[index] = e.target.value;
+                            setPremiumFormData({...premiumFormData, apScores: newScores});
+                          }}
+                          placeholder="AP Score (1-5)"
+                          className={`w-32 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 ${
+                            !isPremium ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''
+                          }`}
+                        />
+                        {premiumFormData.apScores.length > 1 && (
+                          <button
+                            disabled={!isPremium}
+                            onClick={() => {
+                              const newScores = premiumFormData.apScores.filter((_, i) => i !== index);
+                              setPremiumFormData({...premiumFormData, apScores: newScores});
+                            }}
+                            className={`px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ${
+                              !isPremium ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                          >
+                            Remove
+                          </button>
+                        )}
+                </div>
+                    ))}
+                    <button
+                      disabled={!isPremium}
+                      onClick={() => {
+                        setPremiumFormData({
+                          ...premiumFormData, 
+                          apScores: [...premiumFormData.apScores, '']
+                        });
+                      }}
+                      className={`mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 ${
+                        !isPremium ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                    >
+                      Add AP Score
+                    </button>
+                  </div>
+
+                  {/* IB Scores */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      🌍 IB Scores (1-7 scale)
+                    </label>
+                    {premiumFormData.ibScores.map((score, index) => (
+                      <div key={index} className="flex gap-2 mb-2">
+                        <input
+                          type="number"
+                          min="1"
+                          max="7"
+                          disabled={!isPremium}
+                          value={score}
+                          onChange={(e) => {
+                            const newScores = [...premiumFormData.ibScores];
+                            newScores[index] = e.target.value;
+                            setPremiumFormData({...premiumFormData, ibScores: newScores});
+                          }}
+                          placeholder="IB Score (1-7)"
+                          className={`w-32 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 ${
+                            !isPremium ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''
+                          }`}
+                        />
+                        {premiumFormData.ibScores.length > 1 && (
+                          <button
+                            disabled={!isPremium}
+                            onClick={() => {
+                              const newScores = premiumFormData.ibScores.filter((_, i) => i !== index);
+                              setPremiumFormData({...premiumFormData, ibScores: newScores});
+                            }}
+                            className={`px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ${
+                              !isPremium ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      disabled={!isPremium}
+                      onClick={() => {
+                        setPremiumFormData({
+                          ...premiumFormData, 
+                          ibScores: [...premiumFormData.ibScores, '']
+                        });
+                      }}
+                      className={`mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 ${
+                        !isPremium ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                    >
+                      Add IB Score
+                    </button>
+            </div>
+
+                  {/* Honors Classes */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      🏆 Number of Honors/AP Classes Taken
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      disabled={!isPremium}
+                      value={premiumFormData.honorsClasses}
+                      onChange={(e) => setPremiumFormData({...premiumFormData, honorsClasses: e.target.value})}
+                      className={`w-32 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 ${
+                        !isPremium ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''
+                      }`}
+                      placeholder="0"
+                    />
                   </div>
                 </div>
               </div>
 
               {/* Submit Buttons */}
               <div className="space-y-3 pt-6">
-                {isPremium && premiumFormData.essay.trim() && premiumFormData.extracurriculars.trim() ? (
+                {isPremium && premiumFormData.essay.trim() && premiumFormData.extracurriculars.some(ec => ec.trim()) ? (
                   <button
                     type="button"
                     onClick={async () => {
@@ -1681,13 +1812,13 @@ export default function Home() {
                         const response = await fetch('/api/analyze/essay', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            essay: premiumFormData.essay,
-                            extracurriculars: premiumFormData.extracurriculars,
-                            apScores: premiumFormData.apScores,
-                            ibScores: premiumFormData.ibScores,
-                            honorsClasses: premiumFormData.honorsClasses
-                          })
+                                                  body: JSON.stringify({
+                          essay: premiumFormData.essay,
+                          extracurriculars: premiumFormData.extracurriculars.filter(ec => ec.trim()),
+                          apScores: premiumFormData.apScores.filter(score => score.trim()).map(Number),
+                          ibScores: premiumFormData.ibScores.filter(score => score.trim()).map(Number),
+                          honorsClasses: parseInt(premiumFormData.honorsClasses) || 0
+                        })
                         });
                         
                         const analysisResult = await response.json();
@@ -1728,22 +1859,22 @@ export default function Home() {
                     {loading ? 'Analyzing...' : '🚀 Calculate Enhanced Admission Chance'}
                   </button>
                 ) : null}
-                
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
-                >
-                  {loading ? 'Calculating...' : 'Calculate My Chances'}
-                </button>
 
-                <button
-                  type="button"
-                  onClick={resetForm}
+            <button
+              type="submit"
+              disabled={loading}
+                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
+            >
+              {loading ? 'Calculating...' : 'Calculate My Chances'}
+            </button>
+
+            <button
+              type="button"
+              onClick={resetForm}
                   className="w-full bg-gray-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-600 transition-colors"
-                >
+            >
                   Reset Form
-                </button>
+            </button>
               </div>
           </form>
         </div>
