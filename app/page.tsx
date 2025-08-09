@@ -1553,16 +1553,17 @@ export default function Home() {
                 </div>
 
               {/* Premium Features Section - Detailed */}
-              <div className="border-t pt-6 mt-6 relative">
-                {/* Premium Overlay - Only show if not premium */}
-                {!isPremium && (
-                  <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-blue-500/10 rounded-lg backdrop-blur-sm z-10 flex items-center justify-center">
-                    <div className="text-center bg-white/90 rounded-xl p-4 shadow-lg max-w-sm">
-                      <div className="text-3xl mb-2">🔒</div>
-                      <h3 className="text-lg font-bold text-purple-800 mb-2">Premium Features</h3>
-                      <p className="text-purple-700 mb-3 text-sm">
-                        Unlock AI analysis for more accurate predictions
-                      </p>
+              <div className="border-t pt-6 mt-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    🚀 Enhanced Analysis (Premium)
+                  </h3>
+                  {isPremium ? (
+                    <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                      ✅ Premium Active
+                    </div>
+                  ) : (
+                    <div className="text-center">
                       <button
                         onClick={() => {
                           if (!user) {
@@ -1577,19 +1578,22 @@ export default function Home() {
                       </button>
                       <p className="text-xs text-purple-600 mt-1">Starting at $5</p>
                     </div>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    🚀 Enhanced Analysis (Premium)
-                  </h3>
-                  {isPremium && (
-                    <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                      ✅ Premium Active
-                    </div>
                   )}
                 </div>
+
+                {!isPremium && (
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
+                    <div className="flex items-center">
+                      <div className="text-purple-600 text-2xl mr-3">🔒</div>
+                      <div>
+                        <h4 className="text-purple-800 font-semibold">Premium Features Preview</h4>
+                        <p className="text-purple-700 text-sm">
+                          These fields are available with premium access. See exactly what you'll get before upgrading!
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="space-y-6">
                   {/* Essay Section */}
