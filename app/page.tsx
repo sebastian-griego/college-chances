@@ -1581,16 +1581,13 @@ export default function Home() {
                   )}
                 </div>
 
-                {!isPremium && (
+                                {!isPremium && (
                   <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
-                    <div className="flex items-center">
-                      <div className="text-purple-600 text-2xl mr-3">[LOCKED]</div>
-                <div>
-                        <h4 className="text-purple-800 font-semibold">Premium Features Preview</h4>
-                        <p className="text-purple-700 text-sm">
-                          These fields are available with premium access. See exactly what you'll get before upgrading!
-                        </p>
-                      </div>
+                    <div>
+                      <h4 className="text-purple-800 font-semibold">Premium Features Preview</h4>
+                      <p className="text-purple-700 text-sm">
+                        These fields are available with premium access. See exactly what you'll get before upgrading!
+                      </p>
                     </div>
                   </div>
                 )}
