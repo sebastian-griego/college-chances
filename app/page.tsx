@@ -1810,13 +1810,14 @@ export default function Home() {
                         const response = await fetch('/api/analyze/essay', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
-                                                  body: JSON.stringify({
-                          essay: premiumFormData.essay,
-                          extracurriculars: premiumFormData.extracurriculars.filter(ec => ec.trim()),
-                          apScores: premiumFormData.apScores.filter(score => score.trim()).map(Number),
-                          ibScores: premiumFormData.ibScores.filter(score => score.trim()).map(Number),
-                          honorsClasses: parseInt(premiumFormData.honorsClasses) || 0
-                        })
+                          body: JSON.stringify({
+                            userId: user?.email || 'anonymous',
+                            essay: premiumFormData.essay,
+                            extracurriculars: premiumFormData.extracurriculars.filter(ec => ec.trim()),
+                            apScores: premiumFormData.apScores.filter(score => score.trim()).map(Number),
+                            ibScores: premiumFormData.ibScores.filter(score => score.trim()).map(Number),
+                            honorsClasses: parseInt(premiumFormData.honorsClasses) || 0
+                          })
                         });
                         
                         const analysisResult = await response.json();
@@ -1829,9 +1830,9 @@ export default function Home() {
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({
                             gpa: parseFloat(formData.gpa),
-                            satScore: formData.testType === 'sat' ? parseInt(formData.sat) : undefined,
-                            actScore: formData.testType === 'act' ? parseInt(formData.act) : undefined,
-                            college: formData.college,
+                            satScore: formData.testType === 'sat' ? parseInt(formData.sat) : convertScore(parseInt(formData.act), 'act'),
+                            college: COLLEGES.find((c: any) => c.name === formData.college),
+                            userId: user?.email || 'anonymous',
                             aiScores: analysisResult.scores
                           })
                         });
