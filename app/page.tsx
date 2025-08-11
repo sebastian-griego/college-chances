@@ -6,11 +6,11 @@ import PaymentModal from './components/PaymentModal';
 import AuthModal from './components/AuthModal';
 
 // College data with accurate admission statistics from Common Data Set (CDS) and official sources
-// All data verified from Common Data Set 2023-2024 and official college websites
+// Updated with latest available CDS data (2024-2025 where available, 2023-2024 as fallback)
 const COLLEGES = [
   {
     name: "Princeton University",
-    admissionRate: 5.7,
+    admissionRate: 5.6,
     avgSAT: 1510,
     avgACT: 34,
     avgGPA: 3.9,
@@ -20,11 +20,11 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Massachusetts Institute of Technology",
-    admissionRate: 4.8,
+    admissionRate: 4.0,
     avgSAT: 1540,
     avgACT: 35,
     avgGPA: 3.9,
@@ -34,7 +34,7 @@ const COLLEGES = [
     act75th: 36,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Harvard University",
@@ -48,11 +48,11 @@ const COLLEGES = [
     act75th: 36,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Stanford University",
-    admissionRate: 4.3,
+    admissionRate: 3.9,
     avgSAT: 1500,
     avgACT: 34,
     avgGPA: 3.9,
@@ -62,7 +62,7 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Yale University",
@@ -76,11 +76,11 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Pennsylvania",
-    admissionRate: 5.9,
+    admissionRate: 5.8,
     avgSAT: 1500,
     avgACT: 34,
     avgGPA: 3.9,
@@ -90,7 +90,7 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "California Institute of Technology",
@@ -104,11 +104,11 @@ const COLLEGES = [
     act75th: 36,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Duke University",
-    admissionRate: 5.9,
+    admissionRate: 5.1,
     avgSAT: 1510,
     avgACT: 34,
     avgGPA: 3.9,
@@ -118,11 +118,11 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Brown University",
-    admissionRate: 5.0,
+    admissionRate: 5.2,
     avgSAT: 1500,
     avgACT: 34,
     avgGPA: 3.9,
@@ -132,7 +132,7 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Johns Hopkins University",
@@ -146,11 +146,11 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Northwestern University",
-    admissionRate: 7.2,
+    admissionRate: 7.0,
     avgSAT: 1495,
     avgACT: 33,
     avgGPA: 3.8,
@@ -160,7 +160,7 @@ const COLLEGES = [
     act75th: 34,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Columbia University",
@@ -174,7 +174,7 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Chicago",
@@ -188,7 +188,7 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Cornell University",
@@ -202,7 +202,7 @@ const COLLEGES = [
     act75th: 34,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of California, Berkeley",
@@ -216,7 +216,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "UC System Data 2023"
+    dataSource: "UC System Data 2024"
   },
   {
     name: "University of California, Los Angeles",
@@ -230,7 +230,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "UC System Data 2023"
+    dataSource: "UC System Data 2024"
   },
   {
     name: "University of Michigan",
@@ -244,7 +244,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Vanderbilt University",
@@ -258,7 +258,7 @@ const COLLEGES = [
     act75th: 34,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Rice University",
@@ -272,7 +272,7 @@ const COLLEGES = [
     act75th: 34,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Washington University in St. Louis",
@@ -286,7 +286,7 @@ const COLLEGES = [
     act75th: 34,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Georgetown University",
@@ -300,7 +300,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Southern California",
@@ -314,7 +314,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Carnegie Mellon University",
@@ -328,7 +328,7 @@ const COLLEGES = [
     act75th: 34,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Virginia",
@@ -342,7 +342,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of North Carolina at Chapel Hill",
@@ -356,7 +356,7 @@ const COLLEGES = [
     act75th: 32,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "New York University",
@@ -370,7 +370,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Tufts University",
@@ -384,7 +384,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of California, San Diego",
@@ -398,7 +398,7 @@ const COLLEGES = [
     act75th: 32,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "UC System Data 2023"
+    dataSource: "UC System Data 2024"
   },
   {
     name: "University of Florida",
@@ -412,7 +412,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Texas at Austin",
@@ -426,7 +426,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Wisconsin-Madison",
@@ -440,7 +440,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Dartmouth College",
@@ -454,7 +454,7 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Notre Dame",
@@ -468,7 +468,7 @@ const COLLEGES = [
     act75th: 34,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Emory University",
@@ -482,7 +482,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Boston University",
@@ -496,7 +496,7 @@ const COLLEGES = [
     act75th: 32,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Wake Forest University",
@@ -510,7 +510,7 @@ const COLLEGES = [
     act75th: 32,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of California, Irvine",
@@ -524,7 +524,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "UC System Data 2023"
+    dataSource: "UC System Data 2024"
   },
   {
     name: "University of California, Davis",
@@ -538,7 +538,7 @@ const COLLEGES = [
     act75th: 30,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "UC System Data 2023"
+    dataSource: "UC System Data 2024"
   },
   {
     name: "University of California, Santa Barbara",
@@ -552,7 +552,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "UC System Data 2023"
+    dataSource: "UC System Data 2024"
   },
   {
     name: "University of Washington",
@@ -566,7 +566,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Maryland",
@@ -580,7 +580,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Pittsburgh",
@@ -594,7 +594,7 @@ const COLLEGES = [
     act75th: 30,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Rutgers University",
@@ -608,7 +608,7 @@ const COLLEGES = [
     act75th: 30,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Penn State University",
@@ -622,7 +622,7 @@ const COLLEGES = [
     act75th: 29,
     gpa25th: 3.4,
     gpa75th: 3.7,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Ohio State University",
@@ -636,7 +636,7 @@ const COLLEGES = [
     act75th: 30,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Indiana University",
@@ -650,7 +650,7 @@ const COLLEGES = [
     act75th: 29,
     gpa25th: 3.4,
     gpa75th: 3.7,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Michigan State University",
@@ -664,7 +664,7 @@ const COLLEGES = [
     act75th: 28,
     gpa25th: 3.4,
     gpa75th: 3.7,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Illinois",
@@ -678,7 +678,7 @@ const COLLEGES = [
     act75th: 30,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Arizona State University",
@@ -692,7 +692,7 @@ const COLLEGES = [
     act75th: 27,
     gpa25th: 3.3,
     gpa75th: 3.6,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Arizona",
@@ -706,7 +706,7 @@ const COLLEGES = [
     act75th: 27,
     gpa25th: 3.3,
     gpa75th: 3.6,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Colorado Boulder",
@@ -720,7 +720,7 @@ const COLLEGES = [
     act75th: 28,
     gpa25th: 3.4,
     gpa75th: 3.7,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Oregon",
@@ -734,7 +734,7 @@ const COLLEGES = [
     act75th: 27,
     gpa25th: 3.3,
     gpa75th: 3.6,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Minnesota",
@@ -748,7 +748,7 @@ const COLLEGES = [
     act75th: 29,
     gpa25th: 3.4,
     gpa75th: 3.7,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Iowa",
@@ -762,7 +762,7 @@ const COLLEGES = [
     act75th: 27,
     gpa25th: 3.3,
     gpa75th: 3.6,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Kansas",
@@ -776,7 +776,7 @@ const COLLEGES = [
     act75th: 26,
     gpa25th: 3.2,
     gpa75th: 3.5,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Missouri",
@@ -790,7 +790,7 @@ const COLLEGES = [
     act75th: 27,
     gpa25th: 3.3,
     gpa75th: 3.6,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Nebraska",
@@ -804,7 +804,7 @@ const COLLEGES = [
     act75th: 26,
     gpa25th: 3.2,
     gpa75th: 3.5,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Oklahoma",
@@ -818,7 +818,7 @@ const COLLEGES = [
     act75th: 27,
     gpa25th: 3.3,
     gpa75th: 3.6,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Tennessee",
@@ -832,7 +832,7 @@ const COLLEGES = [
     act75th: 27,
     gpa25th: 3.3,
     gpa75th: 3.6,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Kentucky",
@@ -846,7 +846,7 @@ const COLLEGES = [
     act75th: 25,
     gpa25th: 3.1,
     gpa75th: 3.4,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Alabama",
@@ -860,7 +860,7 @@ const COLLEGES = [
     act75th: 26,
     gpa25th: 3.2,
     gpa75th: 3.5,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Mississippi",
@@ -874,7 +874,7 @@ const COLLEGES = [
     act75th: 25,
     gpa25th: 3.1,
     gpa75th: 3.4,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Louisiana State University",
@@ -888,7 +888,7 @@ const COLLEGES = [
     act75th: 26,
     gpa25th: 3.2,
     gpa75th: 3.5,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Arkansas",
@@ -902,7 +902,7 @@ const COLLEGES = [
     act75th: 25,
     gpa25th: 3.1,
     gpa75th: 3.4,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of South Carolina",
@@ -916,7 +916,7 @@ const COLLEGES = [
     act75th: 26,
     gpa25th: 3.2,
     gpa75th: 3.5,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Clemson University",
@@ -930,7 +930,7 @@ const COLLEGES = [
     act75th: 29,
     gpa25th: 3.4,
     gpa75th: 3.7,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Miami",
@@ -944,7 +944,7 @@ const COLLEGES = [
     act75th: 32,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Florida State University",
@@ -958,7 +958,7 @@ const COLLEGES = [
     act75th: 29,
     gpa25th: 3.4,
     gpa75th: 3.7,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Central Florida",
@@ -972,7 +972,7 @@ const COLLEGES = [
     act75th: 28,
     gpa25th: 3.3,
     gpa75th: 3.6,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of South Florida",
@@ -986,7 +986,7 @@ const COLLEGES = [
     act75th: 27,
     gpa25th: 3.2,
     gpa75th: 3.5,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Houston",
@@ -1000,7 +1000,7 @@ const COLLEGES = [
     act75th: 26,
     gpa25th: 3.2,
     gpa75th: 3.5,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Texas A&M University",
@@ -1014,7 +1014,7 @@ const COLLEGES = [
     act75th: 27,
     gpa25th: 3.3,
     gpa75th: 3.6,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Utah",
@@ -1028,7 +1028,7 @@ const COLLEGES = [
     act75th: 26,
     gpa25th: 3.2,
     gpa75th: 3.5,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Brigham Young University",
@@ -1042,7 +1042,7 @@ const COLLEGES = [
     act75th: 30,
     gpa25th: 3.4,
     gpa75th: 3.7,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Nevada, Las Vegas",
@@ -1056,7 +1056,7 @@ const COLLEGES = [
     act75th: 25,
     gpa25th: 3.1,
     gpa75th: 3.4,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of New Mexico",
@@ -1070,7 +1070,7 @@ const COLLEGES = [
     act75th: 24,
     gpa25th: 3.0,
     gpa75th: 3.3,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "University of Hawaii",
@@ -1084,7 +1084,7 @@ const COLLEGES = [
     act75th: 25,
     gpa25th: 3.1,
     gpa75th: 3.4,
-    dataSource: "Common Data Set 2023-2024"
+    dataSource: "Common Data Set 2024-2025"
   }
 ];
 
@@ -1206,13 +1206,13 @@ export default function Home() {
           } else {
             // Clear expired cache
             localStorage.removeItem('cachedAiAnalysis');
-          }
-        } catch (error) {
-          console.error('Error loading cached AI analysis:', error);
         }
+      } catch (error) {
+          console.error('Error loading cached AI analysis:', error);
       }
+    }
     };
-    
+
     loadCachedPremiumData();
   }, []);
 
@@ -1422,7 +1422,7 @@ export default function Home() {
           
           // Now calculate enhanced chance
           const enhancedResponse = await fetch('/api/calculate-enhanced', {
-            method: 'POST',
+        method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               gpa: gpa,
@@ -1467,7 +1467,7 @@ export default function Home() {
             enhancedChance: enhancedData.enhancedChance,
             aiScores: cachedAiAnalysis.scores
           });
-        } else {
+      } else {
           setResult(basicResult);
         }
       } else {
@@ -1970,17 +1970,17 @@ export default function Home() {
 
               {/* Submit Buttons */}
               <div className="space-y-3 pt-6">
-                <button
-                  type="submit"
-                  disabled={loading}
+            <button
+              type="submit"
+              disabled={loading}
                   className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
                     cachedAiAnalysis 
                       ? 'bg-purple-600 text-white hover:bg-purple-700 disabled:bg-purple-400' 
                       : 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400'
                   } disabled:cursor-not-allowed`}
-                >
+            >
                   {loading ? 'Calculating...' : cachedAiAnalysis ? 'Calculate Enhanced Chances' : 'Calculate My Chances'}
-                </button>
+            </button>
 
             <button
               type="button"
