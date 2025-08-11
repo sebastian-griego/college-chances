@@ -1614,7 +1614,7 @@ export default function Home() {
             Get an accurate estimate of your admission chances at top colleges and universities
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Data sourced from Common Data Set (CDS) and official college statistics
+            Uses the latest available Common Data Set (CDS) and official college statistics; some values may be estimated when not published.
         </p>
       </div>
 
@@ -2051,7 +2051,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="mt-4 text-xs text-gray-500">
-                  Data source: {result.collegeData.dataSource}
+                  Source: {result.collegeData.dataSource || 'Latest available CDS/official college statistics; some values estimated when not published'}
                 </div>
               </div>
 
