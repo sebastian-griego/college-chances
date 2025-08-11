@@ -1568,13 +1568,19 @@ export default function Home() {
                         onClick={() => {
                           if (!user) {
                             setShowAuthModal(true);
-                          } else {
+                          } else if (!isPremium) {
                             setShowPaymentModal(true);
                           }
                         }}
-                        className="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-sm"
+                        className={`px-4 py-2 rounded-lg font-semibold transition-colors text-sm ${
+                          !user 
+                            ? 'bg-purple-600 text-white hover:bg-purple-700' 
+                            : isPremium 
+                              ? 'bg-green-600 text-white cursor-not-allowed' 
+                              : 'bg-purple-600 text-white hover:bg-purple-700'
+                        }`}
                       >
-                        {!user ? 'Sign In for Premium' : 'Upgrade to Premium'}
+                        {!user ? 'Sign In for Premium' : isPremium ? 'Premium Active' : 'Upgrade to Premium'}
                       </button>
                       <p className="text-xs text-purple-600 mt-1">Starting at $5</p>
                     </div>
@@ -1940,10 +1946,22 @@ export default function Home() {
                   Upgrade to premium for AI-powered analysis of your essay, extracurriculars, and academic rigor.
                 </p>
                 <button
-                  onClick={() => setShowPaymentModal(true)}
-                  className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700"
+                  onClick={() => {
+                    if (!user) {
+                      setShowAuthModal(true);
+                    } else if (!isPremium) {
+                      setShowPaymentModal(true);
+                    }
+                  }}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    !user 
+                      ? 'bg-purple-600 text-white hover:bg-purple-700' 
+                      : isPremium 
+                        ? 'bg-green-600 text-white cursor-not-allowed' 
+                        : 'bg-purple-600 text-white hover:bg-purple-700'
+                  }`}
                 >
-                  Upgrade to Premium
+                  {!user ? 'Sign In for Premium' : isPremium ? 'Premium Active' : 'Upgrade to Premium'}
                 </button>
               </div>
 
@@ -2020,6 +2038,7 @@ export default function Home() {
             setShowPaymentModal(false);
             setShowPaidCalculator(true);
           }}
+          userEmail={user?.email || ''}
         />
 
         {/* Footer */}

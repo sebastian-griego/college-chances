@@ -21,9 +21,10 @@ interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  userEmail: string;
 }
 
-function CheckoutForm({ onSuccess, onClose }: { onSuccess: () => void; onClose: () => void }) {
+function CheckoutForm({ onSuccess, onClose, userEmail }: { onSuccess: () => void; onClose: () => void; userEmail: string }) {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
@@ -92,21 +93,14 @@ function CheckoutForm({ onSuccess, onClose }: { onSuccess: () => void; onClose: 
   );
 }
 
-export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModalProps) {
+export default function PaymentModal({ isOpen, onClose, onSuccess, userEmail }: PaymentModalProps) {
   const [step, setStep] = useState<'plan' | 'payment'>('plan');
   const [selectedTier, setSelectedTier] = useState<'2-weeks' | '1-month' | '3-months' | null>(null);
-  const [email, setEmail] = useState('');
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePlanConfirm = () => {
-    if (selectedTier) {
-      setStep('payment');
-    }
-  };
-
-  const handlePaymentSetup = async () => {
-    if (!selectedTier || !email) return;
+  const handlePlanConfirm = async () => {
+    if (!selectedTier) return;
     
     setIsLoading(true);
     
@@ -114,11 +108,12 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
       const response = await fetch('/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier: selectedTier, email }),
+        body: JSON.stringify({ tier: selectedTier, email: userEmail }),
       });
       
       const data = await response.json();
       setClientSecret(data.clientSecret);
+      setStep('payment');
     } catch (error) {
       console.error('Payment intent creation failed:', error);
     } finally {
@@ -148,6 +143,12 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
         
         {step === 'plan' ? (
           <div className="space-y-4">
+            <div className="bg-blue-50 p-3 rounded-lg mb-4">
+              <div className="text-sm text-blue-800">
+                Account: <span className="font-semibold">{userEmail}</span>
+              </div>
+            </div>
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
                 Choose Your Plan
@@ -187,46 +188,8 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
               </button>
               <button
                 onClick={handlePlanConfirm}
-                disabled={!selectedTier}
+                disabled={!selectedTier || isLoading}
                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Confirm Plan
-              </button>
-            </div>
-          </div>
-        ) : step === 'payment' && !clientSecret ? (
-          <div className="space-y-4">
-            <div className="bg-blue-50 p-3 rounded-lg mb-4">
-              <div className="text-sm text-blue-800">
-                Selected: <span className="font-semibold">{selectedTier && PRICING_TIERS[selectedTier].name}</span> - ${selectedTier && PRICING_TIERS[selectedTier].price}
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your email for receipt"
-                autoFocus
-              />
-            </div>
-            
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={handleBack}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
-              >
-                Back
-              </button>
-              <button
-                onClick={handlePaymentSetup}
-                disabled={!email || isLoading}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
               >
                 {isLoading ? 'Setting up...' : 'Continue to Payment'}
               </button>
@@ -236,12 +199,12 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
           <div>
             <div className="bg-blue-50 p-3 rounded-lg mb-4">
               <div className="text-sm text-blue-800">
-                {selectedTier && PRICING_TIERS[selectedTier].name} - ${selectedTier && PRICING_TIERS[selectedTier].price} • {email}
+                {selectedTier && PRICING_TIERS[selectedTier].name} - ${selectedTier && PRICING_TIERS[selectedTier].price} • {userEmail}
               </div>
             </div>
             
             <Elements stripe={stripePromise} options={{ clientSecret: clientSecret! }}>
-              <CheckoutForm onSuccess={onSuccess} onClose={handleBack} />
+              <CheckoutForm onSuccess={onSuccess} onClose={handleBack} userEmail={userEmail} />
             </Elements>
           </div>
         )}
