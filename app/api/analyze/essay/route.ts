@@ -55,8 +55,9 @@ Format your response as JSON:
 }`;
 
   try {
-    console.log('API Key available:', !!process.env.BASETEN_API_KEY);
-    console.log('API Key length:', process.env.BASETEN_API_KEY?.length);
+    console.log('Essay API Key available:', !!process.env.BASETEN_API_KEY);
+    console.log('Essay API Key length:', process.env.BASETEN_API_KEY?.length);
+    console.log('Essay API Key first 10 chars:', process.env.BASETEN_API_KEY?.substring(0, 10));
     
     const response = await fetch('https://inference.baseten.co/v1/chat/completions', {
       method: 'POST',
@@ -77,7 +78,9 @@ Format your response as JSON:
     });
 
     if (!response.ok) {
-      throw new Error(`AI API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error('Essay AI API error response:', errorText);
+      throw new Error(`AI API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
@@ -139,6 +142,7 @@ Provide only a numerical score (0-100) based on the criteria above. Be objective
   try {
     console.log('EC API Key available:', !!process.env.BASETEN_API_KEY);
     console.log('EC API Key length:', process.env.BASETEN_API_KEY?.length);
+    console.log('EC API Key first 10 chars:', process.env.BASETEN_API_KEY?.substring(0, 10));
     
     const response = await fetch('https://inference.baseten.co/v1/chat/completions', {
       method: 'POST',
@@ -305,14 +309,30 @@ export async function POST(request: NextRequest) {
   try {
     const { userId, essay, extracurriculars, apScores, ibScores, honorsClasses } = await request.json();
     
+    console.log('API received request:', {
+      userId,
+      essayLength: essay?.length || 0,
+      extracurricularsCount: extracurriculars?.length || 0,
+      apScoresCount: apScores?.length || 0,
+      ibScoresCount: ibScores?.length || 0,
+      honorsClasses
+    });
+    
     if (!userId) {
       return NextResponse.json({ error: 'User ID required' }, { status: 400 });
     }
     
+    console.log('Starting AI analysis...');
+    
     // Analyze each component with AI
     const essayAnalysis = await analyzeEssayWithAI(essay || '');
+    console.log('Essay analysis result:', essayAnalysis);
+    
     const ecScore = await analyzeExtracurricularsWithAI(extracurriculars || []);
+    console.log('EC analysis result:', ecScore);
+    
     const academicRigorScore = await calculateAcademicRigor(apScores || [], ibScores || [], honorsClasses || 0);
+    console.log('Academic rigor result:', academicRigorScore);
     
     // Store user data in memory (will be replaced with database later)
     userDataStore[userId] = {

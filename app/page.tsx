@@ -1367,6 +1367,14 @@ export default function Home() {
         !cachedAiAnalysis;
       
       if (shouldRunAnalysis) {
+        console.log('Running AI analysis with data:', {
+          essay: premiumFormData.essay.substring(0, 100) + '...',
+          extracurriculars: premiumFormData.extracurriculars.filter(ec => ec.trim()),
+          apScores: premiumFormData.apScores.filter(score => score.trim()).map(Number),
+          ibScores: premiumFormData.ibScores.filter(score => score.trim()).map(Number),
+          honorsClasses: parseInt(premiumFormData.honorsClasses) || 0
+        });
+        
         // Run AI analysis first
         const analysisResponse = await fetch('/api/analyze/essay', {
           method: 'POST',
@@ -1380,6 +1388,13 @@ export default function Home() {
             honorsClasses: parseInt(premiumFormData.honorsClasses) || 0
           })
         });
+        
+        console.log('Analysis response status:', analysisResponse.status);
+        
+        if (!analysisResponse.ok) {
+          const errorText = await analysisResponse.text();
+          console.error('Analysis API error:', errorText);
+        }
         
         if (analysisResponse.ok) {
           const analysisResult = await analysisResponse.json();
