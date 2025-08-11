@@ -1360,11 +1360,19 @@ export default function Home() {
       // Calculate basic chance
       const basicResult = calculateChance(gpa, testScore, formData.testType, selectedCollege);
       
-      // Check if we should run AI analysis (premium user with data but no cache)
+      // Check if we should run AI analysis (premium user with data and either no cache or content changed)
+      const currentContentHash = JSON.stringify({
+        essay: premiumFormData.essay,
+        extracurriculars: premiumFormData.extracurriculars,
+        apScores: premiumFormData.apScores,
+        ibScores: premiumFormData.ibScores,
+        honorsClasses: premiumFormData.honorsClasses
+      });
+      
       const shouldRunAnalysis = isPremium && 
         premiumFormData.essay.trim() && 
         premiumFormData.extracurriculars.some(ec => ec.trim()) && 
-        !cachedAiAnalysis;
+        (!cachedAiAnalysis || cachedAiAnalysis.contentHash !== currentContentHash);
       
       if (shouldRunAnalysis) {
         console.log('Running AI analysis with data:', {
@@ -1403,7 +1411,8 @@ export default function Home() {
           const analysisCache = {
             scores: analysisResult.scores,
             essayFeedback: analysisResult.essayFeedback,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            contentHash: currentContentHash
           };
           setCachedAiAnalysis(analysisCache);
           saveAiAnalysisCache(analysisCache);
@@ -1499,11 +1508,21 @@ export default function Home() {
   const handleAnalysisComplete = async (scores: any, essayFeedback?: string) => {
     console.log('handleAnalysisComplete called with:', { scores, essayFeedback });
     
+    // Create content hash for current data
+    const currentContentHash = JSON.stringify({
+      essay: premiumFormData.essay,
+      extracurriculars: premiumFormData.extracurriculars,
+      apScores: premiumFormData.apScores,
+      ibScores: premiumFormData.ibScores,
+      honorsClasses: premiumFormData.honorsClasses
+    });
+    
     // Cache the AI analysis results
     const analysisCache = {
       scores,
       essayFeedback: essayFeedback || '',
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      contentHash: currentContentHash
     };
     setCachedAiAnalysis(analysisCache);
     saveAiAnalysisCache(analysisCache);
