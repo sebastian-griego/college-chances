@@ -84,10 +84,14 @@ Format your response as JSON:
     }
 
     const data = await response.json();
+    console.log('Essay AI response data:', data);
+    
     const aiResponse = data.choices[0].message.content;
+    console.log('Essay AI raw response:', aiResponse);
     
     // Parse the JSON response
     const parsed = JSON.parse(aiResponse);
+    console.log('Essay AI parsed response:', parsed);
     
     return {
       score: Math.max(0, Math.min(100, parsed.score)),
