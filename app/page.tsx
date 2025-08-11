@@ -1179,6 +1179,41 @@ export default function Home() {
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
     }
+    
+    // Load cached premium form data
+    const loadCachedPremiumData = () => {
+      const cachedData = localStorage.getItem('premiumFormData');
+      if (cachedData) {
+        try {
+          const parsedData = JSON.parse(cachedData);
+          setPremiumFormData(parsedData);
+        } catch (error) {
+          console.error('Error loading cached premium data:', error);
+        }
+      }
+      
+      // Load cached AI analysis
+      const cachedAnalysis = localStorage.getItem('cachedAiAnalysis');
+      if (cachedAnalysis) {
+        try {
+          const parsedAnalysis = JSON.parse(cachedAnalysis);
+          // Check if cache is less than 24 hours old
+          const cacheAge = Date.now() - parsedAnalysis.timestamp;
+          if (cacheAge < 24 * 60 * 60 * 1000) { // 24 hours
+            setCachedAiAnalysis(parsedAnalysis);
+            setAiScores(parsedAnalysis.scores);
+            setEssayFeedback(parsedAnalysis.essayFeedback);
+          } else {
+            // Clear expired cache
+            localStorage.removeItem('cachedAiAnalysis');
+          }
+        } catch (error) {
+          console.error('Error loading cached AI analysis:', error);
+        }
+      }
+    };
+    
+    loadCachedPremiumData();
   }, []);
 
   const handleAuthSuccess = (userData: any) => {
@@ -1191,6 +1226,30 @@ export default function Home() {
     localStorage.removeItem('isPremium');
     setUser(null);
     setIsPremium(false);
+  };
+
+  // Function to save premium form data to localStorage
+  const savePremiumFormData = (data: any) => {
+    try {
+      localStorage.setItem('premiumFormData', JSON.stringify(data));
+    } catch (error) {
+      console.error('Error saving premium form data:', error);
+    }
+  };
+
+  // Function to save AI analysis cache to localStorage
+  const saveAiAnalysisCache = (analysis: any) => {
+    try {
+      localStorage.setItem('cachedAiAnalysis', JSON.stringify(analysis));
+    } catch (error) {
+      console.error('Error saving AI analysis cache:', error);
+    }
+  };
+
+  // Wrapper function to update premium form data and save to localStorage
+  const updatePremiumFormData = (newData: any) => {
+    setPremiumFormData(newData);
+    savePremiumFormData(newData);
   };
 
   const filteredColleges = COLLEGES.filter(college =>
@@ -1326,11 +1385,13 @@ export default function Home() {
           const analysisResult = await analysisResponse.json();
           
           // Cache the analysis results
-          setCachedAiAnalysis({
+          const analysisCache = {
             scores: analysisResult.scores,
             essayFeedback: analysisResult.essayFeedback,
             timestamp: Date.now()
-          });
+          };
+          setCachedAiAnalysis(analysisCache);
+          saveAiAnalysisCache(analysisCache);
           
           setAiScores(analysisResult.scores);
           setEssayFeedback(analysisResult.essayFeedback);
@@ -1414,17 +1475,23 @@ export default function Home() {
     setEssayFeedback('');
     setCachedAiAnalysis(null);
     setShowPaidCalculator(false);
+    
+    // Clear localStorage cache
+    localStorage.removeItem('premiumFormData');
+    localStorage.removeItem('cachedAiAnalysis');
   };
 
   const handleAnalysisComplete = async (scores: any, essayFeedback?: string) => {
     console.log('handleAnalysisComplete called with:', { scores, essayFeedback });
     
     // Cache the AI analysis results
-    setCachedAiAnalysis({
+    const analysisCache = {
       scores,
       essayFeedback: essayFeedback || '',
       timestamp: Date.now()
-    });
+    };
+    setCachedAiAnalysis(analysisCache);
+    saveAiAnalysisCache(analysisCache);
     
     setAiScores(scores);
     setEssayFeedback(essayFeedback || '');
@@ -1616,6 +1683,15 @@ export default function Home() {
 
               {/* Premium Features Section - Detailed */}
               <div className="border-t pt-6 mt-6">
+                {premiumFormData.essay.trim() || premiumFormData.extracurriculars.some(ec => ec.trim()) ? (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                    <div className="flex items-center text-blue-800 text-sm">
+                      <span className="font-medium">Data Saved</span>
+                      <span className="ml-2 text-blue-600">• Your essay and activities are automatically saved</span>
+                    </div>
+                  </div>
+                ) : null}
+                
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-semibold text-gray-900">
                     Enhanced Analysis (Premium)
@@ -1660,7 +1736,7 @@ export default function Home() {
                     <textarea
                       disabled={!isPremium}
                       value={premiumFormData.essay}
-                      onChange={(e) => setPremiumFormData({...premiumFormData, essay: e.target.value})}
+                      onChange={(e) => updatePremiumFormData({...premiumFormData, essay: e.target.value})}
                       placeholder="Paste your personal essay here (500-650 words recommended)..."
                       className={`w-full h-32 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                         !isPremium ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''
@@ -1685,7 +1761,7 @@ export default function Home() {
                           onChange={(e) => {
                             const newActivities = [...premiumFormData.extracurriculars];
                             newActivities[index] = e.target.value;
-                            setPremiumFormData({...premiumFormData, extracurriculars: newActivities});
+                            updatePremiumFormData({...premiumFormData, extracurriculars: newActivities});
                           }}
                           placeholder="e.g., President of Science Club, 2 years, 5 hours/week"
                           className={`flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 ${
@@ -1697,7 +1773,7 @@ export default function Home() {
                             disabled={!isPremium}
                             onClick={() => {
                               const newActivities = premiumFormData.extracurriculars.filter((_, i) => i !== index);
-                              setPremiumFormData({...premiumFormData, extracurriculars: newActivities});
+                              updatePremiumFormData({...premiumFormData, extracurriculars: newActivities});
                             }}
                             className={`px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ${
                               !isPremium ? 'opacity-50 cursor-not-allowed' : ''
@@ -1711,7 +1787,7 @@ export default function Home() {
                     <button
                       disabled={!isPremium}
                       onClick={() => {
-                        setPremiumFormData({
+                        updatePremiumFormData({
                           ...premiumFormData, 
                           extracurriculars: [...premiumFormData.extracurriculars, '']
                         });
@@ -1741,7 +1817,7 @@ export default function Home() {
                           onChange={(e) => {
                             const newScores = [...premiumFormData.apScores];
                             newScores[index] = e.target.value;
-                            setPremiumFormData({...premiumFormData, apScores: newScores});
+                            updatePremiumFormData({...premiumFormData, apScores: newScores});
                           }}
                           placeholder="AP Score (1-5)"
                           className={`w-32 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 ${
@@ -1753,7 +1829,7 @@ export default function Home() {
                             disabled={!isPremium}
                             onClick={() => {
                               const newScores = premiumFormData.apScores.filter((_, i) => i !== index);
-                              setPremiumFormData({...premiumFormData, apScores: newScores});
+                              updatePremiumFormData({...premiumFormData, apScores: newScores});
                             }}
                             className={`px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ${
                               !isPremium ? 'opacity-50 cursor-not-allowed' : ''
@@ -1767,7 +1843,7 @@ export default function Home() {
                     <button
                       disabled={!isPremium}
                       onClick={() => {
-                        setPremiumFormData({
+                        updatePremiumFormData({
                           ...premiumFormData, 
                           apScores: [...premiumFormData.apScores, '']
                         });
@@ -1796,7 +1872,7 @@ export default function Home() {
                           onChange={(e) => {
                             const newScores = [...premiumFormData.ibScores];
                             newScores[index] = e.target.value;
-                            setPremiumFormData({...premiumFormData, ibScores: newScores});
+                            updatePremiumFormData({...premiumFormData, ibScores: newScores});
                           }}
                           placeholder="IB Score (1-7)"
                           className={`w-32 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 ${
@@ -1808,7 +1884,7 @@ export default function Home() {
                             disabled={!isPremium}
                             onClick={() => {
                               const newScores = premiumFormData.ibScores.filter((_, i) => i !== index);
-                              setPremiumFormData({...premiumFormData, ibScores: newScores});
+                              updatePremiumFormData({...premiumFormData, ibScores: newScores});
                             }}
                             className={`px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ${
                               !isPremium ? 'opacity-50 cursor-not-allowed' : ''
@@ -1822,7 +1898,7 @@ export default function Home() {
                     <button
                       disabled={!isPremium}
                       onClick={() => {
-                        setPremiumFormData({
+                        updatePremiumFormData({
                           ...premiumFormData, 
                           ibScores: [...premiumFormData.ibScores, '']
                         });
@@ -1845,7 +1921,7 @@ export default function Home() {
                       min="0"
                       disabled={!isPremium}
                       value={premiumFormData.honorsClasses}
-                      onChange={(e) => setPremiumFormData({...premiumFormData, honorsClasses: e.target.value})}
+                      onChange={(e) => updatePremiumFormData({...premiumFormData, honorsClasses: e.target.value})}
                       className={`w-32 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 ${
                         !isPremium ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''
                       }`}
