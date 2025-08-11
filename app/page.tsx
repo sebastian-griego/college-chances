@@ -1683,15 +1683,6 @@ export default function Home() {
 
               {/* Premium Features Section - Detailed */}
               <div className="border-t pt-6 mt-6">
-                {premiumFormData.essay.trim() || premiumFormData.extracurriculars.some(ec => ec.trim()) ? (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                    <div className="flex items-center text-blue-800 text-sm">
-                      <span className="font-medium">Data Saved</span>
-                      <span className="ml-2 text-blue-600">• Your essay and activities are automatically saved</span>
-                    </div>
-                  </div>
-                ) : null}
-                
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-semibold text-gray-900">
                     Enhanced Analysis (Premium)
@@ -1770,8 +1761,10 @@ export default function Home() {
                         />
                         {premiumFormData.extracurriculars.length > 1 && (
                           <button
+                            type="button"
                             disabled={!isPremium}
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               const newActivities = premiumFormData.extracurriculars.filter((_, i) => i !== index);
                               updatePremiumFormData({...premiumFormData, extracurriculars: newActivities});
                             }}
@@ -1785,8 +1778,10 @@ export default function Home() {
                       </div>
                     ))}
                     <button
+                      type="button"
                       disabled={!isPremium}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault();
                         updatePremiumFormData({
                           ...premiumFormData, 
                           extracurriculars: [...premiumFormData.extracurriculars, '']
@@ -1826,8 +1821,10 @@ export default function Home() {
                         />
                         {premiumFormData.apScores.length > 1 && (
                           <button
+                            type="button"
                             disabled={!isPremium}
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               const newScores = premiumFormData.apScores.filter((_, i) => i !== index);
                               updatePremiumFormData({...premiumFormData, apScores: newScores});
                             }}
@@ -1841,8 +1838,10 @@ export default function Home() {
                 </div>
                     ))}
                     <button
+                      type="button"
                       disabled={!isPremium}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault();
                         updatePremiumFormData({
                           ...premiumFormData, 
                           apScores: [...premiumFormData.apScores, '']
@@ -1881,8 +1880,10 @@ export default function Home() {
                         />
                         {premiumFormData.ibScores.length > 1 && (
                           <button
+                            type="button"
                             disabled={!isPremium}
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               const newScores = premiumFormData.ibScores.filter((_, i) => i !== index);
                               updatePremiumFormData({...premiumFormData, ibScores: newScores});
                             }}
@@ -1896,8 +1897,10 @@ export default function Home() {
                       </div>
                     ))}
                     <button
+                      type="button"
                       disabled={!isPremium}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault();
                         updatePremiumFormData({
                           ...premiumFormData, 
                           ibScores: [...premiumFormData.ibScores, '']
@@ -1933,15 +1936,6 @@ export default function Home() {
 
               {/* Submit Buttons */}
               <div className="space-y-3 pt-6">
-                {cachedAiAnalysis && (
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-3">
-                    <div className="flex items-center text-purple-800 text-sm">
-                      <span className="font-medium">AI Analysis Cached</span>
-                      <span className="ml-2 text-purple-600">• Enhanced calculations will use your essay and activities</span>
-                    </div>
-                  </div>
-                )}
-                
                 <button
                   type="submit"
                   disabled={loading}
