@@ -1155,6 +1155,7 @@ export default function Home() {
     ibScores: [''],
     honorsClasses: '0'
   });
+  const [cachedAiAnalysis, setCachedAiAnalysis] = useState<any>(null);
 
   // Check for authentication and premium status on component mount
   useEffect(() => {
@@ -1300,21 +1301,77 @@ export default function Home() {
       // Calculate basic chance
       const basicResult = calculateChance(gpa, testScore, formData.testType, selectedCollege);
       
-      // If user has AI scores, calculate enhanced chance
-      if (aiScores) {
-        const response = await fetch('/api/calculate-enhanced', {
-        method: 'POST',
+      // Check if we should run AI analysis (premium user with data but no cache)
+      const shouldRunAnalysis = isPremium && 
+        premiumFormData.essay.trim() && 
+        premiumFormData.extracurriculars.some(ec => ec.trim()) && 
+        !cachedAiAnalysis;
+      
+      if (shouldRunAnalysis) {
+        // Run AI analysis first
+        const analysisResponse = await fetch('/api/analyze/essay', {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            gpa: formData.gpa,
+            userId: user?.email || 'anonymous',
+            essay: premiumFormData.essay,
+            extracurriculars: premiumFormData.extracurriculars.filter(ec => ec.trim()),
+            apScores: premiumFormData.apScores.filter(score => score.trim()).map(Number),
+            ibScores: premiumFormData.ibScores.filter(score => score.trim()).map(Number),
+            honorsClasses: parseInt(premiumFormData.honorsClasses) || 0
+          })
+        });
+        
+        if (analysisResponse.ok) {
+          const analysisResult = await analysisResponse.json();
+          
+          // Cache the analysis results
+          setCachedAiAnalysis({
+            scores: analysisResult.scores,
+            essayFeedback: analysisResult.essayFeedback,
+            timestamp: Date.now()
+          });
+          
+          setAiScores(analysisResult.scores);
+          setEssayFeedback(analysisResult.essayFeedback);
+          
+          // Now calculate enhanced chance
+          const enhancedResponse = await fetch('/api/calculate-enhanced', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              gpa: gpa,
+              satScore: formData.testType === 'sat' ? testScore : convertScore(testScore, 'act'),
+              college: selectedCollege,
+              userId: user?.email || 'anonymous',
+              aiScores: analysisResult.scores
+            })
+          });
+          
+          if (enhancedResponse.ok) {
+            const enhancedData = await enhancedResponse.json();
+            setResult({
+              ...basicResult,
+              enhancedChance: enhancedData.enhancedChance,
+              aiScores: analysisResult.scores
+            });
+          } else {
+            setResult(basicResult);
+          }
+        } else {
+          setResult(basicResult);
+        }
+      } else if (cachedAiAnalysis) {
+        // Use cached AI analysis
+        const response = await fetch('/api/calculate-enhanced', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            gpa: gpa,
             satScore: formData.testType === 'sat' ? testScore : convertScore(testScore, 'act'),
             college: selectedCollege,
-            userId: aiScores.userId,
-            aiScores: {
-              essayScore: aiScores.essayScore,
-              ecScore: aiScores.ecScore,
-              academicRigorScore: aiScores.academicRigorScore
-            }
+            userId: user?.email || 'anonymous',
+            aiScores: cachedAiAnalysis.scores
           })
         });
         
@@ -1323,7 +1380,7 @@ export default function Home() {
           setResult({
             ...basicResult,
             enhancedChance: enhancedData.enhancedChance,
-            aiScores: aiScores // Keep the original AI scores
+            aiScores: cachedAiAnalysis.scores
           });
         } else {
           setResult(basicResult);
@@ -1355,16 +1412,25 @@ export default function Home() {
     setSearchTerm('');
     setAiScores(null);
     setEssayFeedback('');
+    setCachedAiAnalysis(null);
     setShowPaidCalculator(false);
   };
 
   const handleAnalysisComplete = async (scores: any, essayFeedback?: string) => {
     console.log('handleAnalysisComplete called with:', { scores, essayFeedback });
+    
+    // Cache the AI analysis results
+    setCachedAiAnalysis({
+      scores,
+      essayFeedback: essayFeedback || '',
+      timestamp: Date.now()
+    });
+    
     setAiScores(scores);
     setEssayFeedback(essayFeedback || '');
     setShowPaidCalculator(false);
     
-    // Recalculate with enhanced analysis
+    // Recalculate with enhanced analysis if we have a current result
     if (result && scores) {
       console.log('Recalculating enhanced chance with:', { basicChance: result.chance, aiScores: scores });
       try {
@@ -1375,12 +1441,8 @@ export default function Home() {
             gpa: parseFloat(formData.gpa),
             satScore: formData.testType === 'sat' ? parseInt(formData.sat) : convertScore(parseInt(formData.act), 'act'),
             college: COLLEGES.find((c: any) => c.name === formData.college),
-            userId: scores.userId,
-            aiScores: {
-              essayScore: scores.essayScore,
-              ecScore: scores.ecScore,
-              academicRigorScore: scores.academicRigorScore
-            }
+            userId: user?.email || 'anonymous',
+            aiScores: scores
           })
         });
         
@@ -1795,77 +1857,26 @@ export default function Home() {
 
               {/* Submit Buttons */}
               <div className="space-y-3 pt-6">
-                {isPremium && premiumFormData.essay.trim() && premiumFormData.extracurriculars.some(ec => ec.trim()) ? (
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      if (!formData.gpa || !formData.college || (!formData.sat && !formData.act)) {
-                        alert('Please fill out the basic form (GPA, test score, college) first!');
-                        return;
-                      }
-                      
-                      setLoading(true);
-                      try {
-                        // Call the AI analysis API directly
-                        const response = await fetch('/api/analyze/essay', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            userId: user?.email || 'anonymous',
-                            essay: premiumFormData.essay,
-                            extracurriculars: premiumFormData.extracurriculars.filter(ec => ec.trim()),
-                            apScores: premiumFormData.apScores.filter(score => score.trim()).map(Number),
-                            ibScores: premiumFormData.ibScores.filter(score => score.trim()).map(Number),
-                            honorsClasses: parseInt(premiumFormData.honorsClasses) || 0
-                          })
-                        });
-                        
-                        const analysisResult = await response.json();
-                        setAiScores(analysisResult.scores);
-                        setEssayFeedback(analysisResult.essayFeedback);
-                        
-                        // Now call enhanced calculation
-                        const enhancedResponse = await fetch('/api/calculate-enhanced', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            gpa: parseFloat(formData.gpa),
-                            satScore: formData.testType === 'sat' ? parseInt(formData.sat) : convertScore(parseInt(formData.act), 'act'),
-                            college: COLLEGES.find((c: any) => c.name === formData.college),
-                            userId: user?.email || 'anonymous',
-                            aiScores: analysisResult.scores
-                          })
-                        });
-                        
-                        const enhancedResult = await enhancedResponse.json();
-                        
-                        // Update result with enhanced data
-                        setResult(prev => prev ? {
-                          ...prev,
-                          enhancedChance: enhancedResult.enhancedChance,
-                          aiScores: analysisResult.scores
-                        } : null);
-                        
-                      } catch (error) {
-                        console.error('Enhanced calculation failed:', error);
-                      } finally {
-                        setLoading(false);
-                      }
-                    }}
-                    disabled={loading}
-                    className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 disabled:bg-purple-400 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {loading ? 'Analyzing...' : 'Calculate Enhanced Admission Chance'}
-                  </button>
-                ) : null}
-
-            <button
-              type="submit"
-              disabled={loading}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
-            >
-              {loading ? 'Calculating...' : 'Calculate My Chances'}
-            </button>
+                {cachedAiAnalysis && (
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-3">
+                    <div className="flex items-center text-purple-800 text-sm">
+                      <span className="font-medium">AI Analysis Cached</span>
+                      <span className="ml-2 text-purple-600">• Enhanced calculations will use your essay and activities</span>
+                    </div>
+                  </div>
+                )}
+                
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
+                    cachedAiAnalysis 
+                      ? 'bg-purple-600 text-white hover:bg-purple-700 disabled:bg-purple-400' 
+                      : 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400'
+                  } disabled:cursor-not-allowed`}
+                >
+                  {loading ? 'Calculating...' : cachedAiAnalysis ? 'Calculate Enhanced Chances' : 'Calculate My Chances'}
+                </button>
 
             <button
               type="button"
