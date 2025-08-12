@@ -10,163 +10,163 @@ import AuthModal from './components/AuthModal';
 const COLLEGES = [
   {
     name: "Princeton University",
-    admissionRate: 5.6,
-    avgSAT: 1510,
-    avgACT: 34,
-    avgGPA: 3.9,
+    admissionRate: 4.5,
+    avgSAT: 1515,
+    avgACT: 33.5,
+    avgGPA: 4.0,
     sat25th: 1460,
     sat75th: 1570,
-    act25th: 33,
+    act25th: 32,
     act75th: 35,
-    gpa25th: 3.8,
+    gpa25th: 3.85,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Third-party compilation 2024-2025"
   },
   {
     name: "Massachusetts Institute of Technology",
-    admissionRate: 4.0,
+    admissionRate: 4.8,
+    avgSAT: 1545,
+    avgACT: 35,
+    avgGPA: 4.0,
+    sat25th: 1520,
+    sat75th: 1570,
+    act25th: 34,
+    act75th: 36,
+    gpa25th: 3.9,
+    gpa75th: 4.0,
+    dataSource: "Official 2024-2025 CDS"
+  },
+  {
+    name: "Harvard University",
+    admissionRate: 3.4,
     avgSAT: 1540,
     avgACT: 35,
-    avgGPA: 3.9,
+    avgGPA: 3.95,
     sat25th: 1500,
-    sat75th: 1570,
+    sat75th: 1580,
     act25th: 34,
     act75th: 36,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
-  },
-  {
-    name: "Harvard University",
-    admissionRate: 3.2,
-    avgSAT: 1520,
-    avgACT: 34,
-    avgGPA: 3.9,
-    sat25th: 1460,
-    sat75th: 1580,
-    act25th: 33,
-    act75th: 36,
-    gpa25th: 3.8,
-    gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "Stanford University",
-    admissionRate: 3.9,
-    avgSAT: 1500,
-    avgACT: 34,
-    avgGPA: 3.9,
-    sat25th: 1440,
-    sat75th: 1550,
-    act25th: 32,
+    admissionRate: 3.6,
+    avgSAT: 1540,
+    avgACT: 34.5,
+    avgGPA: 3.94,
+    sat25th: 1510,
+    sat75th: 1570,
+    act25th: 34,
     act75th: 35,
-    gpa25th: 3.8,
+    gpa25th: 3.85,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Stanford Official CDS 2024-2025"
   },
   {
     name: "Yale University",
-    admissionRate: 4.6,
-    avgSAT: 1510,
+    admissionRate: 4.5,
+    avgSAT: 1515,
     avgACT: 34,
-    avgGPA: 3.9,
+    avgGPA: 3.95,
     sat25th: 1460,
     sat75th: 1570,
     act25th: 33,
     act75th: 35,
-    gpa25th: 3.8,
+    gpa25th: 3.85,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "University of Pennsylvania",
-    admissionRate: 5.8,
-    avgSAT: 1500,
+    admissionRate: 5.9,
+    avgSAT: 1505,
     avgACT: 34,
     avgGPA: 3.9,
-    sat25th: 1450,
-    sat75th: 1560,
-    act25th: 32,
+    sat25th: 1460,
+    sat75th: 1550,
+    act25th: 33,
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "California Institute of Technology",
     admissionRate: 2.7,
-    avgSAT: 1540,
+    avgSAT: 1545,
     avgACT: 35,
-    avgGPA: 3.9,
+    avgGPA: 3.97,
     sat25th: 1510,
-    sat75th: 1570,
+    sat75th: 1580,
     act25th: 34,
     act75th: 36,
-    gpa25th: 3.8,
+    gpa25th: 3.9,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "Duke University",
     admissionRate: 5.1,
-    avgSAT: 1510,
+    avgSAT: 1520,
     avgACT: 34,
-    avgGPA: 3.9,
-    sat25th: 1460,
+    avgGPA: 3.94,
+    sat25th: 1470,
     sat75th: 1570,
     act25th: 33,
     act75th: 35,
-    gpa25th: 3.8,
+    gpa25th: 3.85,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "Brown University",
     admissionRate: 5.2,
-    avgSAT: 1500,
+    avgSAT: 1495,
+    avgACT: 33.5,
+    avgGPA: 3.9,
+    sat25th: 1440,
+    sat75th: 1550,
+    act25th: 32,
+    act75th: 35,
+    gpa25th: 3.8,
+    gpa75th: 4.0,
+    dataSource: "Official 2024-2025 CDS"
+  },
+  {
+    name: "Johns Hopkins University",
+    admissionRate: 7.6,
+    avgSAT: 1520,
     avgACT: 34,
+    avgGPA: 3.9,
+    sat25th: 1480,
+    sat75th: 1560,
+    act25th: 33,
+    act75th: 35,
+    gpa25th: 3.8,
+    gpa75th: 4.0,
+    dataSource: "Official 2024-2025 CDS"
+  },
+  {
+    name: "Northwestern University",
+    admissionRate: 7.0,
+    avgSAT: 1500,
+    avgACT: 33,
     avgGPA: 3.9,
     sat25th: 1440,
     sat75th: 1560,
     act25th: 32,
     act75th: 35,
-    gpa25th: 3.8,
+    gpa25th: 3.75,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
-  },
-  {
-    name: "Johns Hopkins University",
-    admissionRate: 7.3,
-    avgSAT: 1520,
-    avgACT: 34,
-    avgGPA: 3.9,
-    sat25th: 1470,
-    sat75th: 1560,
-    act25th: 33,
-    act75th: 35,
-    gpa25th: 3.8,
-    gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
-  },
-  {
-    name: "Northwestern University",
-    admissionRate: 7.0,
-    avgSAT: 1495,
-    avgACT: 33,
-    avgGPA: 3.8,
-    sat25th: 1430,
-    sat75th: 1550,
-    act25th: 32,
-    act75th: 34,
-    gpa25th: 3.7,
-    gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "Columbia University",
-    admissionRate: 3.9,
-    avgSAT: 1500,
-    avgACT: 34,
+    admissionRate: 4.0,
+    avgSAT: 1505,
+    avgACT: 33.5,
     avgGPA: 3.9,
     sat25th: 1450,
     sat75th: 1560,
@@ -174,161 +174,161 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.8,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "University of Chicago",
-    admissionRate: 5.4,
-    avgSAT: 1530,
+    admissionRate: 4.8,
+    avgSAT: 1535,
     avgACT: 34,
-    avgGPA: 3.9,
-    sat25th: 1480,
+    avgGPA: 3.95,
+    sat25th: 1500,
     sat75th: 1570,
     act25th: 33,
     act75th: 35,
-    gpa25th: 3.8,
+    gpa25th: 3.85,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "Cornell University",
-    admissionRate: 7.3,
-    avgSAT: 1480,
+    admissionRate: 7.9,
+    avgSAT: 1470,
     avgACT: 33,
-    avgGPA: 3.8,
-    sat25th: 1420,
+    avgGPA: 3.9,
+    sat25th: 1400,
     sat75th: 1540,
-    act25th: 31,
+    act25th: 32,
     act75th: 34,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "University of California, Berkeley",
     admissionRate: 11.6,
-    avgSAT: 1410,
-    avgACT: 31,
-    avgGPA: 3.7,
-    sat25th: 1330,
+    avgSAT: 1430,
+    avgACT: 32,
+    avgGPA: 3.9,
+    sat25th: 1350,
     sat75th: 1530,
-    act25th: 29,
-    act75th: 33,
-    gpa25th: 3.6,
-    gpa75th: 3.9,
-    dataSource: "UC System Data 2024"
+    act25th: 30,
+    act75th: 34,
+    gpa25th: 3.7,
+    gpa75th: 4.0,
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "University of California, Los Angeles",
     admissionRate: 8.8,
-    avgSAT: 1400,
+    avgSAT: 1415,
     avgACT: 31,
-    avgGPA: 3.7,
-    sat25th: 1320,
+    avgGPA: 3.9,
+    sat25th: 1330,
     sat75th: 1520,
     act25th: 29,
-    act75th: 33,
-    gpa25th: 3.6,
-    gpa75th: 3.9,
-    dataSource: "UC System Data 2024"
+    act75th: 34,
+    gpa25th: 3.7,
+    gpa75th: 4.0,
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "University of Michigan",
     admissionRate: 17.7,
-    avgSAT: 1430,
+    avgSAT: 1450,
     avgACT: 32,
-    avgGPA: 3.8,
-    sat25th: 1350,
+    avgGPA: 3.88,
+    sat25th: 1370,
     sat75th: 1530,
-    act25th: 30,
-    act75th: 33,
-    gpa25th: 3.7,
+    act25th: 31,
+    act75th: 34,
+    gpa25th: 3.75,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "Vanderbilt University",
     admissionRate: 6.7,
-    avgSAT: 1500,
-    avgACT: 33,
-    avgGPA: 3.8,
-    sat25th: 1440,
-    sat75th: 1560,
+    avgSAT: 1510,
+    avgACT: 34,
+    avgGPA: 3.9,
+    sat25th: 1450,
+    sat75th: 1570,
     act25th: 32,
-    act75th: 34,
-    gpa25th: 3.7,
+    act75th: 35,
+    gpa25th: 3.75,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "Rice University",
     admissionRate: 8.7,
-    avgSAT: 1490,
-    avgACT: 33,
-    avgGPA: 3.8,
-    sat25th: 1430,
-    sat75th: 1550,
+    avgSAT: 1500,
+    avgACT: 34,
+    avgGPA: 3.9,
+    sat25th: 1440,
+    sat75th: 1560,
     act25th: 32,
-    act75th: 34,
-    gpa25th: 3.7,
+    act75th: 35,
+    gpa25th: 3.75,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "Washington University in St. Louis",
     admissionRate: 13.0,
-    avgSAT: 1500,
-    avgACT: 33,
-    avgGPA: 3.8,
-    sat25th: 1440,
-    sat75th: 1560,
+    avgSAT: 1510,
+    avgACT: 34,
+    avgGPA: 3.9,
+    sat25th: 1450,
+    sat75th: 1570,
     act25th: 32,
-    act75th: 34,
-    gpa25th: 3.7,
+    act75th: 35,
+    gpa25th: 3.75,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "Georgetown University",
     admissionRate: 12.0,
-    avgSAT: 1450,
-    avgACT: 32,
-    avgGPA: 3.7,
-    sat25th: 1380,
-    sat75th: 1520,
-    act25th: 30,
-    act75th: 33,
-    gpa25th: 3.6,
-    gpa75th: 3.9,
-    dataSource: "Common Data Set 2024-2025"
+    avgSAT: 1460,
+    avgACT: 33,
+    avgGPA: 3.8,
+    sat25th: 1390,
+    sat75th: 1530,
+    act25th: 31,
+    act75th: 34,
+    gpa25th: 3.65,
+    gpa75th: 3.95,
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "University of Southern California",
     admissionRate: 12.0,
-    avgSAT: 1440,
+    avgSAT: 1450,
     avgACT: 32,
-    avgGPA: 3.7,
-    sat25th: 1370,
-    sat75th: 1510,
+    avgGPA: 3.8,
+    sat25th: 1380,
+    sat75th: 1520,
     act25th: 30,
-    act75th: 33,
-    gpa25th: 3.6,
-    gpa75th: 3.9,
-    dataSource: "Common Data Set 2024-2025"
+    act75th: 34,
+    gpa25th: 3.65,
+    gpa75th: 3.95,
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "Carnegie Mellon University",
     admissionRate: 15.4,
-    avgSAT: 1510,
-    avgACT: 33,
-    avgGPA: 3.8,
-    sat25th: 1460,
-    sat75th: 1560,
-    act25th: 32,
-    act75th: 34,
+    avgSAT: 1524,
+    avgACT: 34,
+    avgGPA: 3.85,
+    sat25th: 1470,
+    sat75th: 1570,
+    act25th: 33,
+    act75th: 35,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "University of Virginia",
@@ -342,7 +342,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "University of North Carolina at Chapel Hill",
@@ -356,21 +356,21 @@ const COLLEGES = [
     act75th: 32,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "New York University",
-    admissionRate: 12.2,
-    avgSAT: 1450,
+    admissionRate: 12.8,
+    avgSAT: 1440,
     avgACT: 32,
-    avgGPA: 3.7,
-    sat25th: 1380,
-    sat75th: 1520,
+    avgGPA: 3.9,
+    sat25th: 1350,
+    sat75th: 1530,
     act25th: 30,
-    act75th: 33,
+    act75th: 34,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "Tufts University",
@@ -384,7 +384,7 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "University of California, San Diego",
@@ -398,7 +398,7 @@ const COLLEGES = [
     act75th: 32,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "UC System Data 2024"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "University of Florida",
@@ -412,7 +412,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "University of Texas at Austin",
@@ -426,7 +426,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "University of Wisconsin-Madison",
@@ -440,7 +440,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "Dartmouth College",
@@ -454,7 +454,7 @@ const COLLEGES = [
     act75th: 35,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Official 2024-2025 CDS"
   },
   {
     name: "University of Notre Dame",
@@ -468,7 +468,7 @@ const COLLEGES = [
     act75th: 34,
     gpa25th: 3.7,
     gpa75th: 4.0,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "Emory University",
@@ -482,21 +482,21 @@ const COLLEGES = [
     act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
-    name: "Boston University",
-    admissionRate: 10.7,
+    name: "Boston College",
+    admissionRate: 16.7,
     avgSAT: 1420,
-    avgACT: 31,
+    avgACT: 32,
     avgGPA: 3.7,
-    sat25th: 1330,
-    sat75th: 1500,
-    act25th: 29,
-    act75th: 32,
+    sat25th: 1340,
+    sat75th: 1510,
+    act25th: 30,
+    act75th: 33,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "Wake Forest University",
@@ -510,7 +510,7 @@ const COLLEGES = [
     act75th: 32,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "Common Data Set 2024-2025"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "University of California, Irvine",
@@ -524,7 +524,7 @@ const COLLEGES = [
     act75th: 31,
     gpa25th: 3.6,
     gpa75th: 3.9,
-    dataSource: "UC System Data 2024"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "University of California, Davis",
@@ -538,7 +538,7 @@ const COLLEGES = [
     act75th: 30,
     gpa25th: 3.5,
     gpa75th: 3.8,
-    dataSource: "UC System Data 2024"
+    dataSource: "Estimated from 2023-2024 Data"
   },
   {
     name: "University of California, Santa Barbara",
@@ -1265,6 +1265,34 @@ export default function Home() {
     }
   };
 
+  // Helper function to calculate dynamic GPA range based on average GPA and admission rate
+  const calculateGPARange = (avgGPA: number, admissionRate: number) => {
+    // Determine base spread based on admission rate tiers
+    let baseSpread: number;
+    if (admissionRate < 10) {
+      baseSpread = 0.20; // Top-tier schools
+    } else if (admissionRate < 25) {
+      baseSpread = 0.30; // Upper-tier schools
+    } else if (admissionRate < 50) {
+      baseSpread = 0.40; // Mid-tier schools
+    } else {
+      baseSpread = 0.50; // General-tier schools
+    }
+    
+    // Calculate the distance from average GPA to 4.0
+    const distanceToMax = 4.0 - avgGPA;
+    
+    // Use the minimum of the tiered spread and twice the distance to 4.0
+    // This ensures we don't exceed 4.0 and gives realistic ranges for high-average schools
+    const effectiveSpread = Math.min(baseSpread, distanceToMax * 2);
+    
+    // Calculate 25th and 75th percentiles
+    const gpa75th = avgGPA + (effectiveSpread / 2);
+    const gpa25th = avgGPA - (effectiveSpread / 2);
+    
+    return { gpa25th, gpa75th };
+  };
+
   const calculateChance = (gpa: number, testScore: number, testType: 'sat' | 'act', college: any): CalculationResult => {
     // Normalize GPA to 4.0 scale if needed
     const normalizedGPA = Math.min(gpa, 4.0);
@@ -1278,8 +1306,11 @@ export default function Home() {
       convertedScore = satScore;
     }
     
+    // Calculate dynamic GPA range
+    const { gpa25th, gpa75th } = calculateGPARange(college.avgGPA, college.admissionRate);
+    
     // Calculate percentile scores
-    const gpaPercentile = Math.min((normalizedGPA - college.gpa25th) / (college.gpa75th - college.gpa25th), 1) * 100;
+    const gpaPercentile = Math.min((normalizedGPA - gpa25th) / (gpa75th - gpa25th), 1) * 100;
     const satPercentile = Math.min((satScore - college.sat25th) / (college.sat75th - college.sat25th), 1) * 100;
     
     // Weight GPA and test scores (GPA slightly more important)
@@ -1614,7 +1645,7 @@ export default function Home() {
             Get an accurate estimate of your admission chances at top colleges and universities
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Uses the latest available Common Data Set (CDS) and official college statistics; some values may be estimated when not published.
+            Uses data from official CDS reports where available, supplemented by reliable third-party sources. Many universities no longer publish specific test score ranges in their official CDS.
         </p>
       </div>
 
