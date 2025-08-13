@@ -2147,7 +2147,6 @@ export default function Home() {
                     <div className="text-center">
                       <h3 className="font-semibold text-gray-900 text-lg mb-2">2 Weeks</h3>
                       <div className="text-3xl font-bold text-purple-600 mb-2">$5</div>
-                      <p className="text-sm text-gray-600 mb-4">Perfect for final applications</p>
                       <button
                         onClick={() => {
                           setSelectedTier('2-weeks');
@@ -2169,7 +2168,6 @@ export default function Home() {
                     <div className="text-center">
                       <h3 className="font-semibold text-gray-900 text-lg mb-2">1 Month</h3>
                       <div className="text-3xl font-bold text-purple-600 mb-2">$15</div>
-                      <p className="text-sm text-gray-600 mb-4">Great for application season</p>
                       <button
                         onClick={() => {
                           setSelectedTier('1-month');
@@ -2191,7 +2189,6 @@ export default function Home() {
                     <div className="text-center">
                       <h3 className="font-semibold text-gray-900 text-lg mb-2">3 Months</h3>
                       <div className="text-3xl font-bold text-purple-600 mb-2">$35</div>
-                      <p className="text-sm text-gray-600 mb-4">Best value for planning</p>
                       <button
                         onClick={() => {
                           setSelectedTier('3-months');
