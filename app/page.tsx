@@ -1707,8 +1707,8 @@ export default function Home() {
                   {isPremium ? (
                     <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                       Premium Active
-                </div>
-              ) : (
+                    </div>
+                  ) : (
                     <div className="text-center">
                       <button
                         onClick={() => {
@@ -1726,12 +1726,49 @@ export default function Home() {
                               : 'bg-purple-600 text-white hover:bg-purple-700'
                         }`}
                       >
-                        {!user ? 'Sign In for Premium' : isPremium ? 'Premium Active' : 'Upgrade to Premium'}
+                        {!user ? 'Premium' : isPremium ? 'Premium Active' : 'Upgrade to Premium'}
                       </button>
-                      <p className="text-xs text-purple-600 mt-1">Starting at $5</p>
                     </div>
                   )}
                 </div>
+
+                {/* Pricing Plans - Show before premium features */}
+                {!isPremium && (
+                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 mb-6">
+                    <h4 className="font-semibold text-gray-900 mb-4 text-center">Choose Your Plan</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-white rounded-lg p-4 border border-purple-200">
+                        <div className="text-center">
+                          <h5 className="font-semibold text-gray-900">2 Weeks</h5>
+                          <div className="text-2xl font-bold text-purple-600 mt-2">$5</div>
+                          <p className="text-sm text-gray-600 mt-1">Perfect for final applications</p>
+                        </div>
+                      </div>
+                      <div className="bg-white rounded-lg p-4 border-2 border-purple-400 relative">
+                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                          Most Popular
+                        </div>
+                        <div className="text-center">
+                          <h5 className="font-semibold text-gray-900">1 Month</h5>
+                          <div className="text-2xl font-bold text-purple-600 mt-2">$15</div>
+                          <p className="text-sm text-gray-600 mt-1">Great for application season</p>
+                        </div>
+                      </div>
+                      <div className="bg-white rounded-lg p-4 border border-purple-200">
+                        <div className="text-center">
+                          <h5 className="font-semibold text-gray-900">3 Months</h5>
+                          <div className="text-2xl font-bold text-purple-600 mt-2">$35</div>
+                          <p className="text-sm text-gray-600 mt-1">Best value for planning</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-center mt-4">
+                      <p className="text-sm text-gray-600">
+                        All plans include AI essay analysis, extracurricular evaluation, and enhanced admission predictions
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 
 
