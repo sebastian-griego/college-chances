@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://college-chances.vercel.app'),
+  metadataBase: new URL('https://admissionchances.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: "College Admission Chances Calculator | Free & AI-Powered Analysis",
     description: "Calculate your admission chances at top colleges with our free calculator. Get AI-powered analysis of your essay, extracurriculars, and academic profile for more accurate predictions. Answer questions like 'What are my chances of getting into Stanford?' or 'How likely am I to get accepted to Harvard?' with our comprehensive admission probability calculator.",
-    url: 'https://college-chances.vercel.app',
+    url: 'https://admissionchances.com',
     siteName: 'College Chances Calculator',
     images: [
       {
@@ -78,7 +78,7 @@ export default function RootLayout({
               "@type": "WebApplication",
               "name": "College Admission Chances Calculator",
               "description": "Calculate your admission chances at top colleges with our free calculator. Get AI-powered analysis of your essay, extracurriculars, and academic profile for more accurate predictions. Answer questions like 'What are my chances of getting into Stanford?' or 'How likely am I to get accepted to Harvard?' with our comprehensive admission probability calculator.",
-              "url": "https://college-chances.vercel.app",
+              "url": "https://admissionchances.com",
               "applicationCategory": "EducationalApplication",
               "operatingSystem": "Web Browser",
               "offers": {
@@ -98,7 +98,7 @@ export default function RootLayout({
               },
               "potentialAction": {
                 "@type": "UseAction",
-                "target": "https://college-chances.vercel.app",
+                "target": "https://admissionchances.com",
                 "description": "Calculate college admission chances"
               },
               "mainEntity": {
