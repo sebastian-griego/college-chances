@@ -1268,9 +1268,20 @@ export default function Home() {
     // Calculate dynamic GPA range
     const { gpa25th, gpa75th } = calculateGPARange(college.avgGPA, college.admissionRate);
     
-    // Calculate percentile scores
+    // Calculate percentile scores using average values and estimated ranges
     const gpaPercentile = Math.min((normalizedGPA - gpa25th) / (gpa75th - gpa25th), 1) * 100;
-    const satPercentile = Math.min((satScore - college.sat25th) / (college.sat75th - college.sat25th), 1) * 100;
+    
+    // Use average SAT and estimated range if 25th/75th percentiles are not available
+    let satPercentile: number;
+    if (college.sat25th && college.sat75th) {
+      satPercentile = Math.min((satScore - college.sat25th) / (college.sat75th - college.sat25th), 1) * 100;
+    } else {
+      // Estimate SAT range based on average and admission rate
+      const satRange = college.admissionRate < 10 ? 200 : college.admissionRate < 25 ? 250 : 300;
+      const sat25th = college.avgSAT - satRange / 2;
+      const sat75th = college.avgSAT + satRange / 2;
+      satPercentile = Math.min((satScore - sat25th) / (sat75th - sat25th), 1) * 100;
+    }
     
     // Weight GPA and test scores (GPA slightly more important)
     const weightedScore = (gpaPercentile * 0.6) + (satPercentile * 0.4);
@@ -1431,14 +1442,9 @@ export default function Home() {
               aiScores: analysisResult.scores
             });
           } else {
-            // If enhanced calculation fails, still show basic result but preserve AI scores
-            setResult({
-              ...basicResult,
-              aiScores: analysisResult.scores
-            });
+            setResult(basicResult);
           }
         } else {
-          // If AI analysis fails, just show basic result
           setResult(basicResult);
         }
       } else if (cachedAiAnalysis) {
@@ -1462,12 +1468,8 @@ export default function Home() {
             enhancedChance: enhancedData.enhancedChance,
             aiScores: cachedAiAnalysis.scores
           });
-        } else {
-          // If enhanced calculation fails, still show basic result but preserve any existing enhanced data
-          setResult({
-            ...basicResult,
-            aiScores: cachedAiAnalysis.scores
-          });
+      } else {
+          setResult(basicResult);
         }
       } else {
         setResult(basicResult);
@@ -1584,16 +1586,16 @@ export default function Home() {
                   {isPremium && (
                     <span className="ml-2 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
                       Premium
-                    </span>
+                </span>
                   )}
-      </div>
+              </div>
                 <button
                   onClick={handleLogout}
                   className="text-gray-600 hover:text-gray-900 text-sm font-medium"
                 >
                   Logout
                 </button>
-      </div>
+                </div>
             ) : (
               <button
                 onClick={() => setShowAuthModal(true)}
@@ -1602,8 +1604,8 @@ export default function Home() {
                 Sign In
               </button>
             )}
-      </div>
-        </div>
+                </div>
+                </div>
 
         <div className="text-center mb-12 relative">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -1613,9 +1615,9 @@ export default function Home() {
             Get an accurate estimate of your admission chances at top colleges and universities
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Uses data from official CDS reports where available, supplemented by reliable third-party sources.
+            Uses data from official CDS reports where available, supplemented by reliable third-party sources. Many universities no longer publish specific test score ranges in their official CDS.
         </p>
-      </div>
+              </div>
 
 
 
@@ -1628,7 +1630,7 @@ export default function Home() {
             
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* College Selection */}
-                <div>
+            <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Search Colleges
                 </label>
@@ -1723,8 +1725,8 @@ export default function Home() {
                   {isPremium ? (
                     <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                       Premium Active
-                    </div>
-                  ) : (
+                </div>
+              ) : (
                     <div className="text-center">
                       <button
                         type="button"
@@ -2039,7 +2041,7 @@ export default function Home() {
               <div>
                     <p className="text-gray-600">Average SAT</p>
                     <p className="font-semibold">{result.collegeData.avgSAT}</p>
-              </div>
+            </div>
                   <div>
                     <p className="text-gray-600">Average ACT</p>
                     <p className="font-semibold">{result.collegeData.avgACT}</p>
@@ -2078,8 +2080,8 @@ export default function Home() {
                   >
                     {isPremium ? 'Premium Active' : 'Premium'}
                   </button>
-                </div>
-              )}
+          </div>
+        )}
 
               {/* AI Scores Display */}
               {result.aiScores && (
