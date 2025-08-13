@@ -2165,10 +2165,7 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  <div className="bg-white rounded-lg p-6 border-2 border-purple-400 relative hover:border-purple-500 transition-colors">
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                      Most Popular
-                    </div>
+                  <div className="bg-white rounded-lg p-6 border-2 border-gray-200 hover:border-purple-300 transition-colors">
                     <div className="text-center">
                       <h3 className="font-semibold text-gray-900 text-lg mb-2">1 Month</h3>
                       <div className="text-3xl font-bold text-purple-600 mb-2">$15</div>
