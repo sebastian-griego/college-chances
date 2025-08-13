@@ -1095,6 +1095,8 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showPaidCalculator, setShowPaidCalculator] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showPricingModal, setShowPricingModal] = useState(false);
+  const [selectedTier, setSelectedTier] = useState<'2-weeks' | '1-month' | '3-months' | null>(null);
   const [aiScores, setAiScores] = useState<any>(null);
   const [essayFeedback, setEssayFeedback] = useState<string>('');
   const [user, setUser] = useState<any>(null);
@@ -1171,6 +1173,11 @@ export default function Home() {
   const handleAuthSuccess = (userData: any) => {
     setUser(userData);
     setIsPremium(userData.isPremium);
+    
+    // If user just signed in and we have a selected tier, continue to payment
+    if (selectedTier && !userData.isPremium) {
+      setShowPaymentModal(true);
+    }
   };
 
   const handleLogout = () => {
@@ -1712,63 +1719,25 @@ export default function Home() {
                     <div className="text-center">
                       <button
                         onClick={() => {
-                          if (!user) {
-                            setShowAuthModal(true);
-                          } else if (!isPremium) {
-                            setShowPaymentModal(true);
+                          if (isPremium) {
+                            // Already premium, do nothing
+                          } else {
+                            setShowPricingModal(true);
                           }
                         }}
                         className={`px-4 py-2 rounded-lg font-semibold transition-colors text-sm ${
-                          !user 
-                            ? 'bg-purple-600 text-white hover:bg-purple-700' 
-                            : isPremium 
-                              ? 'bg-green-600 text-white cursor-not-allowed' 
-                              : 'bg-purple-600 text-white hover:bg-purple-700'
+                          isPremium 
+                            ? 'bg-green-600 text-white cursor-not-allowed' 
+                            : 'bg-purple-600 text-white hover:bg-purple-700'
                         }`}
                       >
-                        {!user ? 'Premium' : isPremium ? 'Premium Active' : 'Upgrade to Premium'}
+                        {isPremium ? 'Premium Active' : 'Premium'}
                       </button>
                     </div>
                   )}
                 </div>
 
-                {/* Pricing Plans - Show before premium features */}
-                {!isPremium && (
-                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 mb-6">
-                    <h4 className="font-semibold text-gray-900 mb-4 text-center">Choose Your Plan</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="bg-white rounded-lg p-4 border border-purple-200">
-                        <div className="text-center">
-                          <h5 className="font-semibold text-gray-900">2 Weeks</h5>
-                          <div className="text-2xl font-bold text-purple-600 mt-2">$5</div>
-                          <p className="text-sm text-gray-600 mt-1">Perfect for final applications</p>
-                        </div>
-                      </div>
-                      <div className="bg-white rounded-lg p-4 border-2 border-purple-400 relative">
-                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-                          Most Popular
-                        </div>
-                        <div className="text-center">
-                          <h5 className="font-semibold text-gray-900">1 Month</h5>
-                          <div className="text-2xl font-bold text-purple-600 mt-2">$15</div>
-                          <p className="text-sm text-gray-600 mt-1">Great for application season</p>
-                        </div>
-                      </div>
-                      <div className="bg-white rounded-lg p-4 border border-purple-200">
-                        <div className="text-center">
-                          <h5 className="font-semibold text-gray-900">3 Months</h5>
-                          <div className="text-2xl font-bold text-purple-600 mt-2">$35</div>
-                          <p className="text-sm text-gray-600 mt-1">Best value for planning</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-center mt-4">
-                      <p className="text-sm text-gray-600">
-                        All plans include AI essay analysis, extracurricular evaluation, and enhanced admission predictions
-                      </p>
-                    </div>
-                  </div>
-                )}
+
 
                 
 
@@ -2083,21 +2052,19 @@ export default function Home() {
                 </p>
                                       <button
                         onClick={() => {
-                          if (!user) {
-                            setShowAuthModal(true);
-                          } else if (!isPremium) {
-                            setShowPaymentModal(true);
+                          if (isPremium) {
+                            // Already premium, do nothing
+                          } else {
+                            setShowPricingModal(true);
                           }
                         }}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          !user 
-                            ? 'bg-purple-600 text-white hover:bg-purple-700' 
-                            : isPremium 
-                              ? 'bg-green-600 text-white cursor-not-allowed' 
-                              : 'bg-purple-600 text-white hover:bg-purple-700'
+                          isPremium 
+                            ? 'bg-green-600 text-white cursor-not-allowed' 
+                            : 'bg-purple-600 text-white hover:bg-purple-700'
                         }`}
                       >
-                        {!user ? 'Premium' : isPremium ? 'Premium Active' : 'Upgrade to Premium'}
+                        {isPremium ? 'Premium Active' : 'Premium'}
                       </button>
               </div>
 
@@ -2160,13 +2127,115 @@ export default function Home() {
           </div>
         )}
 
-        {/* Payment Modal */}
+        {/* Pricing Modal */}
+        {showPricingModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900">Choose Your Premium Plan</h2>
+                  <button
+                    onClick={() => setShowPricingModal(false)}
+                    className="text-gray-500 hover:text-gray-700 text-xl"
+                  >
+                    ✕
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="bg-white rounded-lg p-6 border-2 border-gray-200 hover:border-purple-300 transition-colors">
+                    <div className="text-center">
+                      <h3 className="font-semibold text-gray-900 text-lg mb-2">2 Weeks</h3>
+                      <div className="text-3xl font-bold text-purple-600 mb-2">$5</div>
+                      <p className="text-sm text-gray-600 mb-4">Perfect for final applications</p>
+                      <button
+                        onClick={() => {
+                          setSelectedTier('2-weeks');
+                          setShowPricingModal(false);
+                          if (!user) {
+                            setShowAuthModal(true);
+                          } else {
+                            setShowPaymentModal(true);
+                          }
+                        }}
+                        className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                      >
+                        Choose Plan
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white rounded-lg p-6 border-2 border-purple-400 relative hover:border-purple-500 transition-colors">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                      Most Popular
+                    </div>
+                    <div className="text-center">
+                      <h3 className="font-semibold text-gray-900 text-lg mb-2">1 Month</h3>
+                      <div className="text-3xl font-bold text-purple-600 mb-2">$15</div>
+                      <p className="text-sm text-gray-600 mb-4">Great for application season</p>
+                      <button
+                        onClick={() => {
+                          setSelectedTier('1-month');
+                          setShowPricingModal(false);
+                          if (!user) {
+                            setShowAuthModal(true);
+                          } else {
+                            setShowPaymentModal(true);
+                          }
+                        }}
+                        className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                      >
+                        Choose Plan
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white rounded-lg p-6 border-2 border-gray-200 hover:border-purple-300 transition-colors">
+                    <div className="text-center">
+                      <h3 className="font-semibold text-gray-900 text-lg mb-2">3 Months</h3>
+                      <div className="text-3xl font-bold text-purple-600 mb-2">$35</div>
+                      <p className="text-sm text-gray-600 mb-4">Best value for planning</p>
+                      <button
+                        onClick={() => {
+                          setSelectedTier('3-months');
+                          setShowPricingModal(false);
+                          if (!user) {
+                            setShowAuthModal(true);
+                          } else {
+                            setShowPaymentModal(true);
+                          }
+                        }}
+                        className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                      >
+                        Choose Plan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-purple-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-purple-900 mb-2">What's Included:</h4>
+                  <ul className="text-sm text-purple-800 space-y-1">
+                    <li>• AI-powered essay analysis and feedback</li>
+                    <li>• Extracurricular activity evaluation</li>
+                    <li>• Academic rigor assessment</li>
+                    <li>• Enhanced admission predictions</li>
+                    <li>• Data persistence across sessions</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Auth Modal */}
         <AuthModal
           isOpen={showAuthModal}
           onClose={() => setShowAuthModal(false)}
           onAuthSuccess={handleAuthSuccess}
         />
 
+        {/* Payment Modal */}
         <PaymentModal
           isOpen={showPaymentModal}
           onClose={() => setShowPaymentModal(false)}
@@ -2175,6 +2244,7 @@ export default function Home() {
             setShowPaidCalculator(true);
           }}
           userEmail={user?.email || ''}
+          selectedTier={selectedTier}
         />
 
         {/* Footer */}

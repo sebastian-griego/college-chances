@@ -22,6 +22,7 @@ interface PaymentModalProps {
   onClose: () => void;
   onSuccess: () => void;
   userEmail: string;
+  selectedTier?: '2-weeks' | '1-month' | '3-months' | null;
 }
 
 function CheckoutForm({ onSuccess, onClose, userEmail }: { onSuccess: () => void; onClose: () => void; userEmail: string }) {
@@ -93,9 +94,9 @@ function CheckoutForm({ onSuccess, onClose, userEmail }: { onSuccess: () => void
   );
 }
 
-export default function PaymentModal({ isOpen, onClose, onSuccess, userEmail }: PaymentModalProps) {
-  const [step, setStep] = useState<'plan' | 'payment'>('plan');
-  const [selectedTier, setSelectedTier] = useState<'2-weeks' | '1-month' | '3-months' | null>(null);
+export default function PaymentModal({ isOpen, onClose, onSuccess, userEmail, selectedTier: initialTier }: PaymentModalProps) {
+  const [step, setStep] = useState<'plan' | 'payment'>(initialTier ? 'payment' : 'plan');
+  const [selectedTier, setSelectedTier] = useState<'2-weeks' | '1-month' | '3-months' | null>(initialTier || null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
