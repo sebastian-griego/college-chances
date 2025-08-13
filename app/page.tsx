@@ -1134,37 +1134,47 @@ export default function Home() {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
     
-    // Load cached premium form data
+    // Load cached premium form data only if user is logged in and premium
     const loadCachedPremiumData = () => {
-      const cachedData = localStorage.getItem('premiumFormData');
-      if (cachedData) {
-        try {
-          const parsedData = JSON.parse(cachedData);
-          setPremiumFormData(parsedData);
-        } catch (error) {
-          console.error('Error loading cached premium data:', error);
-        }
-      }
+      const userData = localStorage.getItem('user');
+      const premiumStatus = localStorage.getItem('isPremium');
+      const isUserPremium = userData && (JSON.parse(userData).isPremium || premiumStatus === 'true');
       
-      // Load cached AI analysis
-      const cachedAnalysis = localStorage.getItem('cachedAiAnalysis');
-      if (cachedAnalysis) {
-        try {
-          const parsedAnalysis = JSON.parse(cachedAnalysis);
-          // Check if cache is less than 24 hours old
-          const cacheAge = Date.now() - parsedAnalysis.timestamp;
-          if (cacheAge < 24 * 60 * 60 * 1000) { // 24 hours
-            setCachedAiAnalysis(parsedAnalysis);
-            setAiScores(parsedAnalysis.scores);
-            setEssayFeedback(parsedAnalysis.essayFeedback);
-          } else {
-            // Clear expired cache
-            localStorage.removeItem('cachedAiAnalysis');
+      if (isUserPremium) {
+        const cachedData = localStorage.getItem('premiumFormData');
+        if (cachedData) {
+          try {
+            const parsedData = JSON.parse(cachedData);
+            setPremiumFormData(parsedData);
+          } catch (error) {
+            console.error('Error loading cached premium data:', error);
+          }
         }
-      } catch (error) {
-          console.error('Error loading cached AI analysis:', error);
+        
+        // Load cached AI analysis
+        const cachedAnalysis = localStorage.getItem('cachedAiAnalysis');
+        if (cachedAnalysis) {
+          try {
+            const parsedAnalysis = JSON.parse(cachedAnalysis);
+            // Check if cache is less than 24 hours old
+            const cacheAge = Date.now() - parsedAnalysis.timestamp;
+            if (cacheAge < 24 * 60 * 60 * 1000) { // 24 hours
+              setCachedAiAnalysis(parsedAnalysis);
+              setAiScores(parsedAnalysis.scores);
+              setEssayFeedback(parsedAnalysis.essayFeedback);
+            } else {
+              // Clear expired cache
+              localStorage.removeItem('cachedAiAnalysis');
+            }
+          } catch (error) {
+            console.error('Error loading cached AI analysis:', error);
+          }
+        }
+      } else {
+        // Clear premium data if user is not premium
+        localStorage.removeItem('cachedAiAnalysis');
+        localStorage.removeItem('premiumFormData');
       }
-    }
     };
 
     loadCachedPremiumData();
@@ -1181,10 +1191,25 @@ export default function Home() {
   };
 
   const handleLogout = () => {
+    // Clear all user-related data from localStorage
     localStorage.removeItem('user');
     localStorage.removeItem('isPremium');
+    localStorage.removeItem('cachedAiAnalysis');
+    localStorage.removeItem('premiumFormData');
+    
+    // Reset all state
     setUser(null);
     setIsPremium(false);
+    setCachedAiAnalysis(null);
+    setAiScores(null);
+    setEssayFeedback('');
+    setPremiumFormData({
+      essay: '',
+      extracurriculars: [''],
+      apScores: [''],
+      ibScores: [''],
+      honorsClasses: '0'
+    });
   };
 
   // Function to save premium form data to localStorage
