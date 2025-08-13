@@ -10,6 +10,35 @@ interface UserData {
 // In-memory storage for production (will be replaced with database later)
 const userDataStore: { [userId: string]: UserData } = {};
 
+// Helper function to calculate dynamic GPA range based on average GPA and admission rate
+// This matches the logic in the main page
+const calculateGPARange = (avgGPA: number, admissionRate: number) => {
+  // Determine base spread based on admission rate tiers
+  let baseSpread: number;
+  if (admissionRate < 10) {
+    baseSpread = 0.20; // Top-tier schools
+  } else if (admissionRate < 25) {
+    baseSpread = 0.30; // Upper-tier schools
+  } else if (admissionRate < 50) {
+    baseSpread = 0.40; // Mid-tier schools
+  } else {
+    baseSpread = 0.50; // General-tier schools
+  }
+  
+  // Calculate the distance from average GPA to 4.0
+  const distanceToMax = 4.0 - avgGPA;
+  
+  // Use the minimum of the tiered spread and twice the distance to 4.0
+  // This ensures we don't exceed 4.0 and gives realistic ranges for high-average schools
+  const effectiveSpread = Math.min(baseSpread, distanceToMax * 2);
+  
+  // Calculate 25th and 75th percentiles
+  const gpa75th = avgGPA + (effectiveSpread / 2);
+  const gpa25th = avgGPA - (effectiveSpread / 2);
+  
+  return { gpa25th, gpa75th };
+};
+
 // Enhanced calculation that includes AI scores
 function calculateEnhancedChance(
   gpa: number,
@@ -19,8 +48,11 @@ function calculateEnhancedChance(
   ecScore: number = 50,
   academicRigorScore: number = 50
 ): number {
+  // Calculate dynamic GPA range (same as main page)
+  const { gpa25th, gpa75th } = calculateGPARange(college.avgGPA, college.admissionRate);
+  
   // Use the same base calculation as the main page
-  const gpaPercentile = Math.min(100, Math.max(0, ((gpa - college.gpa25th) / (college.gpa75th - college.gpa25th)) * 100));
+  const gpaPercentile = Math.min(100, Math.max(0, ((gpa - gpa25th) / (gpa75th - gpa25th)) * 100));
   const satPercentile = Math.min(100, Math.max(0, ((satScore - college.sat25th) / (college.sat75th - college.sat25th)) * 100));
   
   // Base weighted score (same as main page)
