@@ -1253,63 +1253,62 @@ export default function Home() {
   };
 
   const calculateChance = (gpa: number, testScore: number, testType: 'sat' | 'act', college: any): CalculationResult => {
-    // Normalize GPA to 4.0 scale if needed
-    const normalizedGPA = Math.min(gpa, 4.0);
+    try {
+      // Normalize GPA to 4.0 scale if needed
+      const normalizedGPA = Math.min(gpa, 4.0);
+      
+      // Convert test score to SAT for consistent calculation
+      let satScore = testScore;
+      let convertedScore: number | undefined;
+      
+      if (testType === 'act') {
+        satScore = convertScore(testScore, 'act');
+        convertedScore = satScore;
+      }
+      
+      // Calculate dynamic GPA range
+      const { gpa25th, gpa75th } = calculateGPARange(college.avgGPA, college.admissionRate);
+      
+      // Calculate percentile scores
+      const gpaPercentile = Math.min((normalizedGPA - gpa25th) / (gpa75th - gpa25th), 1) * 100;
+      const satPercentile = Math.min((satScore - college.sat25th) / (college.sat75th - college.sat25th), 1) * 100;
     
-    // Convert test score to SAT for consistent calculation
-    let satScore = testScore;
-    let convertedScore: number | undefined;
-    
-    if (testType === 'act') {
-      satScore = convertScore(testScore, 'act');
-      convertedScore = satScore;
+          // Weight GPA and test scores (GPA slightly more important)
+      const weightedScore = (gpaPercentile * 0.6) + (satPercentile * 0.4);
+      
+      // Base chance calculation
+      let baseChance = college.admissionRate;
+      
+      // Adjust based on how competitive the applicant is
+      if (weightedScore >= 90) {
+        baseChance *= 2.5; // Excellent candidate
+      } else if (weightedScore >= 75) {
+        baseChance *= 2.0; // Strong candidate
+      } else if (weightedScore >= 50) {
+        baseChance *= 1.5; // Above average
+      } else if (weightedScore >= 25) {
+        baseChance *= 1.0; // Average
+      } else {
+        baseChance *= 0.5; // Below average
+      }
+      
+      // Cap the chance at 95% (no guarantees)
+      const finalChance = Math.min(baseChance, 95);
+      
+      return {
+        chance: Math.round(finalChance * 10) / 10,
+        collegeData: college,
+        convertedScore
+      };
+    } catch (error) {
+      console.error('Error calculating chance:', error, { gpa, testScore, testType, college });
+      // Return a fallback result
+      return {
+        chance: college.admissionRate,
+        collegeData: college,
+        convertedScore: testType === 'act' ? convertScore(testScore, 'act') : undefined
+      };
     }
-    
-    // Calculate dynamic GPA range
-    const { gpa25th, gpa75th } = calculateGPARange(college.avgGPA, college.admissionRate);
-    
-    // Calculate percentile scores using average values and estimated ranges
-    const gpaPercentile = Math.min((normalizedGPA - gpa25th) / (gpa75th - gpa25th), 1) * 100;
-    
-    // Use average SAT and estimated range if 25th/75th percentiles are not available
-    let satPercentile: number;
-    if (college.sat25th && college.sat75th) {
-      satPercentile = Math.min((satScore - college.sat25th) / (college.sat75th - college.sat25th), 1) * 100;
-    } else {
-      // Estimate SAT range based on average and admission rate
-      const satRange = college.admissionRate < 10 ? 200 : college.admissionRate < 25 ? 250 : 300;
-      const sat25th = college.avgSAT - satRange / 2;
-      const sat75th = college.avgSAT + satRange / 2;
-      satPercentile = Math.min((satScore - sat25th) / (sat75th - sat25th), 1) * 100;
-    }
-    
-    // Weight GPA and test scores (GPA slightly more important)
-    const weightedScore = (gpaPercentile * 0.6) + (satPercentile * 0.4);
-    
-    // Base chance calculation
-    let baseChance = college.admissionRate;
-    
-    // Adjust based on how competitive the applicant is
-    if (weightedScore >= 90) {
-      baseChance *= 2.5; // Excellent candidate
-    } else if (weightedScore >= 75) {
-      baseChance *= 2.0; // Strong candidate
-    } else if (weightedScore >= 50) {
-      baseChance *= 1.5; // Above average
-    } else if (weightedScore >= 25) {
-      baseChance *= 1.0; // Average
-    } else {
-      baseChance *= 0.5; // Below average
-    }
-    
-    // Cap the chance at 95% (no guarantees)
-    const finalChance = Math.min(baseChance, 95);
-    
-    return {
-      chance: Math.round(finalChance * 10) / 10,
-      collegeData: college,
-      convertedScore
-    };
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
