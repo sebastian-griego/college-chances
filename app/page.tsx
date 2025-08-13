@@ -1718,6 +1718,7 @@ export default function Home() {
                   ) : (
                     <div className="text-center">
                       <button
+                        type="button"
                         onClick={() => {
                           if (isPremium) {
                             // Already premium, do nothing
@@ -2051,6 +2052,7 @@ export default function Home() {
                   Upgrade to premium for AI-powered analysis of your essay, extracurriculars, and academic rigor.
                 </p>
                                       <button
+                        type="button"
                         onClick={() => {
                           if (isPremium) {
                             // Already premium, do nothing
