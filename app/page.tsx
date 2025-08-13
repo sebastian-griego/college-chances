@@ -1431,9 +1431,14 @@ export default function Home() {
               aiScores: analysisResult.scores
             });
           } else {
-            setResult(basicResult);
+            // If enhanced calculation fails, still show basic result but preserve AI scores
+            setResult({
+              ...basicResult,
+              aiScores: analysisResult.scores
+            });
           }
         } else {
+          // If AI analysis fails, just show basic result
           setResult(basicResult);
         }
       } else if (cachedAiAnalysis) {
@@ -1457,8 +1462,12 @@ export default function Home() {
             enhancedChance: enhancedData.enhancedChance,
             aiScores: cachedAiAnalysis.scores
           });
-      } else {
-          setResult(basicResult);
+        } else {
+          // If enhanced calculation fails, still show basic result but preserve any existing enhanced data
+          setResult({
+            ...basicResult,
+            aiScores: cachedAiAnalysis.scores
+          });
         }
       } else {
         setResult(basicResult);
@@ -1604,7 +1613,7 @@ export default function Home() {
             Get an accurate estimate of your admission chances at top colleges and universities
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Uses data from official CDS reports where available, supplemented by reliable third-party sources. Many universities no longer publish specific test score ranges in their official CDS.
+            Uses data from official CDS reports where available, supplemented by reliable third-party sources.
         </p>
       </div>
 
