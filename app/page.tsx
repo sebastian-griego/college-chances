@@ -1629,7 +1629,7 @@ export default function Home() {
             Get an accurate estimate of your admission chances at top colleges and universities
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Uses data from official CDS reports where available, supplemented by reliable third-party sources. Many universities no longer publish specific test score ranges in their official CDS.
+            Uses data from official CDS reports where available, supplemented by reliable third-party sources.
         </p>
               </div>
 
