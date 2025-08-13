@@ -10,35 +10,31 @@ import AuthModal from './components/AuthModal';
 const COLLEGES = [
   {
     name: "Princeton University",
-    admissionRate: 4.5,
-    avgSAT: 1515,
-    avgACT: 33.5,
-    avgGPA: 4.0,
-    sat25th: 1460,
-    sat75th: 1570,
-    act25th: 32,
+    admissionRate: 3.600,
+    avgSAT: 1530,
+    avgACT: 34,
+    avgGPA: 3.95,
+    sat25th: 1500,
+    sat75th: 1560,
+    act25th: 34,
     act75th: 35,
-    gpa25th: 3.85,
-    gpa75th: 4.0,
-    dataSource: "Third-party compilation 2024-2025"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Massachusetts Institute of Technology",
-    admissionRate: 4.8,
-    avgSAT: 1545,
+    admissionRate: 4.500,
+    avgSAT: 1550,
     avgACT: 35,
-    avgGPA: 4.0,
+    avgGPA: 3.95,
     sat25th: 1520,
-    sat75th: 1570,
-    act25th: 34,
+    sat75th: 1580,
+    act25th: 35,
     act75th: 36,
-    gpa25th: 3.9,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
+    dataSource: "Common Data Set 2024-2025"
   },
   {
     name: "Harvard University",
-    admissionRate: 3.4,
+    admissionRate: 3.600,
     avgSAT: 1540,
     avgACT: 35,
     avgGPA: 3.95,
@@ -46,163 +42,139 @@ const COLLEGES = [
     sat75th: 1580,
     act25th: 34,
     act75th: 36,
-    gpa25th: 3.8,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
+    dataSource: "Common Data Set 2024-2025 and third-party sources"
   },
   {
     name: "Stanford University",
-    admissionRate: 3.6,
+    admissionRate: 3.600,
     avgSAT: 1540,
-    avgACT: 34.5,
+    avgACT: 34,
     avgGPA: 3.94,
     sat25th: 1510,
     sat75th: 1570,
     act25th: 34,
     act75th: 35,
-    gpa25th: 3.85,
-    gpa75th: 4.0,
-    dataSource: "Stanford Official CDS 2024-2025"
+    dataSource: "Common Data Set 2024-2025 and third-party sources"
   },
   {
     name: "Yale University",
-    admissionRate: 4.5,
-    avgSAT: 1515,
-    avgACT: 34,
-    avgGPA: 3.95,
-    sat25th: 1460,
-    sat75th: 1570,
-    act25th: 33,
-    act75th: 35,
-    gpa25th: 3.85,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
-  },
-  {
-    name: "University of Pennsylvania",
-    admissionRate: 5.9,
-    avgSAT: 1505,
-    avgACT: 34,
-    avgGPA: 3.9,
-    sat25th: 1460,
-    sat75th: 1550,
-    act25th: 33,
-    act75th: 35,
-    gpa25th: 3.8,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
-  },
-  {
-    name: "California Institute of Technology",
-    admissionRate: 2.7,
-    avgSAT: 1545,
-    avgACT: 35,
-    avgGPA: 3.97,
-    sat25th: 1510,
-    sat75th: 1580,
-    act25th: 34,
-    act75th: 36,
-    gpa25th: 3.9,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
-  },
-  {
-    name: "Duke University",
-    admissionRate: 5.1,
-    avgSAT: 1520,
-    avgACT: 34,
-    avgGPA: 3.94,
-    sat25th: 1470,
-    sat75th: 1570,
-    act25th: 33,
-    act75th: 35,
-    gpa25th: 3.85,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
-  },
-  {
-    name: "Brown University",
-    admissionRate: 5.2,
-    avgSAT: 1495,
-    avgACT: 33.5,
-    avgGPA: 3.9,
-    sat25th: 1440,
-    sat75th: 1550,
-    act25th: 32,
-    act75th: 35,
-    gpa25th: 3.8,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
-  },
-  {
-    name: "Johns Hopkins University",
-    admissionRate: 7.6,
-    avgSAT: 1520,
-    avgACT: 34,
-    avgGPA: 3.9,
-    sat25th: 1480,
-    sat75th: 1560,
-    act25th: 33,
-    act75th: 35,
-    gpa25th: 3.8,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
-  },
-  {
-    name: "Northwestern University",
-    admissionRate: 7.0,
-    avgSAT: 1500,
-    avgACT: 33,
-    avgGPA: 3.9,
-    sat25th: 1440,
-    sat75th: 1560,
-    act25th: 32,
-    act75th: 35,
-    gpa25th: 3.75,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
-  },
-  {
-    name: "Columbia University",
-    admissionRate: 4.0,
-    avgSAT: 1505,
-    avgACT: 33.5,
-    avgGPA: 3.9,
-    sat25th: 1450,
-    sat75th: 1560,
-    act25th: 32,
-    act75th: 35,
-    gpa25th: 3.8,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
-  },
-  {
-    name: "University of Chicago",
-    admissionRate: 4.8,
-    avgSAT: 1535,
+    admissionRate: 3.730,
+    avgSAT: 1530,
     avgACT: 34,
     avgGPA: 3.95,
     sat25th: 1500,
-    sat75th: 1570,
+    sat75th: 1560,
     act25th: 33,
     act75th: 35,
-    gpa25th: 3.85,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
+    dataSource: "Common Data Set 2024-2025"
+  },
+  {
+    name: "University of Pennsylvania",
+    admissionRate: 5.400,
+    avgSAT: 1535,
+    avgACT: 35,
+    avgGPA: 3.90,
+    sat25th: 1500,
+    sat75th: 1570,
+    act25th: 34,
+    act75th: 35,
+    dataSource: "Common Data Set 2024-2025"
+  },
+  {
+    name: "California Institute of Technology",
+    admissionRate: 2.569,
+    avgSAT: 1550,
+    avgACT: 36,
+    avgGPA: 3.96,
+    sat25th: 1530,
+    sat75th: 1570,
+    act25th: 35,
+    act75th: 36,
+    dataSource: "Common Data Set 2024-2025 and third-party sources"
+  },
+  {
+    name: "Duke University",
+    admissionRate: 5.150,
+    avgSAT: 1545,
+    avgACT: 35,
+    avgGPA: 3.94,
+    sat25th: 1520,
+    sat75th: 1570,
+    act25th: 34,
+    act75th: 35,
+    dataSource: "Common Data Set 2024-2025 and third-party sources"
+  },
+  {
+    name: "Brown University",
+    admissionRate: 5.160,
+    avgSAT: 1535,
+    avgACT: 35,
+    avgGPA: 3.94,
+    sat25th: 1510,
+    sat75th: 1560,
+    act25th: 34,
+    act75th: 35,
+    dataSource: "Common Data Set 2024-2025 and third-party sources"
+  },
+  {
+    name: "Johns Hopkins University",
+    admissionRate: 5.770,
+    avgSAT: 1550,
+    avgACT: 35,
+    avgGPA: 3.95,
+    sat25th: 1530,
+    sat75th: 1570,
+    act25th: 34,
+    act75th: 36,
+    dataSource: "Common Data Set 2024-2025"
+  },
+  {
+    name: "Northwestern University",
+    admissionRate: 7.500,
+    avgSAT: 1525,
+    avgACT: 34,
+    avgGPA: 3.92,
+    sat25th: 1490,
+    sat75th: 1560,
+    act25th: 33,
+    act75th: 35,
+    dataSource: "Common Data Set 2024-2025 and third-party sources"
+  },
+  {
+    name: "Columbia University",
+    admissionRate: 3.850,
+    avgSAT: 1525,
+    avgACT: 34,
+    avgGPA: 3.92,
+    sat25th: 1500,
+    sat75th: 1560,
+    act25th: 34,
+    act75th: 35,
+    dataSource: "Common Data Set 2024-2025"
+  },
+  {
+    name: "University of Chicago",
+    admissionRate: 4.480,
+    avgSAT: 1535,
+    avgACT: 35,
+    avgGPA: 3.95,
+    sat25th: 1510,
+    sat75th: 1560,
+    act25th: 34,
+    act75th: 35,
+    dataSource: "Common Data Set 2024-2025 and third-party sources"
   },
   {
     name: "Cornell University",
-    admissionRate: 7.9,
-    avgSAT: 1470,
-    avgACT: 33,
-    avgGPA: 3.9,
-    sat25th: 1400,
-    sat75th: 1540,
-    act25th: 32,
-    act75th: 34,
-    gpa25th: 3.7,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
+    admissionRate: 8.405,
+    avgSAT: 1535,
+    avgACT: 34,
+    avgGPA: 3.90,
+    sat25th: 1510,
+    sat75th: 1560,
+    act25th: 33,
+    act75th: 35,
+    dataSource: "Common Data Set 2024-2025 and third-party sources"
   },
   {
     name: "University of California, Berkeley",
@@ -214,8 +186,6 @@ const COLLEGES = [
     sat75th: 1530,
     act25th: 30,
     act75th: 34,
-    gpa25th: 3.7,
-    gpa75th: 4.0,
     dataSource: "Estimated from 2023-2024 Data"
   },
   {
@@ -228,8 +198,6 @@ const COLLEGES = [
     sat75th: 1520,
     act25th: 29,
     act75th: 34,
-    gpa25th: 3.7,
-    gpa75th: 4.0,
     dataSource: "Estimated from 2023-2024 Data"
   },
   {
@@ -242,8 +210,6 @@ const COLLEGES = [
     sat75th: 1530,
     act25th: 31,
     act75th: 34,
-    gpa25th: 3.75,
-    gpa75th: 4.0,
     dataSource: "Estimated from 2023-2024 Data"
   },
   {
@@ -256,8 +222,6 @@ const COLLEGES = [
     sat75th: 1570,
     act25th: 32,
     act75th: 35,
-    gpa25th: 3.75,
-    gpa75th: 4.0,
     dataSource: "Estimated from 2023-2024 Data"
   },
   {
@@ -270,8 +234,6 @@ const COLLEGES = [
     sat75th: 1560,
     act25th: 32,
     act75th: 35,
-    gpa25th: 3.75,
-    gpa75th: 4.0,
     dataSource: "Estimated from 2023-2024 Data"
   },
   {
@@ -284,8 +246,6 @@ const COLLEGES = [
     sat75th: 1570,
     act25th: 32,
     act75th: 35,
-    gpa25th: 3.75,
-    gpa75th: 4.0,
     dataSource: "Estimated from 2023-2024 Data"
   },
   {
@@ -326,8 +286,6 @@ const COLLEGES = [
     sat75th: 1570,
     act25th: 33,
     act75th: 35,
-    gpa25th: 3.7,
-    gpa75th: 4.0,
     dataSource: "Official 2024-2025 CDS"
   },
   {
@@ -340,8 +298,6 @@ const COLLEGES = [
     sat75th: 1530,
     act25th: 30,
     act75th: 33,
-    gpa25th: 3.7,
-    gpa75th: 4.0,
     dataSource: "Official 2024-2025 CDS"
   },
   {
@@ -444,17 +400,15 @@ const COLLEGES = [
   },
   {
     name: "Dartmouth College",
-    admissionRate: 6.2,
-    avgSAT: 1500,
-    avgACT: 33,
-    avgGPA: 3.8,
-    sat25th: 1440,
+    admissionRate: 5.300,
+    avgSAT: 1520,
+    avgACT: 34,
+    avgGPA: 3.92,
+    sat25th: 1480,
     sat75th: 1560,
     act25th: 32,
     act75th: 35,
-    gpa25th: 3.7,
-    gpa75th: 4.0,
-    dataSource: "Official 2024-2025 CDS"
+    dataSource: "Common Data Set 2024-2025 and third-party sources"
   },
   {
     name: "University of Notre Dame",
@@ -466,8 +420,6 @@ const COLLEGES = [
     sat75th: 1530,
     act25th: 31,
     act75th: 34,
-    gpa25th: 3.7,
-    gpa75th: 4.0,
     dataSource: "Estimated from 2023-2024 Data"
   },
   {
@@ -2092,24 +2044,24 @@ export default function Home() {
                 <p className="text-sm text-purple-700 mb-3">
                   Upgrade to premium for AI-powered analysis of your essay, extracurriculars, and academic rigor.
                 </p>
-                <button
-                  onClick={() => {
-                    if (!user) {
-                      setShowAuthModal(true);
-                    } else if (!isPremium) {
-                      setShowPaymentModal(true);
-                    }
-                  }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    !user 
-                      ? 'bg-purple-600 text-white hover:bg-purple-700' 
-                      : isPremium 
-                        ? 'bg-green-600 text-white cursor-not-allowed' 
-                        : 'bg-purple-600 text-white hover:bg-purple-700'
-                  }`}
-                >
-                  {!user ? 'Sign In for Premium' : isPremium ? 'Premium Active' : 'Upgrade to Premium'}
-                </button>
+                                      <button
+                        onClick={() => {
+                          if (!user) {
+                            setShowAuthModal(true);
+                          } else if (!isPremium) {
+                            setShowPaymentModal(true);
+                          }
+                        }}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          !user 
+                            ? 'bg-purple-600 text-white hover:bg-purple-700' 
+                            : isPremium 
+                              ? 'bg-green-600 text-white cursor-not-allowed' 
+                              : 'bg-purple-600 text-white hover:bg-purple-700'
+                        }`}
+                      >
+                        {!user ? 'Premium' : isPremium ? 'Premium Active' : 'Upgrade to Premium'}
+                      </button>
               </div>
 
               {/* AI Scores Display */}

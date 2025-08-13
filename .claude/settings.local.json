@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(npm run build:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "WebSearch",
+      "WebFetch(domain:ir.princeton.edu)",
+      "WebFetch(domain:college.harvard.edu)",
+      "WebFetch(domain:irds.stanford.edu)",
+      "WebFetch(domain:mitadmissions.org)",
+      "WebFetch(domain:admission.princeton.edu)",
+      "WebFetch(domain:bpb-us-e1.wpmucdn.com)",
+      "WebFetch(domain:news.stanford.edu)"
     ],
     "deny": []
   }
