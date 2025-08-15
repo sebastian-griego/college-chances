@@ -1735,8 +1735,8 @@ export default function Home() {
         {/* Footer */}
         <div className="mt-16 text-center text-gray-500">
           <p className="text-sm">
-            This calculator provides estimates based on Common Data Set (CDS) and official college admission data. 
-            Actual admission decisions depend on many factors including essays, recommendations, and extracurricular activities.
+            Disclaimer: This calculator provides estimates based on Common Data Set (CDS) and official college admission data. 
+            These estimates are for informational purposes only and do not guarantee admission. Actual admission decisions depend on many factors including essays, recommendations, extracurricular activities, interviews, and institutional priorities. Use at your own discretion.
           </p>
         </div>
       </div>
