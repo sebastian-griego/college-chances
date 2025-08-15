@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import PaidCalculator from './components/PaidCalculator';
 import PaymentModal from './components/PaymentModal';
 import AuthModal from './components/AuthModal';
+import CookieConsent from './components/CookieConsent';
 
 // College data with accurate admission statistics from Common Data Set (CDS) and official sources
 // Updated with latest available CDS data (2024-2025 where available, 2023-2024 as fallback)
@@ -1780,6 +1781,12 @@ export default function Home() {
             <a href="/privacy" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
               Privacy Policy
             </a>
+            <a href="/refund" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
+              Refund Policy
+            </a>
+            <a href="/contact" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
+              Contact & Support
+            </a>
           </div>
           <p className="text-sm">
             Disclaimer: This calculator provides estimates based on Common Data Set (CDS) and official college admission data. 
@@ -1787,6 +1794,9 @@ export default function Home() {
           </p>
         </div>
       </div>
+      
+      {/* Cookie Consent Banner */}
+      <CookieConsent />
     </div>
   );
 }
