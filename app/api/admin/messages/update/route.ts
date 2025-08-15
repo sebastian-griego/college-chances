@@ -6,16 +6,13 @@ const prisma = new PrismaClient();
 // This is required for dynamic API routes
 export const dynamic = 'force-dynamic';
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest) {
   try {
-    const { read } = await request.json();
+    const { id, read } = await request.json();
     
     const updatedMessage = await prisma.contactMessage.update({
       where: {
-        id: params.id
+        id: id
       },
       data: {
         read

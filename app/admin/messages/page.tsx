@@ -38,10 +38,10 @@ export default function AdminMessages() {
 
   const markAsRead = async (messageId: string) => {
     try {
-      const response = await fetch(`/api/admin/messages/${messageId}`, {
+      const response = await fetch('/api/admin/messages/update', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ read: true }),
+        body: JSON.stringify({ id: messageId, read: true }),
       });
       
       if (response.ok) {
