@@ -24,12 +24,26 @@ export default function ContactSupport() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Here you would typically send the form data to your backend
-    // For now, we'll simulate a submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setSubmitted(true);
-    setIsSubmitting(false);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -44,7 +58,7 @@ export default function ContactSupport() {
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Message Sent!</h1>
             <p className="text-gray-600 mb-6">
-              Thank you for contacting us. We'll get back to you within 2 business days.
+              Thank you for contacting us. We'll get back to you soon.
             </p>
             <button
               onClick={() => {
@@ -86,25 +100,10 @@ export default function ContactSupport() {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-900">Email Support</h3>
-                    <p className="text-gray-600 text-sm">We typically respond within 2 business days</p>
+                    <p className="text-gray-600 text-sm">Contact us anytime for support</p>
                   </div>
                 </div>
                 
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1">
-                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-900">Response Time</h3>
-                    <p className="text-gray-600 text-sm">
-                      General inquiries: 1-2 business days<br/>
-                      Technical issues: Same day<br/>
-                      Refund requests: 1 business day
-                    </p>
-                  </div>
-                </div>
               </div>
               
               <div className="mt-6 p-4 bg-blue-50 rounded-lg">
@@ -240,8 +239,8 @@ export default function ContactSupport() {
               <div>
                 <h3 className="font-medium text-gray-900">Can I get a refund?</h3>
                 <p className="text-gray-600 text-sm mt-1">
-                  Yes, we offer refunds within 7 days of purchase under certain conditions. 
-                  Please see our <a href="/refund" className="text-blue-600 underline">Refund Policy</a> for details.
+                  No, all sales are final. We do not offer refunds for premium subscriptions. 
+                  Please see our <a href="/refund" className="text-blue-600 underline">Refund Policy</a> for complete details.
                 </p>
               </div>
               

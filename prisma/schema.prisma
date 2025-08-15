@@ -61,3 +61,14 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  category  String
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+}
