@@ -1194,7 +1194,7 @@ export default function Home() {
 
               {/* Premium Features Section - Detailed */}
               <div className="border-t pt-6 mt-6">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-semibold text-gray-900">
                     Enhanced Analysis (Premium)
                   </h3>
@@ -1225,7 +1225,24 @@ export default function Home() {
                   )}
                 </div>
 
-
+                {/* AI Disclaimer */}
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <h4 className="text-sm font-medium text-amber-800">
+                        AI Analysis Disclaimer
+                      </h4>
+                      <p className="mt-1 text-sm text-amber-700">
+                        Our AI provides supplementary analysis only. Results are estimates based on patterns in training data and should not be considered definitive assessments. College admissions decisions involve human judgment, institutional priorities, and factors beyond quantifiable metrics. Use AI feedback as one of many tools in your application process.
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
                 
 
@@ -1238,21 +1255,31 @@ export default function Home() {
                     <textarea
                       disabled={!isPremium}
                       value={premiumFormData.essay}
-                      onChange={(e) => updatePremiumFormData({...premiumFormData, essay: e.target.value})}
-                      placeholder="Paste your personal essay here (500-650 words recommended)..."
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        const wordCount = newValue.split(' ').filter(word => word.trim()).length;
+                        if (wordCount <= 3000) {
+                          updatePremiumFormData({...premiumFormData, essay: newValue});
+                        }
+                      }}
+                      placeholder="Paste your personal essay here (max 3000 words)..."
                       className={`w-full h-32 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                         !isPremium ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''
                       }`}
                     />
-                    <p className="text-sm text-gray-500 mt-1">
-                      Word count: {premiumFormData.essay.split(' ').filter(word => word.trim()).length}
+                    <p className={`text-sm mt-1 ${
+                      premiumFormData.essay.split(' ').filter(word => word.trim()).length > 3000 
+                        ? 'text-red-500' 
+                        : 'text-gray-500'
+                    }`}>
+                      Word count: {premiumFormData.essay.split(' ').filter(word => word.trim()).length}/3000
                     </p>
                   </div>
 
                   {/* Extracurricular Activities */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Extracurricular Activities
+                      Extracurricular Activities (max 10 activities, 150 characters each)
                     </label>
                     {premiumFormData.extracurriculars.map((activity, index) => (
                       <div key={index} className="flex gap-2 mb-2">
@@ -1261,9 +1288,12 @@ export default function Home() {
                           disabled={!isPremium}
                           value={activity}
                           onChange={(e) => {
-                            const newActivities = [...premiumFormData.extracurriculars];
-                            newActivities[index] = e.target.value;
-                            updatePremiumFormData({...premiumFormData, extracurriculars: newActivities});
+                            const newValue = e.target.value;
+                            if (newValue.length <= 150) {
+                              const newActivities = [...premiumFormData.extracurriculars];
+                              newActivities[index] = newValue;
+                              updatePremiumFormData({...premiumFormData, extracurriculars: newActivities});
+                            }
                           }}
                           placeholder="e.g., President of Science Club, 2 years, 5 hours/week"
                           className={`flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 ${
@@ -1288,21 +1318,30 @@ export default function Home() {
                         )}
                       </div>
                     ))}
+                    {premiumFormData.extracurriculars.map((activity, index) => (
+                      <p key={`char-count-${index}`} className={`text-xs mt-1 ${
+                        activity.length > 150 ? 'text-red-500' : 'text-gray-500'
+                      }`}>
+                        {activity.length}/150 characters
+                      </p>
+                    ))}
                     <button
                       type="button"
-                      disabled={!isPremium}
+                      disabled={!isPremium || premiumFormData.extracurriculars.length >= 10}
                       onClick={(e) => {
                         e.preventDefault();
-                        updatePremiumFormData({
-                          ...premiumFormData, 
-                          extracurriculars: [...premiumFormData.extracurriculars, '']
-                        });
+                        if (premiumFormData.extracurriculars.length < 10) {
+                          updatePremiumFormData({
+                            ...premiumFormData, 
+                            extracurriculars: [...premiumFormData.extracurriculars, '']
+                          });
+                        }
                       }}
                       className={`mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 ${
-                        !isPremium ? 'opacity-50 cursor-not-allowed' : ''
+                        !isPremium || premiumFormData.extracurriculars.length >= 10 ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                     >
-                      Add Activity
+                      {premiumFormData.extracurriculars.length >= 10 ? 'Max Activities Reached' : 'Add Activity'}
                     </button>
 
                   </div>
@@ -1734,6 +1773,14 @@ export default function Home() {
 
         {/* Footer */}
         <div className="mt-16 text-center text-gray-500">
+          <div className="mb-6 space-x-6">
+            <a href="/terms" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
+              Terms of Service
+            </a>
+            <a href="/privacy" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
+              Privacy Policy
+            </a>
+          </div>
           <p className="text-sm">
             Disclaimer: This calculator provides estimates based on Common Data Set (CDS) and official college admission data. 
             These estimates are for informational purposes only and do not guarantee admission. Actual admission decisions depend on many factors including essays, recommendations, extracurricular activities, interviews, and institutional priorities. Use at your own discretion.
