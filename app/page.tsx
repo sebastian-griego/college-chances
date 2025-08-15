@@ -1052,7 +1052,7 @@ export default function Home() {
         {/* Header with Auth */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-gray-900">Chance Me Calculator</h1>
+            <h1 className="text-2xl font-bold text-gray-900">College Calculator</h1>
         </div>
           <div className="flex items-center space-x-4">
             {user ? (
@@ -1086,14 +1086,13 @@ export default function Home() {
 
         <div className="text-center mb-12 relative">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Free Chance Me Calculator
+            College Chances Calculator
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Calculate your chances of getting into Harvard, Stanford, MIT, and 40+ top universities. 
-            Get instant admission probability estimates based on your GPA, SAT/ACT scores, and more.
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Get an accurate estimate of your admission chances at top colleges and universities
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Uses official Common Data Set statistics and AI-powered analysis for accurate predictions.
+            Uses data from official CDS reports where available, supplemented by reliable third-party sources.
         </p>
               </div>
 

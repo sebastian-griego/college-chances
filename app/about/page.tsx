@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "About College Admission Chances Calculator | How It Works",
-  description: "Learn how our college admission calculator works. Find answers to questions like 'What are my chances of getting into Stanford?' or 'How likely am I to get accepted to Harvard?' with our accurate probability estimates.",
-  keywords: "college admission calculator, how it works, admission chances, college application, SAT scores, GPA calculator, college essay analysis, extracurricular evaluation, university admission odds, what are my chances of getting into, admission probability, college acceptance rate, university admission calculator, how likely am I to get accepted, college admission predictor",
+  title: "About Our Chance Me Calculator | Free College Admission Calculator",
+  description: "Learn about our free chance me calculator for college admissions. Calculate your chances of getting into Harvard, Stanford, MIT, and 40+ top universities. Get accurate admission probability estimates.",
+  keywords: "chance me calculator, about chance me, college admission calculator, admission chances calculator, what are my chances, chance me for college, college chance calculator, admission probability calculator",
 };
 
 export default function AboutPage() {
@@ -13,31 +13,32 @@ export default function AboutPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            About Our College Admission Calculator
+            About Our Chance Me Calculator
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            How we help you calculate your admission chances at top colleges and universities
+            Free chance me calculator for college admissions - calculate your chances at 40+ top universities
           </p>
         </div>
 
         {/* Main Content */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-            Find Your College Admission Chances
+            What is a Chance Me Calculator?
           </h2>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-700 mb-6">
-              Wondering "What are my chances of getting into Stanford?" or "How likely am I to get accepted to Harvard?" 
-              Our free college admission calculator provides accurate probability estimates based on official Common Data Set statistics.
+              A chance me calculator is a free tool that helps students estimate their probability of getting accepted to colleges. 
+              Our chance me calculator provides accurate admission probability estimates for Harvard, Stanford, MIT, Yale, Princeton, 
+              and 40+ other top universities based on official Common Data Set statistics.
             </p>
             <p className="text-gray-700 mb-6">
               Simply enter your GPA, SAT or ACT scores, and select your target college. Our algorithm compares your academic profile 
-              against the college's official admission data to calculate your admission probability. For even more accurate predictions, 
+              against the college's official admission data to calculate your chance me results. For even more accurate predictions, 
               try our AI-powered enhanced analysis that evaluates your essay, extracurriculars, and academic rigor.
             </p>
             <p className="text-gray-700 mb-6">
-              Whether you're asking "What are my admission chances for MIT?" or "How likely am I to get accepted to Yale?", 
-              our comprehensive calculator covers over 100 top colleges and universities with data from official sources.
+              Whether you're asking "What are my chances of getting into college?" or need a comprehensive chance me assessment, 
+              our calculator provides instant, data-driven results to help with your college planning.
             </p>
           </div>
         </div>
