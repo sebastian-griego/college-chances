@@ -1769,20 +1769,10 @@ export default function Home() {
               Contact & Support
             </a>
           </div>
-          <div className="space-y-4">
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 max-w-4xl mx-auto">
-              <h4 className="text-sm font-medium text-amber-800 mb-2">
-                AI Analysis Disclaimer
-              </h4>
-              <p className="text-sm text-amber-700">
-                Our AI provides supplementary analysis only. Results are estimates based on patterns in training data and should not be considered definitive assessments. College admissions decisions involve human judgment, institutional priorities, and factors beyond quantifiable metrics. Use AI feedback as one of many tools in your application process.
-              </p>
-            </div>
-            <p className="text-sm">
-              Disclaimer: This calculator provides estimates based on Common Data Set (CDS) and official college admission data. 
-              These estimates are for informational purposes only and do not guarantee admission. Actual admission decisions depend on many factors including essays, recommendations, extracurricular activities, interviews, and institutional priorities. Use at your own discretion.
-            </p>
-          </div>
+          <p className="text-sm">
+            Disclaimer: This calculator provides estimates based on Common Data Set (CDS) and official college admission data. 
+            These estimates are for informational purposes only and do not guarantee admission. Our AI provides supplementary analysis only and results are estimates based on patterns in training data that should not be considered definitive assessments. Actual admission decisions depend on many factors including essays, recommendations, extracurricular activities, interviews, and institutional priorities, as well as human judgment and institutional priorities beyond quantifiable metrics. Use at your own discretion.
+          </p>
         </div>
       </div>
       
