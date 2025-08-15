@@ -1,15 +1,22 @@
-# College Chances Calculator
+# College Admission Chances Calculator
 
-A modern, accurate college admission chances calculator built with Next.js and TypeScript. This tool helps students estimate their admission probability at top colleges and universities based on their academic credentials.
+A modern, AI-powered college admission chances calculator built with Next.js and TypeScript. This tool helps students estimate their admission probability at top colleges and universities using official Common Data Set statistics.
 
 ## Features
 
-- **Accurate Calculations**: Uses real college admission data and statistical modeling
-- **Comprehensive Database**: Includes 20+ top colleges with current admission statistics
-- **Smart Recommendations**: Provides personalized advice based on your profile
-- **Modern UI**: Clean, responsive design with intuitive user experience
-- **Real-time Search**: Search and filter colleges easily
-- **Category Classification**: Automatically categorizes schools as safety, target, reach, or far-reach
+### Free Calculator
+- **Accurate Calculations**: Based on official Common Data Set (CDS) statistics
+- **40+ Top Universities**: Comprehensive database of elite institutions
+- **Real-time Search**: Find colleges quickly with live search
+- **SAT/ACT Support**: Works with both standardized tests
+- **Modern UI**: Clean, responsive design optimized for students
+
+### Premium Features
+- **AI Essay Analysis**: Advanced essay evaluation and feedback
+- **Extracurricular Evaluation**: Assessment of activities and leadership
+- **Academic Rigor Analysis**: AP/IB scores and honors class evaluation
+- **Enhanced Predictions**: More accurate chances using qualitative factors
+- **Data Persistence**: Save your analysis across sessions
 
 ## How It Works
 
@@ -21,28 +28,24 @@ The calculator uses a sophisticated algorithm that considers:
 4. **Weighted Scoring**: GPA weighted slightly higher than test scores
 5. **Statistical Modeling**: Based on historical admission patterns
 
-## Colleges Included
+## Universities Included (40+)
 
-- Harvard University
-- Stanford University
-- MIT
-- Yale University
-- Princeton University
-- Columbia University
-- University of Pennsylvania
-- Duke University
-- Brown University
-- Cornell University
-- UC Berkeley
-- UCLA
-- University of Michigan
-- University of Virginia
-- University of North Carolina
-- NYU
-- Boston University
-- University of Texas at Austin
-- University of Wisconsin
-- University of Illinois
+### Ivy League
+- Harvard, Yale, Princeton, Columbia, University of Pennsylvania
+- Brown, Cornell, Dartmouth
+
+### Top Private Universities  
+- Stanford, MIT, Caltech, Duke, Johns Hopkins
+- Northwestern, University of Chicago, Vanderbilt
+- Rice, Washington University in St. Louis
+- Georgetown, USC, Carnegie Mellon, NYU, Tufts
+- University of Notre Dame, Emory, Boston College, Wake Forest
+
+### Top Public Universities
+- UC Berkeley, UCLA, UC San Diego, UC Irvine, UC Davis, UC Santa Barbara
+- University of Michigan, University of Virginia, University of North Carolina
+- University of Texas at Austin, University of Florida, University of Washington
+- University of Wisconsin-Madison, University of Maryland
 
 ## Getting Started
 
@@ -80,22 +83,25 @@ npm start
 
 ## Technology Stack
 
-- **Framework**: Next.js 14
+- **Framework**: Next.js 14 with App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Deployment**: Vercel-ready
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: Custom auth system
+- **Payments**: Stripe integration
+- **AI Integration**: OpenAI API for essay analysis
+- **Deployment**: Vercel
 
-## Future Enhancements
+## Live Website
 
-- **Paid Premium Version**: Advanced features including:
-  - Extracurricular activity analysis
-  - Essay evaluation with AI
-  - More detailed recommendations
-  - Application strategy planning
-- **More Colleges**: Expand database to 100+ institutions
-- **ACT Support**: Add ACT score calculations
-- **International Students**: Specialized calculations for international applicants
-- **Mobile App**: Native mobile application
+🌐 **[admissionchances.com](https://admissionchances.com)**
+
+## Pricing
+
+- **Free**: Basic admission calculator with 40+ universities
+- **Premium**: $5 (2 weeks), $8 (1 month), or $15 (3 months)
+  - One-time payment, no recurring charges
+  - AI essay analysis and enhanced predictions
 
 ## Contributing
 
@@ -105,6 +111,16 @@ This is a personal project, but suggestions and feedback are welcome!
 
 This project is for educational purposes.
 
+## Contact
+
+For support, questions, or feedback: **contact.admissionchances@gmail.com**
+
+## Legal
+
+- [Terms of Service](https://admissionchances.com/terms)
+- [Privacy Policy](https://admissionchances.com/privacy)  
+- [Refund Policy](https://admissionchances.com/refund)
+
 ## Disclaimer
 
-This calculator provides estimates based on historical admission data. Actual admission decisions depend on many factors including essays, recommendations, extracurricular activities, and institutional priorities. Use this tool as one of many resources in your college application process.
+This calculator provides estimates based on Common Data Set statistics and historical admission data. Our AI provides supplementary analysis only and results should not be considered definitive assessments. Actual admission decisions depend on many factors including essays, recommendations, extracurricular activities, interviews, and institutional priorities. Use this tool as one of many resources in your college application process.
