@@ -1,8 +1,12 @@
 User-agent: *
 Allow: /
 
+# Block admin areas and API routes from search engines
+Disallow: /api/
+Disallow: /admin/
+
 # Sitemap
-Sitemap: https://college-chances.vercel.app/sitemap.xml
+Sitemap: https://admissionchances.com/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1

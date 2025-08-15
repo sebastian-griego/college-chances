@@ -97,6 +97,8 @@ export default function RootLayout({
                 "ratingValue": "4.8",
                 "reviewCount": "150"
               },
+              "keywords": "college admission calculator, admission chances, SAT scores, GPA calculator, college essay analysis, AI college advisor, university admission probability, college acceptance rate, admission predictor, chance me calculator",
+              "category": "Education",
               "potentialAction": {
                 "@type": "UseAction",
                 "target": "https://admissionchances.com",

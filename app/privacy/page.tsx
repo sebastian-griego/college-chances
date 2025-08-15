@@ -1,3 +1,14 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | College Admission Chances Calculator',
+  description: 'Privacy policy for our college admission calculator. Learn how we protect your personal information, essays, and academic data with industry-standard security.',
+  robots: {
+    index: true,
+    follow: true,
+  }
+};
+
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">

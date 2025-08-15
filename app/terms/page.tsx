@@ -1,3 +1,14 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service | College Admission Chances Calculator',
+  description: 'Terms of service for our free college admission calculator and premium AI analysis features. Learn about our usage policies and user agreements.',
+  robots: {
+    index: true,
+    follow: true,
+  }
+};
+
 export default function TermsOfService() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">

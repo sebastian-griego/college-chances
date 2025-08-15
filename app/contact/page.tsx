@@ -1,3 +1,14 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Contact & Support | College Admission Chances Calculator',
+  description: 'Get help with our college admission calculator. Contact support for technical issues, billing questions, or feedback about our AI-powered analysis features.',
+  robots: {
+    index: true,
+    follow: true,
+  }
+};
+
 export default function ContactSupport() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
