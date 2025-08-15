@@ -628,8 +628,8 @@ export default function Home() {
             } else {
               // Clear expired cache
               localStorage.removeItem('cachedAiAnalysis');
-            }
-          } catch (error) {
+        }
+      } catch (error) {
             console.error('Error loading cached AI analysis:', error);
           }
         }
@@ -1588,7 +1588,7 @@ export default function Home() {
                     <div>
                       <p className="text-gray-600">Essay Quality</p>
                       <p className="font-semibold text-purple-700">{result.aiScores.essayScore}/100</p>
-                    </div>
+      </div>
                     <div>
                       <p className="text-gray-600">Extracurriculars</p>
                       <p className="font-semibold text-purple-700">{result.aiScores.ecScore}/100</p>
