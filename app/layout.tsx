@@ -10,9 +10,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "College Admission Chances Calculator | Free & AI-Powered Analysis",
-  description: "Calculate your admission chances at top colleges with our free calculator. Get AI-powered analysis of your essay, extracurriculars, and academic profile for more accurate predictions. Answer questions like 'What are my chances of getting into Stanford?' or 'How likely am I to get accepted to Harvard?' with our comprehensive admission probability calculator.",
-  keywords: "college admission calculator, admission chances, college application, SAT scores, GPA calculator, college essay analysis, extracurricular evaluation, university admission odds, what are my chances of getting into, admission probability, college acceptance rate, university admission calculator, how likely am I to get accepted, college admission predictor",
+  title: "Chance Me Calculator | Free College Admission Chances Calculator",
+  description: "Free chance me calculator for college admissions. Calculate your chances of getting into Harvard, Stanford, MIT, and 40+ top universities. Get AI-powered analysis of your GPA, SAT/ACT scores, essays, and extracurriculars. Answer 'What are my chances?' with our accurate admission probability calculator.",
+  keywords: "chance me calculator, chance me, college chances calculator, admission chances calculator, what are my chances of getting into college, college admission calculator, admission probability calculator, college acceptance calculator, chance me for college, university chances calculator, college admission predictor, chance calculator college, admission odds calculator",
   authors: [{ name: "College Chances Calculator" }],
   creator: "College Chances Calculator",
   publisher: "College Chances Calculator",
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "College Admission Chances Calculator | Free & AI-Powered Analysis",
-    description: "Calculate your admission chances at top colleges with our free calculator. Get AI-powered analysis of your essay, extracurriculars, and academic profile for more accurate predictions. Answer questions like 'What are my chances of getting into Stanford?' or 'How likely am I to get accepted to Harvard?' with our comprehensive admission probability calculator.",
+    title: "Chance Me Calculator | Free College Admission Chances Calculator",
+    description: "Free chance me calculator for college admissions. Calculate your chances of getting into Harvard, Stanford, MIT, and 40+ top universities. Get AI-powered analysis of your GPA, SAT/ACT scores, essays, and extracurriculars.",
     url: 'https://admissionchances.com',
     siteName: 'College Chances Calculator',
     images: [
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "College Admission Chances Calculator | Free & AI-Powered Analysis",
-    description: "Calculate your admission chances at top colleges with our free calculator. Get AI-powered analysis of your essay, extracurriculars, and academic profile for more accurate predictions. Answer questions like 'What are my chances of getting into Stanford?' or 'How likely am I to get accepted to Harvard?' with our comprehensive admission probability calculator.",
+    title: "Chance Me Calculator | Free College Admission Chances Calculator",
+    description: "Free chance me calculator for college admissions. Calculate your chances of getting into Harvard, Stanford, MIT, and 40+ top universities. Get AI-powered analysis of your GPA, SAT/ACT scores, essays, and extracurriculars.",
     images: ['/og-image.png'],
   },
   robots: {
@@ -77,8 +77,9 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              "name": "College Admission Chances Calculator",
-              "description": "Calculate your admission chances at top colleges with our free calculator. Get AI-powered analysis of your essay, extracurriculars, and academic profile for more accurate predictions. Answer questions like 'What are my chances of getting into Stanford?' or 'How likely am I to get accepted to Harvard?' with our comprehensive admission probability calculator.",
+              "name": "Chance Me Calculator - Free College Admission Chances Calculator",
+              "alternateName": ["Chance Me Calculator", "College Chances Calculator", "Admission Probability Calculator"],
+              "description": "Free chance me calculator for college admissions. Calculate your chances of getting into Harvard, Stanford, MIT, and 40+ top universities. Get AI-powered analysis of your GPA, SAT/ACT scores, essays, and extracurriculars. Answer 'What are my chances of getting into college?' with our accurate admission probability calculator.",
               "url": "https://admissionchances.com",
               "applicationCategory": "EducationalApplication",
               "operatingSystem": "Web Browser",
@@ -97,7 +98,7 @@ export default function RootLayout({
                 "ratingValue": "4.8",
                 "reviewCount": "150"
               },
-              "keywords": "college admission calculator, admission chances, SAT scores, GPA calculator, college essay analysis, AI college advisor, university admission probability, college acceptance rate, admission predictor, chance me calculator",
+              "keywords": "chance me calculator, chance me, college chances calculator, admission chances calculator, what are my chances of getting into college, college admission calculator, admission probability calculator, college acceptance calculator, chance me for college, university chances calculator, college admission predictor, chance calculator college, admission odds calculator, college chance calculator",
               "category": "Education",
               "potentialAction": {
                 "@type": "UseAction",
@@ -109,26 +110,42 @@ export default function RootLayout({
                 "mainEntity": [
                   {
                     "@type": "Question",
-                    "name": "What are my chances of getting into Stanford?",
+                    "name": "What is a chance me calculator?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Use our free college admission calculator to determine your chances at Stanford University. Enter your GPA, SAT/ACT scores, and get an accurate admission probability based on official Common Data Set statistics."
+                      "text": "A chance me calculator is a tool that estimates your probability of getting accepted to colleges based on your GPA, SAT/ACT scores, extracurriculars, and essays. Our free calculator uses official admission data from 40+ top universities."
+                    }
+                  },
+                  {
+                    "@type": "Question", 
+                    "name": "How accurate is the chance me calculator?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Our chance me calculator uses official Common Data Set statistics and historical admission data for accurate probability estimates. However, actual admission decisions depend on many factors including essays, recommendations, and institutional priorities."
                     }
                   },
                   {
                     "@type": "Question",
-                    "name": "How likely am I to get accepted to Harvard?",
+                    "name": "What are my chances of getting into Harvard?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Calculate your Harvard admission chances with our free tool. Input your academic credentials and receive a probability estimate based on Harvard's official admission data and acceptance rates."
+                      "text": "Calculate your Harvard admission chances with our free chance me calculator. Enter your GPA, SAT/ACT scores, and get a probability estimate based on Harvard's official admission statistics and acceptance rates."
                     }
                   },
                   {
                     "@type": "Question",
-                    "name": "What are my admission chances for MIT?",
+                    "name": "Can I calculate my chances for multiple colleges?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Find out your MIT admission probability using our calculator. Enter your GPA, test scores, and get an estimate based on MIT's official admission statistics and acceptance rates."
+                      "text": "Yes! Our chance me calculator includes 40+ top universities including Harvard, Stanford, MIT, Yale, Princeton, and more. Calculate your admission chances for all your target schools."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What factors does the chance me calculator consider?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Our calculator considers GPA, SAT/ACT scores, and with premium features: essay quality, extracurricular activities, academic rigor (AP/IB), and leadership experience for more accurate predictions."
                     }
                   }
                 ]
