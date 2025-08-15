@@ -1052,7 +1052,7 @@ export default function Home() {
         {/* Header with Auth */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-gray-900">College Calculator</h1>
+            <h1 className="text-2xl font-bold text-gray-900">College Chances Calculator</h1>
         </div>
           <div className="flex items-center space-x-4">
             {user ? (
