@@ -1644,7 +1644,7 @@ export default function Home() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6">
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-center mb-4">
                   <h2 className="text-2xl font-bold text-gray-900">Choose Your Premium Plan</h2>
                   <button
                     onClick={() => setShowPricingModal(false)}
@@ -1654,11 +1654,26 @@ export default function Home() {
                   </button>
                 </div>
                 
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <svg className="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-blue-800">One-Time Payment</h3>
+                      <p className="text-sm text-blue-700">No recurring charges. Pay once and get premium access for the selected time period.</p>
+                    </div>
+                  </div>
+                </div>
+                
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   <div className="bg-white rounded-lg p-6 border-2 border-gray-200 hover:border-purple-300 transition-colors">
                     <div className="text-center">
                       <h3 className="font-semibold text-gray-900 text-lg mb-2">2 Weeks</h3>
-                      <div className="text-3xl font-bold text-purple-600 mb-2">$5</div>
+                      <div className="text-3xl font-bold text-purple-600 mb-1">$5</div>
+                      <p className="text-xs text-gray-500 mb-3">one-time payment</p>
                       <button
                         onClick={() => {
                           setSelectedTier('2-weeks');
@@ -1679,7 +1694,8 @@ export default function Home() {
                   <div className="bg-white rounded-lg p-6 border-2 border-gray-200 hover:border-purple-300 transition-colors">
                     <div className="text-center">
                       <h3 className="font-semibold text-gray-900 text-lg mb-2">1 Month</h3>
-                      <div className="text-3xl font-bold text-purple-600 mb-2">$8</div>
+                      <div className="text-3xl font-bold text-purple-600 mb-1">$8</div>
+                      <p className="text-xs text-gray-500 mb-3">one-time payment</p>
                       <button
                         onClick={() => {
                           setSelectedTier('1-month');
@@ -1700,7 +1716,8 @@ export default function Home() {
                   <div className="bg-white rounded-lg p-6 border-2 border-gray-200 hover:border-purple-300 transition-colors">
                     <div className="text-center">
                       <h3 className="font-semibold text-gray-900 text-lg mb-2">3 Months</h3>
-                      <div className="text-3xl font-bold text-purple-600 mb-2">$15</div>
+                      <div className="text-3xl font-bold text-purple-600 mb-1">$15</div>
+                      <p className="text-xs text-gray-500 mb-3">one-time payment</p>
                       <button
                         onClick={() => {
                           setSelectedTier('3-months');
