@@ -22,7 +22,7 @@ export default function ContactSupport() {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-900">Email Support</h3>
-                    <p className="text-blue-600 font-medium">support@admissionchances.com</p>
+                    <p className="text-blue-600 font-medium">contact.admissionchances@gmail.com</p>
                   </div>
                 </div>
               </div>
